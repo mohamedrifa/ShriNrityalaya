@@ -15,6 +15,7 @@ import '../../features/events/presentation/screens/events_screen.dart';
 import '../../features/students/presentation/screens/students_list_screen.dart';
 import '../../features/students/presentation/screens/student_form_screen.dart';
 import '../../features/students/domain/models/student.dart';
+import '../../features/profile/presentation/screens/profile_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/login',
@@ -80,6 +81,10 @@ final appRouter = GoRouter(
         final student = state.extra as Student?;
         return StudentFormScreen(student: student);
       },
+    ),
+    GoRoute(
+      path: '/profile',
+      builder: (context, state) => const ProfileScreen(),
     ),
   ],
 );

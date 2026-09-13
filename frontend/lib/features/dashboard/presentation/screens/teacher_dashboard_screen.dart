@@ -12,7 +12,9 @@ class TeacherDashboardScreen extends StatelessWidget {
         title: const Text('Teacher Dashboard'),
         actions: [
           IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.account_circle), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.account_circle), onPressed: () {
+            GoRouter.of(context).push('/profile');
+          }),
         ],
       ),
       body: SingleChildScrollView(

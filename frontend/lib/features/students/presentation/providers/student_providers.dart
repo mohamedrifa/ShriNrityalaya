@@ -29,10 +29,10 @@ class StudentsNotifier extends StateNotifier<AsyncValue<List<Student>>> {
     }
   }
 
-  Future<void> addStudent(Student student) async {
+  Future<void> addStudent(Map<String, dynamic> payload) async {
     try {
-      final newStudent = await _repository.createStudent(student);
-      if (state.hasValue) {
+      final newStudent = await _repository.createStudent(payload);
+      if (state.value != null) {
         state = AsyncValue.data([...state.value!, newStudent]);
       }
     } catch (e) {

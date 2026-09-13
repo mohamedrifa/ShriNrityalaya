@@ -15,8 +15,8 @@ class StudentRepository {
     throw Exception('Failed to load students');
   }
 
-  Future<Student> createStudent(Student student) async {
-    final response = await _dio.post('/students', data: student.toJson());
+  Future<Student> createStudent(Map<String, dynamic> payload) async {
+    final response = await _dio.post('/students', data: payload);
     if (response.statusCode == 201 && response.data['success'] == true) {
       return Student.fromJson(response.data['data']);
     }
