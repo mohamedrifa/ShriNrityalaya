@@ -5,6 +5,7 @@ import 'package:shri_nrityalaya_app/core/network/api_client.dart';
 import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:shri_nrityalaya_app/features/auth/presentation/providers/auth_providers.dart';
 import '../providers/fee_obligations_providers.dart';
+import '../providers/fee_plans_providers.dart';
 
 class FeeManagementScreen extends ConsumerStatefulWidget {
   const FeeManagementScreen({super.key});
@@ -39,7 +40,7 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
           children: [
             const _MonthlyDuesTab(),
             _buildPendingReviewsTab(context),
-            _buildFeePlansTab(context),
+            const _FeePlansTab(),
           ],
         ),
       ),
@@ -50,23 +51,6 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
     return const _PendingReviewsList();
   }
 
-  Widget _buildFeePlansTab(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-            leading: const Icon(Icons.account_balance_wallet, color: AppColors.primaryNavy),
-            title: Text(index == 0 ? 'Beginner Monthly Plan' : 'Intermediate Monthly Plan', style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(index == 0 ? '₹2,000 / month' : '₹3,000 / month'),
-            trailing: const Icon(Icons.edit, color: AppColors.mutedText),
-            onTap: () {},
-          ),
-        );
-      },
-    );
-  }
 }
 
 class _PendingReviewsList extends ConsumerStatefulWidget {
@@ -91,13 +75,17 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
       final response = await dio.get('/payments');
       if (response.statusCode == 200) {
         final List all = response.data['data'];
-        setState(() {
-          _payments = all.where((p) => p['status'] == 'PendingReview').toList();
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _payments = all.where((p) => p['status'] == 'PendingReview').toList();
+            _isLoading = false;
+          });
+        }
       }
     } catch (e) {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -179,22 +167,60 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
     );
   }
 
-  // ignore: unused_element
-  Widget _buildFeePlansTab(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: 2,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-            leading: const Icon(Icons.account_balance_wallet, color: AppColors.primaryNavy),
-            title: Text(index == 0 ? 'Beginner Monthly Plan' : 'Intermediate Monthly Plan', style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(index == 0 ? '₹2,000 / month' : '₹3,000 / month'),
-            trailing: const Icon(Icons.edit, color: AppColors.mutedText),
-            onTap: () {},
+}
+
+class _FeePlansTab extends ConsumerWidget {
+  const _FeePlansTab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final plansAsync = ref.watch(feePlansProvider);
+
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Active Fee Plans', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
+              ElevatedButton.icon(
+                onPressed: () => context.push('/fee-plans/form'),
+                icon: const Icon(Icons.add, color: AppColors.primaryNavy),
+                label: const Text('Add Plan', style: TextStyle(color: AppColors.primaryNavy)),
+                style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGold),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+        Expanded(
+          child: plansAsync.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (err, stack) => Center(child: Text('Error: $err')),
+            data: (plans) {
+              if (plans.isEmpty) return const Center(child: Text('No fee plans found.'));
+              return ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                itemCount: plans.length,
+                itemBuilder: (context, index) {
+                  final plan = plans[index];
+                  return Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.account_balance_wallet, color: AppColors.primaryNavy),
+                      title: Text(plan['name'] ?? '', style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text('₹${plan['monthlyAmount']} / month\n${plan['description'] ?? ''}'),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.edit, color: AppColors.mutedText),
+                        onPressed: () => context.push('/fee-plans/form', extra: plan),
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }
@@ -213,10 +239,14 @@ class _MonthlyDuesTab extends ConsumerWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Current Month Obligations',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy),
+              const Expanded(
+                child: Text(
+                  'Current Month Obligations',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
+              const SizedBox(width: 8),
               ElevatedButton.icon(
                 onPressed: () async {
                   try {

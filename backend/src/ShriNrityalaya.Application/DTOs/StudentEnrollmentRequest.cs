@@ -9,11 +9,11 @@ public class StudentEnrollmentRequest
     [Required] public string StudentLastName { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     [Required] public string Gender { get; set; } = string.Empty;
-    public string? BloodGroup { get; set; }
     public string? Address { get; set; }
     public string? EmergencyContactNumber { get; set; }
     public DateTime JoiningDate { get; set; } = DateTime.UtcNow;
     public string Status { get; set; } = "Active";
+    public Guid? FeePlanId { get; set; }
 
     // Student Auth
     [Required] public string StudentEmailOrUsername { get; set; } = string.Empty;

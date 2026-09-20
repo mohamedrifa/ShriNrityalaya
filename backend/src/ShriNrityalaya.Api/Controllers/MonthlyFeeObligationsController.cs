@@ -58,14 +58,23 @@ public class MonthlyFeeObligationsController : ControllerBase
         int createdCount = 0;
         foreach (var student in activeStudents)
         {
-            if (!existingForMonth.Contains(student.Id) && defaultPlan != null)
+            if (existingForMonth.Contains(student.Id)) continue;
+            
+            FeePlan? planToUse = null;
+            if (student.FeePlanId.HasValue)
+            {
+                planToUse = feePlans.FirstOrDefault(f => f.Id == student.FeePlanId.Value);
+            }
+            if (planToUse == null) planToUse = feePlans.FirstOrDefault(); // Fallback
+
+            if (planToUse != null)
             {
                 var obligation = new MonthlyFeeObligation
                 {
                     StudentId = student.Id,
                     Year = year,
                     Month = month,
-                    AmountDue = defaultPlan.MonthlyAmount,
+                    AmountDue = planToUse.MonthlyAmount,
                     AmountPaid = 0,
                     Status = "Unpaid",
                     DueDate = new DateTime(year, month, 10), // Due on 10th

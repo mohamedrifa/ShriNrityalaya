@@ -17,70 +17,91 @@ class TeacherDashboardScreen extends StatelessWidget {
           }),
         ],
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(color: AppColors.primaryNavy),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: AppColors.primaryGold,
+                    child: Icon(Icons.person, size: 40, color: AppColors.primaryNavy),
+                  ),
+                  SizedBox(height: 10),
+                  Text('Shri Nrityalaya', style: TextStyle(color: Colors.white, fontSize: 20)),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.receipt_long, color: AppColors.warning),
+              title: const Text('Fee Management'),
+              onTap: () {
+                Navigator.pop(context); // close drawer
+                GoRouter.of(context).push('/fees');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.people, color: AppColors.primaryNavy),
+              title: const Text('Manage Students'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/students');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.video_library, color: AppColors.primaryNavy),
+              title: const Text('Practice Submissions'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/learning');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.trending_up, color: AppColors.primaryGold),
+              title: const Text('Student Progress'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/progress');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.campaign, color: AppColors.error),
+              title: const Text('Messages'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/messaging');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.event, color: AppColors.success),
+              title: const Text('Academy Events'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/events');
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Profile & Settings'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/profile');
+              },
+            ),
+          ],
+        ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Action Required',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            _buildActionCard(
-              context,
-              'Pending Payment Reviews',
-              '3 proofs await your approval',
-              Icons.receipt_long,
-              AppColors.warning,
-              '/fees',
-            ),
-            const SizedBox(height: 12),
-            _buildActionCard(
-              context,
-              'Manage Students',
-              'Add, Edit, Remove profiles',
-              Icons.people,
-              AppColors.primaryNavy,
-              '/students',
-            ),
-            const SizedBox(height: 12),
-            _buildActionCard(
-              context,
-              'Practice Submissions',
-              '5 new videos need feedback',
-              Icons.video_library,
-              AppColors.primaryNavy,
-              '/learning',
-            ),
-            const SizedBox(height: 12),
-            _buildActionCard(
-              context,
-              'Student Progress',
-              'Update skills & certificates',
-              Icons.trending_up,
-              AppColors.primaryGold,
-              '/progress',
-            ),
-            const SizedBox(height: 12),
-            _buildActionCard(
-              context,
-              'Messages & Announcements',
-              'Send broadcast messages',
-              Icons.campaign,
-              AppColors.error,
-              '/messaging',
-            ),
-            const SizedBox(height: 12),
-            _buildActionCard(
-              context,
-              'Academy Events',
-              'Manage upcoming events',
-              Icons.event,
-              AppColors.success,
-              '/events',
-            ),
-            const SizedBox(height: 24),
             Text(
               "Today's Classes",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
@@ -96,25 +117,6 @@ class TeacherDashboardScreen extends StatelessWidget {
         onPressed: () {},
         backgroundColor: AppColors.primaryGold,
         child: const Icon(Icons.add, color: AppColors.deepNavy),
-      ),
-    );
-  }
-
-  Widget _buildActionCard(BuildContext context, String title, String subtitle, IconData icon, Color color, String route) {
-    return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: color.withValues(alpha: 0.1),
-          child: Icon(icon, color: color),
-        ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(subtitle),
-        trailing: const Icon(Icons.chevron_right),
-        onTap: () {
-          if (route.isNotEmpty) {
-            GoRouter.of(context).push(route);
-          }
-        },
       ),
     );
   }

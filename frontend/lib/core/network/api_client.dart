@@ -9,7 +9,7 @@ final dioProvider = Provider<Dio>((ref) {
   final dio = Dio(BaseOptions(
     baseUrl: dotenv.env['API_BASE_URL'] ?? 'http://localhost:5117/api/v1',
     connectTimeout: const Duration(seconds: 5),
-    receiveTimeout: const Duration(seconds: 3),
+    receiveTimeout: const Duration(seconds: 15),
     headers: {
       'Content-Type': 'application/json',
     },

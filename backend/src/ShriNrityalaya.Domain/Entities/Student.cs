@@ -15,6 +15,9 @@ public class Student : AuditableEntity
     public DateTime JoiningDate { get; set; }
     public string Status { get; set; } = "Active";
 
+    public Guid? FeePlanId { get; set; }
+    public FeePlan? FeePlan { get; set; }
+
     public ICollection<StudentParent> Parents { get; set; } = new List<StudentParent>();
     public ICollection<BatchStudent> Batches { get; set; } = new List<BatchStudent>();
 }

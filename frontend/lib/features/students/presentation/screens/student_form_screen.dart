@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../domain/models/student.dart';
 import '../providers/student_providers.dart';
+import '../../../fees/presentation/providers/fee_plans_providers.dart';
 
 class StudentFormScreen extends ConsumerStatefulWidget {
   final Student? student;
@@ -22,10 +23,10 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _genderController;
-  late TextEditingController _bloodGroupController;
   late TextEditingController _addressController;
   late TextEditingController _emergencyContactController;
   late String _status;
+  String? _feePlanId;
 
   // Student Auth
   late TextEditingController _studentLoginController;
@@ -46,10 +47,10 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     _firstNameController = TextEditingController(text: widget.student?.firstName ?? '');
     _lastNameController = TextEditingController(text: widget.student?.lastName ?? '');
     _genderController = TextEditingController(text: widget.student?.gender ?? '');
-    _bloodGroupController = TextEditingController(text: widget.student?.bloodGroup ?? '');
     _addressController = TextEditingController(text: widget.student?.address ?? '');
     _emergencyContactController = TextEditingController(text: widget.student?.emergencyContactNumber ?? '');
     _status = widget.student?.status ?? 'Active';
+    _feePlanId = widget.student?.feePlanId;
 
     // Auth & Parent fields are only used during creation for now
     _studentLoginController = TextEditingController();
@@ -66,7 +67,6 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _genderController.dispose();
-    _bloodGroupController.dispose();
     _addressController.dispose();
     _emergencyContactController.dispose();
     
@@ -93,7 +93,6 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
           "studentLastName": _lastNameController.text.trim(),
           "dateOfBirth": DateTime(2010, 1, 1).toIso8601String(), // Default for demo
           "gender": _genderController.text.trim(),
-          "bloodGroup": _bloodGroupController.text.trim(),
           "address": _addressController.text.trim(),
           "emergencyContactNumber": _emergencyContactController.text.trim(),
           "joiningDate": DateTime.now().toIso8601String(),
@@ -105,6 +104,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
           "parentMobileNumber": _parentMobileController.text.trim(),
           "parentEmailOrUsername": _parentLoginController.text.trim(),
           "parentPassword": _parentPasswordController.text,
+          "feePlanId": _feePlanId,
         };
         await ref.read(studentsProvider.notifier).addStudent(payload);
         if (mounted) {
@@ -119,11 +119,11 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
           lastName: _lastNameController.text.trim(),
           dateOfBirth: widget.student?.dateOfBirth ?? DateTime(2010, 1, 1),
           gender: _genderController.text.trim(),
-          bloodGroup: _bloodGroupController.text.trim(),
           address: _addressController.text.trim(),
           emergencyContactNumber: _emergencyContactController.text.trim(),
           joiningDate: widget.student?.joiningDate ?? DateTime.now(),
           status: _status,
+          feePlanId: _feePlanId,
         );
         await ref.read(studentsProvider.notifier).updateStudent(updatedStudent);
         if (mounted) {
@@ -172,13 +172,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(child: TextFormField(controller: _genderController, decoration: const InputDecoration(labelText: 'Gender', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null)),
-                        const SizedBox(width: 16),
-                        Expanded(child: TextFormField(controller: _bloodGroupController, decoration: const InputDecoration(labelText: 'Blood Group', border: OutlineInputBorder()))),
-                      ],
-                    ),
+                    TextFormField(controller: _genderController, decoration: const InputDecoration(labelText: 'Gender', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null),
                     const SizedBox(height: 16),
                     TextFormField(controller: _addressController, decoration: const InputDecoration(labelText: 'Address', border: OutlineInputBorder()), maxLines: 2),
                     const SizedBox(height: 16),
@@ -215,11 +209,35 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                     ],
 
                     const SizedBox(height: 24),
-                    DropdownButtonFormField<String>(
-                      value: _status,
-                      decoration: const InputDecoration(labelText: 'Status', border: OutlineInputBorder()),
-                      items: ['Active', 'Inactive', 'Graduated'].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
-                      onChanged: (val) { if (val != null) setState(() => _status = val); },
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DropdownButtonFormField<String>(
+                            value: _status,
+                            decoration: const InputDecoration(labelText: 'Status', border: OutlineInputBorder()),
+                            items: ['Active', 'Inactive', 'Graduated'].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+                            onChanged: (val) { if (val != null) setState(() => _status = val); },
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: ref.watch(feePlansProvider).when(
+                            loading: () => const Center(child: CircularProgressIndicator()),
+                            error: (e, s) => Text('Error: $e'),
+                            data: (plans) {
+                              return DropdownButtonFormField<String>(
+                                value: _feePlanId,
+                                decoration: const InputDecoration(labelText: 'Fee Plan', border: OutlineInputBorder()),
+                                items: plans.map((p) => DropdownMenuItem(
+                                  value: p['id'].toString(),
+                                  child: Text(p['name'].toString(), overflow: TextOverflow.ellipsis),
+                                )).toList(),
+                                onChanged: (val) { setState(() => _feePlanId = val); },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 32),
                     SizedBox(

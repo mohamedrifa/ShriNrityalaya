@@ -39,4 +39,20 @@ public class FeePlansController : ControllerBase
         var created = await _repository.AddAsync(plan);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, new { success = true, data = created });
     }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] FeePlan updatedPlan)
+    {
+        var plan = await _repository.GetByIdAsync(id);
+        if (plan == null) return NotFound();
+
+        plan.Name = updatedPlan.Name;
+        plan.MonthlyAmount = updatedPlan.MonthlyAmount;
+        plan.AdmissionFee = updatedPlan.AdmissionFee;
+        plan.Description = updatedPlan.Description;
+        plan.UpdatedAt = DateTimeOffset.UtcNow;
+
+        await _repository.UpdateAsync(plan);
+        return Ok(new { success = true, message = "Fee plan updated successfully." });
+    }
 }

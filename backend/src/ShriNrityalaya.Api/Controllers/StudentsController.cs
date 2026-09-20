@@ -89,11 +89,11 @@ public class StudentsController : ControllerBase
             LastName = req.StudentLastName,
             DateOfBirth = req.DateOfBirth,
             Gender = req.Gender,
-            BloodGroup = req.BloodGroup,
             Address = req.Address,
             EmergencyContactNumber = req.EmergencyContactNumber,
             JoiningDate = req.JoiningDate,
             Status = req.Status,
+            FeePlanId = req.FeePlanId,
             CreatedAt = DateTimeOffset.UtcNow
         };
         var createdStudent = await _studentRepository.AddAsync(student);
@@ -134,11 +134,11 @@ public class StudentsController : ControllerBase
         existing.LastName = student.LastName;
         existing.DateOfBirth = student.DateOfBirth;
         existing.Gender = student.Gender;
-        existing.BloodGroup = student.BloodGroup;
         existing.Address = student.Address;
         existing.EmergencyContactNumber = student.EmergencyContactNumber;
         existing.JoiningDate = student.JoiningDate;
         existing.Status = student.Status;
+        existing.FeePlanId = student.FeePlanId;
         existing.UpdatedAt = DateTimeOffset.UtcNow;
 
         await _studentRepository.UpdateAsync(existing);

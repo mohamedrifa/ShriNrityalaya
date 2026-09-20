@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/dashboard/presentation/screens/teacher_dashboard_screen.dart';
 import '../../features/dashboard/presentation/screens/student_dashboard_screen.dart';
@@ -16,10 +17,15 @@ import '../../features/students/presentation/screens/students_list_screen.dart';
 import '../../features/students/presentation/screens/student_form_screen.dart';
 import '../../features/students/domain/models/student.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
+import '../../features/fees/presentation/screens/fee_plan_form_screen.dart';
 
 final appRouter = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/',
   routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const SplashScreen(),
+    ),
     GoRoute(
       path: '/login',
       builder: (context, state) => const LoginScreen(),
@@ -85,6 +91,13 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/fee-plans/form',
+      builder: (context, state) {
+        final plan = state.extra as Map<String, dynamic>?;
+        return FeePlanFormScreen(feePlan: plan);
+      },
     ),
   ],
 );

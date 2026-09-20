@@ -4,8 +4,8 @@ namespace ShriNrityalaya.Domain.Entities;
 
 public class Lesson : AuditableEntity
 {
-    public Guid BatchId { get; set; }
-    public Batch Batch { get; set; } = null!;
+    public Guid? BatchId { get; set; }
+    public Batch? Batch { get; set; }
 
     public string Title { get; set; } = string.Empty;
     public string? Description { get; set; }

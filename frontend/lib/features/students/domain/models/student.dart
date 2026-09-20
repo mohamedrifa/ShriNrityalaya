@@ -9,6 +9,7 @@ class Student {
   final String? emergencyContactNumber;
   final DateTime joiningDate;
   final String status;
+  final String? feePlanId;
 
   Student({
     this.id,
@@ -21,6 +22,7 @@ class Student {
     this.emergencyContactNumber,
     required this.joiningDate,
     required this.status,
+    this.feePlanId,
   });
 
   factory Student.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class Student {
       emergencyContactNumber: json['emergencyContactNumber'],
       joiningDate: DateTime.tryParse(json['joiningDate'] ?? '') ?? DateTime.now(),
       status: json['status'] ?? 'Active',
+      feePlanId: json['feePlanId'],
     );
   }
 
@@ -50,6 +53,7 @@ class Student {
       'emergencyContactNumber': emergencyContactNumber,
       'joiningDate': joiningDate.toIso8601String(),
       'status': status,
+      'feePlanId': feePlanId,
     };
   }
 }

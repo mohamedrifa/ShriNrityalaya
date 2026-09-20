@@ -35,15 +35,15 @@ public class LessonsController : ControllerBase
     [HttpPost("upload")]
     [Authorize(Roles = "SystemAdmin,Teacher")]
     public async Task<IActionResult> UploadLesson(
-        [FromForm] Guid batchId,
+        [FromForm] Guid? batchId,
         [FromForm] string title,
-        [FromForm] string description,
+        [FromForm] string? description,
         [FromForm] int orderSequence,
-        IFormFile videoFile)
+        IFormFile? videoFile)
     {
         var lesson = new Lesson
         {
-            BatchId = batchId,
+            BatchId = batchId == Guid.Empty ? null : batchId,
             Title = title,
             Description = description,
             OrderSequence = orderSequence,
