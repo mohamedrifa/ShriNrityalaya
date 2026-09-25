@@ -23,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<ShriNrityalaya.Domain.Entities.ClassSession> ClassSessions { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.AttendanceRecord> AttendanceRecords { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.Lesson> Lessons { get; set; }
+    public DbSet<ShriNrityalaya.Domain.Entities.LessonProgress> LessonProgresses { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.LearningResource> LearningResources { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.PracticeSubmission> PracticeSubmissions { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.TeacherFeedback> TeacherFeedbacks { get; set; }
@@ -31,10 +32,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<ShriNrityalaya.Domain.Entities.Message> Messages { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.AcademyEvent> AcademyEvents { get; set; }
     public DbSet<ShriNrityalaya.Domain.Entities.EventParticipant> EventParticipants { get; set; }
+    public DbSet<ShriNrityalaya.Domain.Entities.Announcement> Announcements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        
+        builder.Entity<ShriNrityalaya.Domain.Entities.AcademyEvent>().Property(p => p.ParticipationFee).HasColumnType("decimal(18,2)");
+        builder.Entity<ShriNrityalaya.Domain.Entities.FeePlan>().Property(p => p.AdmissionFee).HasColumnType("decimal(18,2)");
+        builder.Entity<ShriNrityalaya.Domain.Entities.FeePlan>().Property(p => p.MonthlyAmount).HasColumnType("decimal(18,2)");
+        builder.Entity<ShriNrityalaya.Domain.Entities.MonthlyFeeObligation>().Property(p => p.AmountDue).HasColumnType("decimal(18,2)");
+        builder.Entity<ShriNrityalaya.Domain.Entities.MonthlyFeeObligation>().Property(p => p.AmountPaid).HasColumnType("decimal(18,2)");
+        builder.Entity<ShriNrityalaya.Domain.Entities.Payment>().Property(p => p.Amount).HasColumnType("decimal(18,2)");
     }
 }

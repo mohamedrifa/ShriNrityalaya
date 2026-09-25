@@ -1,39 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
+import '../../../profile/presentation/providers/profile_providers.dart';
+import '../../../../core/network/api_client.dart';
 
-class TeacherDashboardScreen extends StatelessWidget {
+class TeacherDashboardScreen extends ConsumerWidget {
   const TeacherDashboardScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileState = ref.watch(profileProvider);
+    final baseUrl = ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
+
+    String? imageUrl;
+    profileState.whenData((profile) {
+      imageUrl = profile['profilePictureUrl'] as String?;
+    });
+
+    Widget profileAvatar = CircleAvatar(
+      backgroundColor: AppColors.primaryGold,
+      backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
+      child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
+    );
+
     return Scaffold(
+      backgroundColor: AppColors.warmCream,
       appBar: AppBar(
         title: const Text('Teacher Dashboard'),
+        backgroundColor: AppColors.primaryNavy,
+        foregroundColor: Colors.white,
         actions: [
           IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.account_circle), onPressed: () {
-            GoRouter.of(context).push('/profile');
-          }),
+          IconButton(
+            icon: profileAvatar,
+            onPressed: () {
+              GoRouter.of(context).push('/profile');
+            }
+          ),
         ],
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: AppColors.primaryNavy),
+            DrawerHeader(
+              decoration: const BoxDecoration(color: AppColors.primaryNavy),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: AppColors.primaryGold,
-                    child: Icon(Icons.person, size: 40, color: AppColors.primaryNavy),
+                  SizedBox(
+                    height: 60,
+                    width: 60,
+                    child: profileAvatar,
                   ),
-                  SizedBox(height: 10),
-                  Text('Shri Nrityalaya', style: TextStyle(color: Colors.white, fontSize: 20)),
+                  const SizedBox(height: 10),
+                  const Text('Shri Nrityalaya', style: TextStyle(color: Colors.white, fontSize: 20)),
                 ],
               ),
             ),
@@ -54,8 +78,16 @@ class TeacherDashboardScreen extends StatelessWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.contact_phone, color: AppColors.success),
+              title: const Text('Directory'),
+              onTap: () {
+                Navigator.pop(context);
+                GoRouter.of(context).push('/directory');
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.video_library, color: AppColors.primaryNavy),
-              title: const Text('Practice Submissions'),
+              title: const Text('Learning & Lessons'),
               onTap: () {
                 Navigator.pop(context);
                 GoRouter.of(context).push('/learning');
@@ -94,6 +126,15 @@ class TeacherDashboardScreen extends StatelessWidget {
                 GoRouter.of(context).push('/profile');
               },
             ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: AppColors.error),
+              title: const Text('Logout', style: TextStyle(color: AppColors.error)),
+              onTap: () {
+                Navigator.pop(context);
+                ref.read(authProvider.notifier).logout();
+                context.go('/login');
+              },
+            ),
           ],
         ),
       ),
@@ -102,73 +143,73 @@ class TeacherDashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Today's Classes",
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            const Text(
+              'Welcome back!',
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryNavy,
+              ),
             ),
-            const SizedBox(height: 16),
-            _buildClassCard(context, 'Beginners Batch', '16:00 - 17:00', '15 Students'),
-            const SizedBox(height: 12),
-            _buildClassCard(context, 'Intermediate Batch', '17:30 - 19:00', '12 Students'),
+            const SizedBox(height: 8),
+            const Text(
+              'Manage your academy from here.',
+              style: TextStyle(fontSize: 16, color: AppColors.mutedText),
+            ),
+            const SizedBox(height: 24),
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                _buildGridCard(context, 'Students', Icons.people, AppColors.primaryNavy, '/students'),
+                _buildGridCard(context, 'Directory', Icons.contact_phone, AppColors.success, '/directory'),
+                _buildGridCard(context, 'Attendance', Icons.check_circle, AppColors.success, '/attendance'),
+                _buildGridCard(context, 'Fees', Icons.receipt_long, AppColors.warning, '/fees'),
+                _buildGridCard(context, 'Lessons', Icons.video_library, AppColors.primaryNavy, '/learning'),
+                _buildGridCard(context, 'Progress', Icons.trending_up, AppColors.primaryGold, '/progress'),
+                _buildGridCard(context, 'Messages', Icons.campaign, AppColors.error, '/messaging'),
+              ],
+            ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: AppColors.primaryGold,
-        child: const Icon(Icons.add, color: AppColors.deepNavy),
       ),
     );
   }
 
-  Widget _buildClassCard(BuildContext context, String name, String time, String students) {
+  Widget _buildGridCard(BuildContext context, String title, IconData icon, Color color, String route) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(name, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppColors.success.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Text('Scheduled', style: TextStyle(color: AppColors.success, fontSize: 12)),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: InkWell(
+        onTap: () => context.push(route),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: color.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                const Icon(Icons.access_time, size: 16, color: AppColors.mutedText),
-                const SizedBox(width: 8),
-                Text(time, style: const TextStyle(color: AppColors.mutedText)),
-                const SizedBox(width: 16),
-                const Icon(Icons.people, size: 16, color: AppColors.mutedText),
-                const SizedBox(width: 8),
-                Text(students, style: const TextStyle(color: AppColors.mutedText)),
-              ],
-            ),
-            const SizedBox(height: 16),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton(
-                onPressed: () {
-                  GoRouter.of(context).push('/attendance');
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.primaryNavy,
-                  side: const BorderSide(color: AppColors.primaryNavy),
-                ),
-                child: const Text('Mark Attendance'),
+                child: Icon(icon, color: color, size: 36),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.deepNavy,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

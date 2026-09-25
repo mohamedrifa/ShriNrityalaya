@@ -9,4 +9,5 @@ public class ApplicationUser : IdentityUser<Guid>
     public DateTimeOffset CreatedAt { get; set; }
     public bool IsActive { get; set; } = true;
     public Guid? AcademyId { get; set; }
+    public string? ProfilePictureUrl { get; set; }
 }

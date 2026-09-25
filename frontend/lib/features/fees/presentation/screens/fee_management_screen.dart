@@ -17,30 +17,34 @@ class FeeManagementScreen extends ConsumerStatefulWidget {
 class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
   @override
   Widget build(BuildContext context) {
+    final userRole = ref.watch(authProvider).userRole;
+    final isTeacherOrAdmin = userRole == 'Teacher' || userRole == 'SystemAdmin';
+    final tabCount = isTeacherOrAdmin ? 3 : 1;
+
     return DefaultTabController(
-      length: 3,
+      length: tabCount,
       child: Scaffold(
         backgroundColor: AppColors.warmCream,
         appBar: AppBar(
           title: const Text('Fee Management'),
           backgroundColor: AppColors.primaryNavy,
           foregroundColor: Colors.white,
-          bottom: const TabBar(
+          bottom: TabBar(
             labelColor: AppColors.primaryGold,
             unselectedLabelColor: Colors.white70,
             indicatorColor: AppColors.primaryGold,
             tabs: [
-              Tab(text: 'Monthly Dues'),
-              Tab(text: 'Pending Reviews'),
-              Tab(text: 'Fee Plans'),
+              const Tab(text: 'Monthly Dues'),
+              if (isTeacherOrAdmin) const Tab(text: 'Pending Reviews'),
+              if (isTeacherOrAdmin) const Tab(text: 'Fee Plans'),
             ],
           ),
         ),
         body: TabBarView(
           children: [
             const _MonthlyDuesTab(),
-            _buildPendingReviewsTab(context),
-            const _FeePlansTab(),
+            if (isTeacherOrAdmin) _buildPendingReviewsTab(context),
+            if (isTeacherOrAdmin) const _FeePlansTab(),
           ],
         ),
       ),
@@ -247,28 +251,29 @@ class _MonthlyDuesTab extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              ElevatedButton.icon(
-                onPressed: () async {
-                  try {
-                    await ref.read(feeObligationsProvider.notifier)
-                        .generateObligations(DateTime.now().year, DateTime.now().month);
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Obligations generated successfully!')),
-                      );
+              if (ref.read(authProvider).userRole == 'Teacher' || ref.read(authProvider).userRole == 'SystemAdmin')
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    try {
+                      await ref.read(feeObligationsProvider.notifier)
+                          .generateObligations(DateTime.now().year, DateTime.now().month);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Obligations generated successfully!')),
+                        );
+                      }
+                    } catch (e) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to generate: $e')),
+                        );
+                      }
                     }
-                  } catch (e) {
-                    if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Failed to generate: $e')),
-                      );
-                    }
-                  }
-                },
-                icon: const Icon(Icons.auto_awesome, color: AppColors.primaryNavy),
-                label: const Text('Generate Now', style: TextStyle(color: AppColors.primaryNavy)),
-                style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGold),
-              ),
+                  },
+                  icon: const Icon(Icons.auto_awesome, color: AppColors.primaryNavy),
+                  label: const Text('Generate Now', style: TextStyle(color: AppColors.primaryNavy)),
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGold),
+                ),
             ],
           ),
         ),
@@ -289,7 +294,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                     margin: const EdgeInsets.only(bottom: 12),
                     child: ListTile(
                       title: Text(
-                        'Student ID: ${ob.studentId.substring(0, 8)}...',
+                        ob.studentName ?? 'Student ID: ${ob.studentId.substring(0, 8)}...',
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text('Due: \$${ob.amountDue} | Paid: \$${ob.amountPaid}\nMonth: ${ob.month}/${ob.year}'),
@@ -319,12 +324,18 @@ class _MonthlyDuesTab extends ConsumerWidget {
                                   ),
                               ],
                             )
-                          : Chip(
-                              label: Text(ob.status),
-                              backgroundColor: ob.status == 'Paid' 
-                                  ? AppColors.success.withOpacity(0.2) 
-                                  : AppColors.warning.withOpacity(0.2),
-                            ),
+                          : (ob.status == 'Under Review' && ref.read(authProvider).userRole != 'Teacher' && ref.read(authProvider).userRole != 'SystemAdmin')
+                              ? ElevatedButton(
+                                  onPressed: () => context.push('/payments/details', extra: ob),
+                                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGold),
+                                  child: const Text('View Submission', style: TextStyle(color: AppColors.primaryNavy)),
+                                )
+                              : Chip(
+                                  label: Text(ob.status),
+                                  backgroundColor: ob.status == 'Paid' 
+                                      ? AppColors.success.withOpacity(0.2) 
+                                      : AppColors.warning.withOpacity(0.2),
+                                ),
                     ),
                   );
                 },

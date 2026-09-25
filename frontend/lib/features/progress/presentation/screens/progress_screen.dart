@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:shri_nrityalaya_app/features/progress/domain/models/skill_assessment.dart';
 import 'package:shri_nrityalaya_app/features/students/presentation/providers/student_providers.dart';
+import 'package:shri_nrityalaya_app/features/auth/presentation/providers/auth_providers.dart' as auth;
 import '../providers/progress_providers.dart';
 
 class ProgressScreen extends ConsumerStatefulWidget {
@@ -16,39 +17,61 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
   String? _selectedStudentId;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final role = ref.read(auth.authProvider).userRole;
+      if (role == 'Student' || role == 'Parent') {
+        setState(() => _selectedStudentId = 'me');
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final role = ref.watch(auth.authProvider).userRole;
+    final isTeacherOrAdmin = role == 'Teacher' || role == 'SystemAdmin';
+    final isStudent = role == 'Student';
     final studentsState = ref.watch(studentsProvider);
+
+    String appBarTitle = 'Progress';
+    if (isTeacherOrAdmin) {
+      appBarTitle = 'Students Progress';
+    } else if (isStudent) {
+      appBarTitle = 'My Progress';
+    }
 
     return Scaffold(
       backgroundColor: AppColors.warmCream,
       appBar: AppBar(
-        title: const Text('My Progress'),
+        title: Text(appBarTitle),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.all(16),
-            color: Colors.white,
-            child: studentsState.when(
-              loading: () => const CircularProgressIndicator(),
-              error: (err, stack) => Text('Error: $err'),
-              data: (students) {
-                if (students.isEmpty) return const Text('No students found');
-                return DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Select Student', border: OutlineInputBorder()),
-                  value: _selectedStudentId,
-                  items: students.map((s) {
-                    return DropdownMenuItem(value: s.id!, child: Text('${s.firstName} ${s.lastName}'));
-                  }).toList(),
-                  onChanged: (val) {
-                    setState(() => _selectedStudentId = val);
-                  },
-                );
-              },
+          if (isTeacherOrAdmin)
+            Container(
+              padding: const EdgeInsets.all(16),
+              color: Colors.white,
+              child: studentsState.when(
+                loading: () => const CircularProgressIndicator(),
+                error: (err, stack) => Text('Error: $err'),
+                data: (students) {
+                  if (students.isEmpty) return const Text('No students found');
+                  return DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(labelText: 'Select Student', border: OutlineInputBorder()),
+                    value: _selectedStudentId,
+                    items: students.map((s) {
+                      return DropdownMenuItem(value: s.id!, child: Text('${s.firstName} ${s.lastName}'));
+                    }).toList(),
+                    onChanged: (val) {
+                      setState(() => _selectedStudentId = val);
+                    },
+                  );
+                },
+              ),
             ),
-          ),
           Expanded(
             child: _selectedStudentId == null
                 ? const Center(child: Text('Select a student to view progress.'))
@@ -56,12 +79,14 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
           ),
         ],
       ),
-      floatingActionButton: _selectedStudentId == null ? null : FloatingActionButton.extended(
-        backgroundColor: AppColors.primaryGold,
-        onPressed: () => _showAddAssessmentDialog(context, ref, _selectedStudentId!),
-        icon: const Icon(Icons.add, color: AppColors.primaryNavy),
-        label: const Text('Record Milestone', style: TextStyle(color: AppColors.primaryNavy, fontWeight: FontWeight.bold)),
-      ),
+      floatingActionButton: (_selectedStudentId == null || !isTeacherOrAdmin) 
+          ? null 
+          : FloatingActionButton.extended(
+              backgroundColor: AppColors.primaryGold,
+              onPressed: () => _showAddAssessmentDialog(context, ref, _selectedStudentId!),
+              icon: const Icon(Icons.add, color: AppColors.primaryNavy),
+              label: const Text('Record Milestone', style: TextStyle(color: AppColors.primaryNavy, fontWeight: FontWeight.bold)),
+            ),
     );
   }
 

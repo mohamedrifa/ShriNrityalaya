@@ -16,11 +16,26 @@ class StudentRepository {
   }
 
   Future<Student> createStudent(Map<String, dynamic> payload) async {
-    final response = await _dio.post('/students', data: payload);
-    if (response.statusCode == 201 && response.data['success'] == true) {
-      return Student.fromJson(response.data['data']);
+    try {
+      final response = await _dio.post('/students', data: payload);
+      if (response.statusCode == 201 && response.data['success'] == true) {
+        return Student.fromJson(response.data['data']);
+      }
+      throw Exception('Failed to create student');
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map && data.containsKey('errors')) {
+           final errors = data['errors'] as List;
+           if (errors.isNotEmpty) {
+             throw Exception(errors.first['description'] ?? 'Failed to create student');
+           }
+        } else if (data is Map && data.containsKey('message')) {
+           throw Exception(data['message']);
+        }
+      }
+      throw Exception('Failed to create student: ${e.message}');
     }
-    throw Exception('Failed to create student');
   }
 
   Future<Student> updateStudent(Student student) async {

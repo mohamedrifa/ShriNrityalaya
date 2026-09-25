@@ -53,14 +53,26 @@ class EventsScreen extends ConsumerWidget {
                               style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGold, foregroundColor: AppColors.primaryNavy),
                               onPressed: () async {
                                 try {
-                                  // Simplified registration with hardcoded student ID for demo
                                   await ref.read(eventRepositoryProvider).registerForEvent(e.id!, '00000000-0000-0000-0000-000000000000');
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Registered successfully!')));
                                 } catch (error) {
+                                  // ignore: use_build_context_synchronously
                                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed: $error')));
                                 }
                               },
                               child: const Text('Register Now'),
+                            ),
+                          if (isTeacher)
+                            TextButton.icon(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => _EventDialog(event: e),
+                                );
+                              },
+                              icon: const Icon(Icons.edit, color: AppColors.primaryNavy),
+                              label: const Text('Edit', style: TextStyle(color: AppColors.primaryNavy)),
                             ),
                         ],
                       )
@@ -74,59 +86,129 @@ class EventsScreen extends ConsumerWidget {
       ),
       floatingActionButton: isTeacher ? FloatingActionButton.extended(
         backgroundColor: AppColors.primaryNavy,
-        onPressed: () => _showAddEventDialog(context, ref),
+        onPressed: () {
+          showDialog(context: context, builder: (ctx) => const _EventDialog());
+        },
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text('New Event', style: TextStyle(color: Colors.white)),
       ) : null,
     );
   }
+}
 
-  void _showAddEventDialog(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
-    final titleCtrl = TextEditingController();
-    final descCtrl = TextEditingController();
-    final locCtrl = TextEditingController();
-    final feeCtrl = TextEditingController();
+class _EventDialog extends ConsumerStatefulWidget {
+  final AcademyEvent? event;
+  const _EventDialog({Key? key, this.event}) : super(key: key);
 
-    showDialog(
+  @override
+  ConsumerState<_EventDialog> createState() => _EventDialogState();
+}
+
+class _EventDialogState extends ConsumerState<_EventDialog> {
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _titleCtrl;
+  late TextEditingController _descCtrl;
+  late TextEditingController _locCtrl;
+  late TextEditingController _feeCtrl;
+  DateTime _selectedDate = DateTime.now().add(const Duration(days: 30));
+
+  @override
+  void initState() {
+    super.initState();
+    _titleCtrl = TextEditingController(text: widget.event?.title ?? '');
+    _descCtrl = TextEditingController(text: widget.event?.description ?? '');
+    _locCtrl = TextEditingController(text: widget.event?.location ?? '');
+    _feeCtrl = TextEditingController(text: widget.event?.participationFee?.toString() ?? '');
+    if (widget.event != null) {
+      _selectedDate = widget.event!.eventDate;
+    }
+  }
+
+  @override
+  void dispose() {
+    _titleCtrl.dispose();
+    _descCtrl.dispose();
+    _locCtrl.dispose();
+    _feeCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickDate() async {
+    final picked = await showDatePicker(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Create Event'),
-        content: Form(
-          key: formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextFormField(controller: titleCtrl, decoration: const InputDecoration(labelText: 'Title'), validator: (v) => v!.isEmpty ? 'Required' : null),
-                TextFormField(controller: descCtrl, decoration: const InputDecoration(labelText: 'Description')),
-                TextFormField(controller: locCtrl, decoration: const InputDecoration(labelText: 'Location')),
-                TextFormField(controller: feeCtrl, decoration: const InputDecoration(labelText: 'Participation Fee'), keyboardType: TextInputType.number),
-              ],
-            ),
+      initialDate: _selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365 * 5)),
+    );
+    if (picked != null) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isEdit = widget.event != null;
+    return AlertDialog(
+      title: Text(isEdit ? 'Edit Event' : 'Create Event'),
+      content: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(controller: _titleCtrl, decoration: const InputDecoration(labelText: 'Title'), validator: (v) => v!.isEmpty ? 'Required' : null),
+              TextFormField(controller: _descCtrl, decoration: const InputDecoration(labelText: 'Description')),
+              TextFormField(controller: _locCtrl, decoration: const InputDecoration(labelText: 'Location')),
+              TextFormField(controller: _feeCtrl, decoration: const InputDecoration(labelText: 'Participation Fee'), keyboardType: TextInputType.number),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text('Date: ${_selectedDate.day}/${_selectedDate.month}/${_selectedDate.year}'),
+                  ),
+                  TextButton(onPressed: _pickDate, child: const Text('Change Date')),
+                ],
+              ),
+            ],
           ),
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        ElevatedButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              if (isEdit) {
+                final updated = AcademyEvent(
+                  id: widget.event!.id,
+                  title: _titleCtrl.text.trim(),
+                  description: _descCtrl.text.trim(),
+                  eventDate: _selectedDate,
+                  location: _locCtrl.text.trim(),
+                  participationFee: double.tryParse(_feeCtrl.text),
+                  status: widget.event!.status,
+                );
+                await ref.read(eventsProvider.notifier).updateEvent(updated);
+              } else {
                 final newEvent = AcademyEvent(
-                  title: titleCtrl.text.trim(),
-                  description: descCtrl.text.trim(),
-                  eventDate: DateTime.now().add(const Duration(days: 30)), // Mock future date
-                  location: locCtrl.text.trim(),
-                  participationFee: double.tryParse(feeCtrl.text),
+                  title: _titleCtrl.text.trim(),
+                  description: _descCtrl.text.trim(),
+                  eventDate: _selectedDate,
+                  location: _locCtrl.text.trim(),
+                  participationFee: double.tryParse(_feeCtrl.text),
                   status: 'Upcoming',
                 );
                 await ref.read(eventsProvider.notifier).createEvent(newEvent);
-                if (ctx.mounted) Navigator.pop(ctx);
               }
-            },
-            child: const Text('Create'),
-          ),
-        ],
-      ),
+              // ignore: use_build_context_synchronously
+              if (mounted) Navigator.pop(context);
+            }
+          },
+          child: Text(isEdit ? 'Save Changes' : 'Create'),
+        ),
+      ],
     );
   }
 }

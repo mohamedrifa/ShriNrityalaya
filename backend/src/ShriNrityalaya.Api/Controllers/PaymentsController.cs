@@ -25,6 +25,19 @@ public class PaymentsController : ControllerBase
         return Ok(new { success = true, data = payments });
     }
 
+    [HttpGet("obligation/{obligationId}")]
+    [Authorize(Roles = "Parent,Student,Teacher,SystemAdmin")]
+    public async Task<IActionResult> GetByObligation(Guid obligationId)
+    {
+        var payments = await _repository.GetAllAsync();
+        var payment = payments.OrderByDescending(p => p.CreatedAt)
+                              .FirstOrDefault(p => p.MonthlyFeeObligationId == obligationId);
+        
+        if (payment == null) return NotFound(new { success = false, message = "Payment not found." });
+
+        return Ok(new { success = true, data = payment });
+    }
+
     [HttpPost("submit-proof")]
     [Authorize(Roles = "Parent,Student,Teacher,SystemAdmin")]
     public async Task<IActionResult> SubmitProof(

@@ -209,35 +209,21 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                     ],
 
                     const SizedBox(height: 24),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: DropdownButtonFormField<String>(
-                            value: _status,
-                            decoration: const InputDecoration(labelText: 'Status', border: OutlineInputBorder()),
-                            items: ['Active', 'Inactive', 'Graduated'].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
-                            onChanged: (val) { if (val != null) setState(() => _status = val); },
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: ref.watch(feePlansProvider).when(
-                            loading: () => const Center(child: CircularProgressIndicator()),
-                            error: (e, s) => Text('Error: $e'),
-                            data: (plans) {
-                              return DropdownButtonFormField<String>(
-                                value: _feePlanId,
-                                decoration: const InputDecoration(labelText: 'Fee Plan', border: OutlineInputBorder()),
-                                items: plans.map((p) => DropdownMenuItem(
-                                  value: p['id'].toString(),
-                                  child: Text(p['name'].toString(), overflow: TextOverflow.ellipsis),
-                                )).toList(),
-                                onChanged: (val) { setState(() => _feePlanId = val); },
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                    ref.watch(feePlansProvider).when(
+                      loading: () => const Center(child: CircularProgressIndicator()),
+                      error: (e, s) => Text('Error: $e'),
+                      data: (plans) {
+                        return DropdownButtonFormField<String>(
+                          isExpanded: true,
+                          value: _feePlanId,
+                          decoration: const InputDecoration(labelText: 'Fee Plan', border: OutlineInputBorder()),
+                          items: plans.map((p) => DropdownMenuItem(
+                            value: p['id'].toString(),
+                            child: Text(p['name'].toString(), overflow: TextOverflow.ellipsis),
+                          )).toList(),
+                          onChanged: (val) { setState(() => _feePlanId = val); },
+                        );
+                      },
                     ),
                     const SizedBox(height: 32),
                     SizedBox(

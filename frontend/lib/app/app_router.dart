@@ -6,10 +6,12 @@ import '../../features/dashboard/presentation/screens/student_dashboard_screen.d
 import '../../features/dashboard/presentation/screens/parent_dashboard_screen.dart';
 import '../../features/fees/presentation/screens/fee_management_screen.dart';
 import '../../features/payments/presentation/screens/payment_submission_screen.dart';
+import '../../features/payments/presentation/screens/payment_details_screen.dart';
 import '../../features/fees/domain/models/monthly_fee_obligation.dart';
 import '../../features/attendance/presentation/screens/attendance_screen.dart';
 import '../../features/learning/presentation/screens/learning_module_screen.dart';
 import '../../features/learning/presentation/screens/lesson_upload_screen.dart';
+import '../../features/learning/presentation/screens/lesson_player_screen.dart';
 import '../../features/progress/presentation/screens/progress_screen.dart';
 import '../../features/messaging/presentation/screens/messaging_screen.dart';
 import '../../features/events/presentation/screens/events_screen.dart';
@@ -18,6 +20,8 @@ import '../../features/students/presentation/screens/student_form_screen.dart';
 import '../../features/students/domain/models/student.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 import '../../features/fees/presentation/screens/fee_plan_form_screen.dart';
+import '../features/learning/domain/models/lesson.dart';
+import '../../features/directory/presentation/screens/directory_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -54,12 +58,26 @@ final appRouter = GoRouter(
       },
     ),
     GoRoute(
+      path: '/payments/details',
+      builder: (context, state) {
+        final obligation = state.extra as MonthlyFeeObligation;
+        return PaymentDetailsScreen(obligation: obligation);
+      },
+    ),
+    GoRoute(
       path: '/attendance',
       builder: (context, state) => const AttendanceScreen(),
     ),
     GoRoute(
       path: '/learning',
       builder: (context, state) => const LearningModuleScreen(),
+    ),
+    GoRoute(
+      path: '/learning/play',
+      builder: (context, state) {
+        final lesson = state.extra as Lesson;
+        return LessonPlayerScreen(lesson: lesson);
+      },
     ),
     GoRoute(
       path: '/learning/upload',
@@ -98,6 +116,10 @@ final appRouter = GoRouter(
         final plan = state.extra as Map<String, dynamic>?;
         return FeePlanFormScreen(feePlan: plan);
       },
+    ),
+    GoRoute(
+      path: '/directory',
+      builder: (context, state) => const DirectoryScreen(),
     ),
   ],
 );

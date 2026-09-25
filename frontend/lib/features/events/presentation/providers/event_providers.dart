@@ -38,4 +38,21 @@ class EventsNotifier extends StateNotifier<AsyncValue<List<AcademyEvent>>> {
       rethrow;
     }
   }
+
+  Future<void> updateEvent(AcademyEvent event) async {
+    try {
+      final updatedEvent = await _repository.updateEvent(event);
+      if (state.hasValue) {
+        final currentList = state.value!;
+        final index = currentList.indexWhere((e) => e.id == updatedEvent.id);
+        if (index != -1) {
+          final newList = List<AcademyEvent>.from(currentList);
+          newList[index] = updatedEvent;
+          state = AsyncValue.data(newList);
+        }
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

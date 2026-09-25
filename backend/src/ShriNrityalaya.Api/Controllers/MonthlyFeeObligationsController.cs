@@ -28,18 +28,66 @@ public class MonthlyFeeObligationsController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var role = User.FindFirst(ClaimTypes.Role)?.Value;
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier || c.Type == "sub" || c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        var userManager = HttpContext.RequestServices.GetRequiredService<Microsoft.AspNetCore.Identity.UserManager<ShriNrityalaya.Infrastructure.Identity.ApplicationUser>>();
+        var user = await userManager.FindByIdAsync(userId);
+        if (user == null) return Unauthorized();
+
+        var roles = await userManager.GetRolesAsync(user);
 
         var obligations = await _obligationRepository.GetAllAsync();
+        var students = await _studentRepository.GetAllAsync();
 
-        if (role == "Student" || role == "Parent")
+        if (roles.Contains("Student") || roles.Contains("Parent"))
         {
-            // For now, simple filtering by UserId (in a real app, parent maps to multiple students)
-            obligations = obligations.Where(o => o.Student.UserId.ToString() == userId).ToList();
+            List<Guid> studentIds = new List<Guid>();
+
+            if (roles.Contains("Student"))
+            {
+                studentIds = students.Where(s => s.UserId.ToString() == userId).Select(s => s.Id).ToList();
+            }
+            else if (roles.Contains("Parent"))
+            {
+                var studentParentRepo = HttpContext.RequestServices.GetRequiredService<IRepository<StudentParent>>();
+                var parentRepo = HttpContext.RequestServices.GetRequiredService<IRepository<Parent>>();
+                
+                var allParents = await parentRepo.GetAllAsync();
+                var currentParent = allParents.FirstOrDefault(p => p.UserId.ToString() == userId);
+                
+                if (currentParent != null)
+                {
+                    var allLinks = await studentParentRepo.GetAllAsync();
+                    studentIds = allLinks.Where(l => l.ParentId == currentParent.Id).Select(l => l.StudentId).ToList();
+                }
+            }
+
+            obligations = obligations.Where(o => studentIds.Contains(o.StudentId)).ToList();
+        }
+        else if (!roles.Contains("Teacher") && !roles.Contains("SystemAdmin"))
+        {
+            // Fail safe: if no recognized role, return empty
+            obligations = new List<MonthlyFeeObligation>();
         }
 
-        return Ok(new { success = true, data = obligations });
+        var result = obligations.Select(o => {
+            var student = students.FirstOrDefault(s => s.Id == o.StudentId);
+            return new {
+                o.Id,
+                o.StudentId,
+                StudentName = student != null ? $"{student.FirstName} {student.LastName}" : "Unknown Student",
+                o.Year,
+                o.Month,
+                o.AmountDue,
+                o.AmountPaid,
+                o.Status,
+                o.DueDate
+            };
+        });
+
+        return Ok(new { success = true, data = result });
     }
 
     [HttpPost("generate")]

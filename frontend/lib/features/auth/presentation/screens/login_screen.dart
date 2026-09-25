@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/network/api_client.dart';
 import 'package:dio/dio.dart';
+import '../../../fees/presentation/providers/fee_obligations_providers.dart';
+import '../../../profile/presentation/providers/profile_providers.dart';
 import '../providers/auth_providers.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -18,6 +20,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _isLoading = false;
   String? _errorMessage;
+  bool _obscurePassword = true;
 
   Future<void> _login() async {
     setState(() {
@@ -40,6 +43,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         final storage = ref.read(secureStorageProvider);
         await storage.write(key: 'jwt_token', value: token);
         
+        // Clear cached data from any previous sessions
+        ref.invalidate(feeObligationsProvider);
+        ref.invalidate(profileProvider);
+
         if (mounted) {
           if (roles.contains('Teacher') || roles.contains('SystemAdmin')) {
             ref.read(authProvider.notifier).setRole('Teacher');
@@ -97,14 +104,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Using a placeholder icon since image might need pubspec config
-                      const Icon(Icons.school, size: 80, color: AppColors.primaryGold),
+                      Image.asset(
+                        'assets/logo/academy_logo.png',
+                        height: 80,
+                        width: 80,
+                        fit: BoxFit.contain,
+                      ),
                       const SizedBox(height: 16),
                       Text(
-                        'Shri Nrityalaya',
-                        style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                        'ShriNrityalaya',
+                        style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                           color: AppColors.primaryNavy,
+                          fontWeight: FontWeight.bold,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       const Text('Academy Management System', style: TextStyle(color: AppColors.mutedText)),
@@ -125,12 +138,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       const SizedBox(height: 16),
                       TextField(
                         controller: _passwordController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Password',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.lock),
+                          border: const OutlineInputBorder(),
+                          prefixIcon: const Icon(Icons.lock),
+                          suffixIcon: IconButton(
+                            icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePassword = !_obscurePassword;
+                              });
+                            },
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: _obscurePassword,
                       ),
                       const SizedBox(height: 24),
                       SizedBox(

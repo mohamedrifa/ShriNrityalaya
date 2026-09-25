@@ -33,4 +33,12 @@ class EventRepository {
       throw Exception('Failed to register');
     }
   }
+
+  Future<AcademyEvent> updateEvent(AcademyEvent event) async {
+    final response = await _dio.put('/AcademyEvents/${event.id}', data: event.toJson());
+    if (response.statusCode == 200 && response.data['success'] == true) {
+      return AcademyEvent.fromJson(response.data['data']);
+    }
+    throw Exception('Failed to update event');
+  }
 }

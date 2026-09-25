@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:file_picker/file_picker.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
@@ -24,7 +25,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   bool _isNameUpdating = false;
   bool _isPasswordUpdating = false;
+  bool _isImageUploading = false;
   bool _hasLoadedInitialData = false;
+
+  bool _obscureCurrentPassword = true;
+  bool _obscureNewPassword = true;
 
   @override
   void dispose() {
@@ -33,6 +38,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     _currentPasswordController.dispose();
     _newPasswordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _pickAndUploadImage() async {
+    final result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
+    );
+    if (result != null && result.files.single.path != null) {
+      setState(() => _isImageUploading = true);
+      try {
+        await ref.read(profileProvider.notifier).uploadProfileImage(result.files.single.path!);
+        if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile image updated!')));
+      } catch (e) {
+        if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+      } finally {
+        if (mounted) setState(() => _isImageUploading = false);
+      }
+    }
   }
 
   Future<void> _updateName() async {
@@ -100,6 +123,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             _hasLoadedInitialData = true;
           }
 
+          final imageUrl = profile['profilePictureUrl'] as String?;
+          final baseUrl = ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
+
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -108,10 +134,24 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 Center(
                   child: Column(
                     children: [
-                      const CircleAvatar(
-                        radius: 40,
-                        backgroundColor: AppColors.primaryGold,
-                        child: Icon(Icons.person, size: 50, color: AppColors.deepNavy),
+                      GestureDetector(
+                        onTap: _isImageUploading ? null : _pickAndUploadImage,
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.primaryGold,
+                          backgroundImage: imageUrl != null && imageUrl.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
+                          child: _isImageUploading
+                              ? const CircularProgressIndicator(color: AppColors.primaryNavy)
+                              : (imageUrl == null || imageUrl.isEmpty)
+                                  ? const Icon(Icons.person, size: 60, color: AppColors.deepNavy)
+                                  : null,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      TextButton.icon(
+                        onPressed: _isImageUploading ? null : _pickAndUploadImage,
+                        icon: const Icon(Icons.camera_alt, color: AppColors.primaryNavy),
+                        label: const Text('Change Photo', style: TextStyle(color: AppColors.primaryNavy)),
                       ),
                       const SizedBox(height: 16),
                       Text('${profile['firstName']} ${profile['lastName']}', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
@@ -164,9 +204,41 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                         children: [
                           const Text('Change Password', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
                           const SizedBox(height: 16),
-                          TextFormField(controller: _currentPasswordController, obscureText: true, decoration: const InputDecoration(labelText: 'Current Password', border: OutlineInputBorder()), validator: (v) => v!.isEmpty ? 'Required' : null),
+                          TextFormField(
+                            controller: _currentPasswordController,
+                            obscureText: _obscureCurrentPassword,
+                            decoration: InputDecoration(
+                              labelText: 'Current Password',
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureCurrentPassword ? Icons.visibility_off : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureCurrentPassword = !_obscureCurrentPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validator: (v) => v!.isEmpty ? 'Required' : null
+                          ),
                           const SizedBox(height: 16),
-                          TextFormField(controller: _newPasswordController, obscureText: true, decoration: const InputDecoration(labelText: 'New Password', border: OutlineInputBorder()), validator: (v) => v!.isEmpty ? 'Required' : null),
+                          TextFormField(
+                            controller: _newPasswordController,
+                            obscureText: _obscureNewPassword,
+                            decoration: InputDecoration(
+                              labelText: 'New Password',
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureNewPassword ? Icons.visibility_off : Icons.visibility),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureNewPassword = !_obscureNewPassword;
+                                  });
+                                },
+                              ),
+                            ),
+                            validator: (v) => v!.isEmpty ? 'Required' : null
+                          ),
                           const SizedBox(height: 16),
                           SizedBox(
                             width: double.infinity,

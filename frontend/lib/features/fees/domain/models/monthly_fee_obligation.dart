@@ -1,6 +1,7 @@
 class MonthlyFeeObligation {
   final String? id;
   final String studentId;
+  final String? studentName;
   final int year;
   final int month;
   final double amountDue;
@@ -11,6 +12,7 @@ class MonthlyFeeObligation {
   MonthlyFeeObligation({
     this.id,
     required this.studentId,
+    this.studentName,
     required this.year,
     required this.month,
     required this.amountDue,
@@ -23,6 +25,7 @@ class MonthlyFeeObligation {
     return MonthlyFeeObligation(
       id: json['id'],
       studentId: json['studentId'] ?? '',
+      studentName: json['studentName'],
       year: json['year'] ?? DateTime.now().year,
       month: json['month'] ?? DateTime.now().month,
       amountDue: (json['amountDue'] ?? 0).toDouble(),

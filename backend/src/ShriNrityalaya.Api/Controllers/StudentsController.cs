@@ -35,14 +35,15 @@ public class StudentsController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var students = await _studentRepository.GetAllAsync();
-        return Ok(new { success = true, data = students });
+        var activeStudents = students.Where(s => s.Status != "Inactive").ToList();
+        return Ok(new { success = true, data = activeStudents });
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetById(Guid id)
     {
         var student = await _studentRepository.GetByIdAsync(id);
-        if (student == null) return NotFound(new { success = false, message = "Student not found." });
+        if (student == null || student.Status == "Inactive") return NotFound(new { success = false, message = "Student not found." });
 
         return Ok(new { success = true, data = student });
     }
@@ -152,7 +153,30 @@ public class StudentsController : ControllerBase
         var existing = await _studentRepository.GetByIdAsync(id);
         if (existing == null) return NotFound(new { success = false, message = "Student not found." });
 
-        await _studentRepository.DeleteAsync(existing);
+        // Soft delete
+        existing.Status = "Inactive";
+        await _studentRepository.UpdateAsync(existing);
+
+        // Deactivate the user login and free up the username/email
+        var user = await _userManager.FindByIdAsync(existing.UserId.ToString());
+        if (user != null)
+        {
+            user.IsActive = false;
+            
+            // Free up the email/username so they can be re-registered
+            var suffix = $"_deleted_{DateTimeOffset.UtcNow.ToUnixTimeSeconds()}";
+            user.UserName = $"{user.UserName}{suffix}";
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                user.Email = $"{user.Email}{suffix}";
+            }
+            // Identity framework normalizes these fields
+            user.NormalizedUserName = user.UserName.ToUpper();
+            if (user.Email != null) user.NormalizedEmail = user.Email.ToUpper();
+
+            await _userManager.UpdateAsync(user);
+        }
+
         return Ok(new { success = true, message = "Student deleted successfully." });
     }
 }

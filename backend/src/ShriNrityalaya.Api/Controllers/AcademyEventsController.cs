@@ -34,4 +34,22 @@ public class AcademyEventsController : ControllerBase
         var created = await _repository.AddAsync(academyEvent);
         return Ok(new { success = true, data = created });
     }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "SystemAdmin,Teacher")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] AcademyEvent updatedEvent)
+    {
+        var existing = await _repository.GetByIdAsync(id);
+        if (existing == null) return NotFound(new { success = false, message = "Event not found" });
+
+        existing.Title = updatedEvent.Title;
+        existing.Description = updatedEvent.Description;
+        existing.EventDate = updatedEvent.EventDate;
+        existing.Location = updatedEvent.Location;
+        existing.ParticipationFee = updatedEvent.ParticipationFee;
+        existing.UpdatedAt = DateTimeOffset.UtcNow;
+
+        await _repository.UpdateAsync(existing);
+        return Ok(new { success = true, data = existing });
+    }
 }

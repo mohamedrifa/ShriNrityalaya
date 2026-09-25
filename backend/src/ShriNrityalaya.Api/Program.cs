@@ -73,14 +73,22 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.UseHttpsRedirection(); // Disabled for mobile dev/dev-tunnels to prevent 307 localhost redirects
-app.UseStaticFiles(); // Allow serving uploaded payment proofs
+app.UseStaticFiles(); // Default wwwroot
+
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+if (!Directory.Exists(uploadsPath)) Directory.CreateDirectory(uploadsPath);
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(uploadsPath),
+    RequestPath = "/uploads",
+    ServeUnknownFileTypes = true,
+    DefaultContentType = "video/mp4"
+});
 
 // Custom Request/Response Logging Middleware
 app.Use(async (context, next) =>

@@ -40,6 +40,7 @@ public class ProfileController : ControllerBase
                 user.LastName,
                 user.Email,
                 user.UserName,
+                user.ProfilePictureUrl,
                 Role = roles.FirstOrDefault()
             }
         });
@@ -78,5 +79,34 @@ public class ProfileController : ControllerBase
             return BadRequest(new { success = false, message = "Failed to change password.", errors = result.Errors });
 
         return Ok(new { success = true, message = "Password changed successfully." });
+    }
+
+    [HttpPost("upload-image")]
+    public async Task<IActionResult> UploadProfileImage(IFormFile? image)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId == null) return Unauthorized();
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) return NotFound(new { success = false, message = "User not found." });
+
+        if (image == null || image.Length == 0)
+            return BadRequest(new { success = false, message = "No image provided." });
+
+        var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "profiles");
+        if (!Directory.Exists(uploadsFolder)) Directory.CreateDirectory(uploadsFolder);
+
+        var fileName = Guid.NewGuid().ToString() + Path.GetExtension(image.FileName);
+        var filePath = Path.Combine(uploadsFolder, fileName);
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await image.CopyToAsync(stream);
+        }
+
+        user.ProfilePictureUrl = "/uploads/profiles/" + fileName;
+        await _userManager.UpdateAsync(user);
+
+        return Ok(new { success = true, profilePictureUrl = user.ProfilePictureUrl });
     }
 }

@@ -44,4 +44,19 @@ class ProfileNotifier extends StateNotifier<AsyncValue<Map<String, dynamic>>> {
       rethrow;
     }
   }
+
+  Future<void> uploadProfileImage(String filePath) async {
+    try {
+      final newUrl = await _repository.uploadProfileImage(filePath);
+      if (state.hasValue) {
+        final currentData = Map<String, dynamic>.from(state.value!);
+        currentData['profilePictureUrl'] = newUrl;
+        state = AsyncValue.data(currentData);
+      } else {
+        await loadProfile();
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
