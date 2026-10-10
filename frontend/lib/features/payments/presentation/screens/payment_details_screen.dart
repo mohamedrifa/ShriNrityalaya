@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -43,9 +44,8 @@ class _PaymentDetailsScreenState extends ConsumerState<PaymentDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Payment Details'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,

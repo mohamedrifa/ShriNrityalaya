@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -146,9 +147,8 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
   Widget build(BuildContext context) {
     final isEditing = widget.student != null;
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: Text(isEditing ? 'Edit Student' : 'Enroll New Student & Parent'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,

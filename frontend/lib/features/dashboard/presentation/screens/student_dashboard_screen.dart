@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
@@ -8,6 +9,8 @@ import '../../../profile/presentation/providers/profile_providers.dart';
 import '../../../progress/presentation/providers/progress_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/app_bottom_nav.dart';
 
 class StudentDashboardScreen extends ConsumerWidget {
   // ignore: use_super_parameters
@@ -34,206 +37,264 @@ class StudentDashboardScreen extends ConsumerWidget {
       child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
     );
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
-        title: const Text('My Dashboard'),
-        backgroundColor: AppColors.primaryNavy,
-        foregroundColor: Colors.white,
-        actions: [
-          IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
-          IconButton(
-            icon: profileAvatar,
-            onPressed: () {
-              context.push('/profile');
-            },
-          ),
+    final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+    return AppScaffold(
+      scaffoldKey: scaffoldKey,
+      drawer: AppDrawer(
+        roleSubtitle: 'Student Dashboard',
+        menuItems: [
+          DrawerMenuItem(title: 'Fee Management', icon: Icons.receipt_long, route: '/fees'),
+          DrawerMenuItem(title: 'Learning & Lessons', icon: Icons.video_library, route: '/learning'),
+          DrawerMenuItem(title: 'My Progress', icon: Icons.trending_up, route: '/progress'),
+          DrawerMenuItem(title: 'Announcements', icon: Icons.campaign_outlined, route: '/messaging'),
+          DrawerMenuItem(title: 'Academy Events', icon: Icons.calendar_today_outlined, route: '/events'),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+      body: SafeArea(
+        bottom: false,
+        child: Stack(
           children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: AppColors.primaryNavy),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: profileAvatar,
+            // Background Structure
+            Column(
+              children: [
+                // Fixed Navy Header Background
+                Container(
+                  height: 190,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryNavy,
+                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24), bottomRight: Radius.circular(24)),
                   ),
-                  const SizedBox(height: 10),
-                  const Text('Student Menu', style: TextStyle(color: Colors.white, fontSize: 20)),
-                ],
-              ),
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Menu Icon (Simulating Profile Icon from mockup)
+                      GestureDetector(
+                        onTap: () => scaffoldKey.currentState?.openDrawer(),
+                        child: const CircleAvatar(
+                          radius: 20,
+                          backgroundColor: AppColors.primaryGold,
+                          child: Icon(Icons.menu, color: AppColors.primaryNavy),
+                        ),
+                      ),
+                      // Title
+                      const Column(
+                        children: [
+                          Text('BHARATANATYAM', style: TextStyle(color: Colors.white, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+                          Text('ACADEMY', style: TextStyle(color: Colors.white, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
+                          SizedBox(height: 16),
+                          Text('Dashboard', style: TextStyle(color: AppColors.primaryGold, fontSize: 24, fontFamily: 'Georgia', fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                      // Notification + Profile
+                      Row(
+                        children: [
+                          IconButton(icon: const Icon(Icons.notifications, color: AppColors.primaryGold), onPressed: () {}),
+                          GestureDetector(
+                            onTap: () => context.push('/profile'),
+                            child: SizedBox(height: 40, width: 40, child: profileAvatar),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                // The Scrollable Content below the header
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(top: 130, left: 16, right: 16, bottom: 24), // 130px top padding to clear the overlapping Welcome Card
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Quick Action Grid (Lessons & Events)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildGridCard(context, 'Lessons', Icons.menu_book, '/learning'),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: _buildGridCard(context, 'Events', Icons.event, '/events'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 32),
+                        
+                        const Text(
+                          'MY MODULES',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2,
+                            color: AppColors.primaryNavy,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Upcoming Events List
+                        Card(
+                          elevation: 2,
+                          shadowColor: Colors.black12,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            leading: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
+                              child: const Icon(Icons.calendar_month, color: Colors.white),
+                            ),
+                            title: const Text('Upcoming Events:\nLive Workshop', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
+                            subtitle: const Text('Next Month'),
+                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                            onTap: () => context.push('/events'),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+
+                        // Recent Progress List
+                        assessmentsState.when(
+                          data: (assessments) {
+                            if (assessments.isEmpty) return const SizedBox.shrink();
+                            final latest = assessments.first;
+                            return Card(
+                              elevation: 2,
+                              shadowColor: Colors.black12,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                leading: Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: const BoxDecoration(color: AppColors.primaryGold, shape: BoxShape.circle),
+                                  child: const Icon(Icons.star, color: Colors.white),
+                                ),
+                                title: Text('Recent Progress:\n${latest.skillName.isNotEmpty ? latest.skillName : 'Skill'} - Level Up', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
+                                subtitle: Text(latest.assessmentDate.toLocal().toString().split(' ')[0]),
+                                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                                onTap: () => context.push('/progress'),
+                              ),
+                            );
+                          },
+                          loading: () => const Center(child: CircularProgressIndicator()),
+                          error: (_, __) => const SizedBox.shrink(),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.receipt_long, color: AppColors.warning),
-              title: const Text('Fee Management'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/fees');
-              },
+            
+            // The Welcome Card Overlapping the Header
+            Positioned(
+              top: 130, // Overlaps the bottom 60px of the header
+              left: 16,
+              right: 16,
+              child: _buildWelcomeCard(context, username, feesState),
             ),
-            ListTile(
-              leading: const Icon(Icons.video_library, color: AppColors.primaryNavy),
-              title: const Text('Learning & Lessons'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/learning');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.trending_up, color: AppColors.primaryGold),
-              title: const Text('My Progress'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/progress');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.campaign, color: AppColors.error),
-              title: const Text('Announcements'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/messaging');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.event, color: AppColors.success),
-              title: const Text('Academy Events'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/events');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: AppColors.error),
-              title: const Text('Logout', style: TextStyle(color: AppColors.error)),
-              onTap: () {
-                Navigator.pop(context);
-                ref.read(authProvider.notifier).logout();
-                context.go('/login');
-              },
+
+            // The Dancer Avatar Overlapping the Welcome Card (Right Aligned)
+            Positioned(
+              top: 70, // Peaks above the Welcome Card
+              right: -20, // Bleeds off the right edge
+              width: 180, // Sized perfectly
+              child: Image.asset('assets/images/student_avatar.png'),
             ),
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Welcome $username!',
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryNavy,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Here is your academy overview.',
-              style: TextStyle(fontSize: 16, color: AppColors.mutedText),
-            ),
-            const SizedBox(height: 24),
-            
-            // Dynamic Unpaid Fees Alert
-            feesState.when(
-              data: (obligations) {
-                final unpaid = obligations.where((o) => o.status == 'Unpaid').toList();
-                if (unpaid.isEmpty) return const SizedBox.shrink();
-                return Column(
+      bottomNavigationBar: const AppBottomNav(currentIndex: 0),
+    );
+  }
+
+  Widget _buildWelcomeCard(BuildContext context, String username, AsyncValue feesState) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFAFD5D7), // Light teal matches mockup
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 5)),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Welcome $username!',
+            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.primaryNavy),
+          ),
+          const SizedBox(height: 4),
+          const Text(
+            'Here is your academy\noverview.',
+            style: TextStyle(fontSize: 16, color: AppColors.deepNavy),
+          ),
+          const SizedBox(height: 16),
+          
+          // Fee Alert inside the Welcome Card
+          feesState.when(
+            data: (obligations) {
+              final unpaid = obligations.where((o) => o.status == 'Unpaid').toList();
+              if (unpaid.isEmpty) return const SizedBox.shrink();
+              return Container(
+                width: 220, // Keep it from going behind the dancer avatar too much
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFDE8E8), // Soft red tint
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.error.withValues(alpha: 0.5)),
+                ),
+                child: Row(
                   children: [
-                    Card(
-                      color: AppColors.error.withValues(alpha: 0.1),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: const BorderSide(color: AppColors.error)),
-                      child: InkWell(
-                        onTap: () => context.push('/fees'),
-                        borderRadius: BorderRadius.circular(12),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              const Icon(Icons.warning_amber_rounded, color: AppColors.error, size: 30),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text('Fee Due', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.error, fontSize: 16)),
-                                    Text('You have ${unpaid.length} pending fee obligation(s). Tap to view.', style: const TextStyle(color: AppColors.error)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                    const Icon(Icons.pan_tool_rounded, color: AppColors.error, size: 28), // Matches the stop hand icon
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('FEE Due', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.error, fontSize: 16)),
+                          Text('You have ${unpaid.length} pending fee\nobligation(s). Tap to view.', style: const TextStyle(color: AppColors.error, fontSize: 12)),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 24),
                   ],
-                );
-              },
-              loading: () => const SizedBox.shrink(),
-              error: (_, __) => const SizedBox.shrink(),
-            ),
+                ),
+              );
+            },
+            loading: () => const SizedBox.shrink(),
+            error: (_, __) => const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
+  }
 
-            // Dynamic Recent Progress
-            assessmentsState.when(
-              data: (assessments) {
-                if (assessments.isEmpty) return const SizedBox.shrink();
-                final latest = assessments.first;
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Recent Progress', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                        TextButton(onPressed: () => context.push('/progress'), child: const Text('View All')),
-                      ],
-                    ),
-                    Card(
-                      child: ListTile(
-                        leading: const CircleAvatar(backgroundColor: AppColors.primaryGold, child: Icon(Icons.star, color: Colors.white)),
-                        title: Text(latest.skillName.isNotEmpty ? latest.skillName : 'Skill Assessment'),
-                        subtitle: Text('Score: ${latest.score} - Assessed on ${latest.assessmentDate.toLocal().toString().split(' ')[0]}'),
-                        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                        onTap: () => context.push('/progress'),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => const SizedBox.shrink(),
-            ),
-
-            // Upcoming Events (Static for now as before)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Upcoming Events', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                TextButton(onPressed: () => context.push('/events'), child: const Text('View All')),
-              ],
-            ),
-            Card(
-              child: ListTile(
-                leading: const CircleAvatar(backgroundColor: AppColors.success, child: Icon(Icons.event, color: Colors.white)),
-                title: const Text('Annual Arangetram Showcase'),
-                subtitle: const Text('Next Month - Don\'t forget to register!'),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () => context.push('/events'),
+  Widget _buildGridCard(BuildContext context, String title, IconData icon, String route) {
+    return Card(
+      elevation: 2,
+      shadowColor: Colors.black12,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: Colors.white,
+      child: InkWell(
+        onTap: () => context.push(route),
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            children: [
+              Icon(icon, color: AppColors.primaryGold, size: 48),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.primaryNavy,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

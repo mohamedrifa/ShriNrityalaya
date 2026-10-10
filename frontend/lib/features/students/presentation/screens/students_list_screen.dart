@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,9 +12,8 @@ class StudentsListScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final studentsState = ref.watch(studentsProvider);
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Manage Students'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,

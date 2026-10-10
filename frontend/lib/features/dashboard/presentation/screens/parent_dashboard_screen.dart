@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
@@ -8,6 +9,7 @@ import '../../../profile/presentation/providers/profile_providers.dart';
 import '../../../progress/presentation/providers/progress_providers.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/widgets/app_drawer.dart';
 
 class ParentDashboardScreen extends ConsumerWidget {
   const ParentDashboardScreen({Key? key}) : super(key: key);
@@ -33,9 +35,8 @@ class ParentDashboardScreen extends ConsumerWidget {
       child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
     );
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Parent Dashboard'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,
@@ -49,70 +50,14 @@ class ParentDashboardScreen extends ConsumerWidget {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: AppColors.primaryNavy),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: profileAvatar,
-                  ),
-                  const SizedBox(height: 10),
-                  const Text('Parent Menu', style: TextStyle(color: Colors.white, fontSize: 20)),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.receipt_long, color: AppColors.warning),
-              title: const Text('Fee Management'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/fees');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.trending_up, color: AppColors.primaryGold),
-              title: const Text('Student Progress'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/progress');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.campaign, color: AppColors.error),
-              title: const Text('Announcements'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/messaging');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.event, color: AppColors.success),
-              title: const Text('Academy Events'),
-              onTap: () {
-                Navigator.pop(context);
-                context.push('/events');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout, color: AppColors.error),
-              title: const Text('Logout', style: TextStyle(color: AppColors.error)),
-              onTap: () {
-                Navigator.pop(context);
-                ref.read(authProvider.notifier).logout();
-                context.go('/login');
-              },
-            ),
-          ],
-        ),
+      drawer: AppDrawer(
+        roleSubtitle: 'Parent Dashboard',
+        menuItems: [
+          DrawerMenuItem(title: 'Fee Management', icon: Icons.receipt_long, route: '/fees'),
+          DrawerMenuItem(title: 'Student Progress', icon: Icons.trending_up, route: '/progress'),
+          DrawerMenuItem(title: 'Announcements', icon: Icons.campaign_outlined, route: '/messaging'),
+          DrawerMenuItem(title: 'Academy Events', icon: Icons.calendar_today_outlined, route: '/events'),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),

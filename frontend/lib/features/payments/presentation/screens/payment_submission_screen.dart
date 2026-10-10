@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,9 +83,8 @@ class _PaymentSubmissionScreenState extends ConsumerState<PaymentSubmissionScree
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Submit Payment'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,

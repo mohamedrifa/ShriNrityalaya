@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -34,9 +35,8 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
   Widget build(BuildContext context) {
     final directoryState = ref.watch(directoryProvider);
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Student & Parent Directory'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,

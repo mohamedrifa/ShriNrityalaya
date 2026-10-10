@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../profile/presentation/providers/profile_providers.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../../core/widgets/app_bottom_nav.dart';
+import '../../../../core/widgets/app_drawer.dart';
+import '../../../../core/widgets/app_scaffold.dart';
 
 class TeacherDashboardScreen extends ConsumerWidget {
   const TeacherDashboardScreen({super.key});
@@ -25,128 +27,51 @@ class TeacherDashboardScreen extends ConsumerWidget {
       child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
     );
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
+    return AppScaffold(
+      extendBodyBehindAppBar: false,
       appBar: AppBar(
-        title: const Text('Teacher Dashboard'),
+        title: const Text('Dashboard', style: TextStyle(fontFamily: 'Georgia', color: AppColors.primaryGold, fontWeight: FontWeight.bold)),
+        centerTitle: true,
         backgroundColor: AppColors.primaryNavy,
-        foregroundColor: Colors.white,
+        foregroundColor: AppColors.primaryGold,
+        iconTheme: const IconThemeData(color: AppColors.primaryGold),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(4.0),
+          child: Container(color: AppColors.primaryGold, height: 4.0),
+        ),
         actions: [
-          IconButton(icon: const Icon(Icons.notifications), onPressed: () {}),
-          IconButton(
-            icon: profileAvatar,
-            onPressed: () {
-              GoRouter.of(context).push('/profile');
-            }
+          IconButton(icon: const Icon(Icons.notifications, color: AppColors.primaryGold), onPressed: () {}),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () => GoRouter.of(context).push('/profile'),
+              child: SizedBox(height: 32, width: 32, child: profileAvatar),
+            ),
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: AppColors.primaryNavy),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    height: 60,
-                    width: 60,
-                    child: profileAvatar,
-                  ),
-                  const SizedBox(height: 10),
-                  const Text('Shri Nrityalaya', style: TextStyle(color: Colors.white, fontSize: 20)),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.receipt_long, color: AppColors.warning),
-              title: const Text('Fee Management'),
-              onTap: () {
-                Navigator.pop(context); // close drawer
-                GoRouter.of(context).push('/fees');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.people, color: AppColors.primaryNavy),
-              title: const Text('Manage Students'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/students');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.contact_phone, color: AppColors.success),
-              title: const Text('Directory'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/directory');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.video_library, color: AppColors.primaryNavy),
-              title: const Text('Learning & Lessons'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/learning');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.trending_up, color: AppColors.primaryGold),
-              title: const Text('Student Progress'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/progress');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.campaign, color: AppColors.error),
-              title: const Text('Messages'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/messaging');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.event, color: AppColors.success),
-              title: const Text('Academy Events'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/events');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Profile & Settings'),
-              onTap: () {
-                Navigator.pop(context);
-                GoRouter.of(context).push('/profile');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout, color: AppColors.error),
-              title: const Text('Logout', style: TextStyle(color: AppColors.error)),
-              onTap: () {
-                Navigator.pop(context);
-                ref.read(authProvider.notifier).logout();
-                context.go('/login');
-              },
-            ),
-          ],
-        ),
+      drawer: AppDrawer(
+        roleSubtitle: 'Teacher Dashboard',
+        menuItems: [
+          DrawerMenuItem(title: 'Fee Management', icon: Icons.emoji_events_outlined, route: '/fees'),
+          DrawerMenuItem(title: 'Manage Students', icon: Icons.people_alt_outlined, route: '/students'),
+          DrawerMenuItem(title: 'Directory', icon: Icons.contact_phone_outlined, route: '/directory'),
+          DrawerMenuItem(title: 'Learning & Lessons', icon: Icons.play_circle_outline, route: '/learning'),
+          DrawerMenuItem(title: 'Student Progress', icon: Icons.auto_graph_outlined, route: '/progress'),
+          DrawerMenuItem(title: 'Messages', icon: Icons.campaign_outlined, route: '/messaging'),
+          DrawerMenuItem(title: 'Academy Events', icon: Icons.calendar_today_outlined, route: '/events'),
+        ],
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 32.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
               'Welcome back!',
               style: TextStyle(
-                fontSize: 28,
+                fontFamily: 'Georgia',
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryNavy,
               ),
@@ -154,62 +79,81 @@ class TeacherDashboardScreen extends ConsumerWidget {
             const SizedBox(height: 8),
             const Text(
               'Manage your academy from here.',
-              style: TextStyle(fontSize: 16, color: AppColors.mutedText),
+              style: TextStyle(fontSize: 18, color: AppColors.deepNavy),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
             GridView.count(
               shrinkWrap: true,
               crossAxisCount: 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
+              childAspectRatio: 0.95,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                _buildGridCard(context, 'Students', Icons.people, AppColors.primaryNavy, '/students'),
-                _buildGridCard(context, 'Directory', Icons.contact_phone, AppColors.success, '/directory'),
-                _buildGridCard(context, 'Attendance', Icons.check_circle, AppColors.success, '/attendance'),
-                _buildGridCard(context, 'Fees', Icons.receipt_long, AppColors.warning, '/fees'),
-                _buildGridCard(context, 'Lessons', Icons.video_library, AppColors.primaryNavy, '/learning'),
-                _buildGridCard(context, 'Progress', Icons.trending_up, AppColors.primaryGold, '/progress'),
-                _buildGridCard(context, 'Messages', Icons.campaign, AppColors.error, '/messaging'),
+                _buildGridCard(context, 'Students', Icons.people, '/students'),
+                _buildGridCard(context, 'Directory', Icons.contact_page_outlined, '/directory'),
+                _buildGridCard(context, 'Attendance', Icons.how_to_reg, '/attendance'),
+                _buildGridCard(context, 'Fees', Icons.monetization_on_outlined, '/fees'),
+                _buildGridCard(context, 'Lessons', Icons.menu_book, '/learning'),
+                _buildGridCard(context, 'Progress', Icons.auto_graph, '/progress'),
               ],
             ),
           ],
         ),
       ),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 0),
     );
   }
 
-  Widget _buildGridCard(BuildContext context, String title, IconData icon, Color color, String route) {
+  Widget _buildGridCard(BuildContext context, String title, IconData icon, String route) {
     return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 4,
+      shadowColor: Colors.black.withValues(alpha: 0.1),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      color: Colors.white,
       child: InkWell(
         onTap: () => context.push(route),
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: color, size: 36),
+        borderRadius: BorderRadius.circular(20),
+        child: Stack(
+          children: [
+            // Top right decorative lotus
+            Positioned(
+              top: 8,
+              right: 8,
+              child: Icon(Icons.spa, size: 24, color: AppColors.primaryGold.withValues(alpha: 0.3)),
+            ),
+            // Bottom left decorative lotus
+            Positioned(
+              bottom: 8,
+              left: 8,
+              child: Icon(Icons.spa, size: 24, color: AppColors.primaryGold.withValues(alpha: 0.3)),
+            ),
+            // Content
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFFFF7E6), // Pale gold circle
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(icon, color: AppColors.primaryGold, size: 40),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.primaryNavy,
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 16),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.deepNavy,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,9 +1,11 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:shri_nrityalaya_app/features/auth/presentation/providers/auth_providers.dart';
 import 'package:shri_nrityalaya_app/features/events/presentation/providers/event_providers.dart';
 import 'package:shri_nrityalaya_app/features/events/domain/models/academy_event.dart';
+import '../../../../core/widgets/app_bottom_nav.dart';
 
 class EventsScreen extends ConsumerWidget {
   const EventsScreen({Key? key}) : super(key: key);
@@ -14,9 +16,8 @@ class EventsScreen extends ConsumerWidget {
     final userRole = ref.watch(authProvider).userRole;
     final isTeacher = userRole == 'Teacher' || userRole == 'SystemAdmin';
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Arangetram & Events'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,
@@ -92,6 +93,7 @@ class EventsScreen extends ConsumerWidget {
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text('New Event', style: TextStyle(color: Colors.white)),
       ) : null,
+      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
     );
   }
 }

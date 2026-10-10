@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -23,9 +24,8 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
 
     return DefaultTabController(
       length: tabCount,
-      child: Scaffold(
-        backgroundColor: AppColors.warmCream,
-        appBar: AppBar(
+      child: AppScaffold(
+appBar: AppBar(
           title: const Text('Fee Management'),
           backgroundColor: AppColors.primaryNavy,
           foregroundColor: Colors.white,

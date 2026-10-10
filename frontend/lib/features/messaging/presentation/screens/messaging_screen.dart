@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -18,7 +19,7 @@ class MessagingScreen extends ConsumerWidget {
     final announcementsState = ref.watch(announcementsProvider);
     final userRole = ref.watch(shri_nrityalaya_app_auth.authProvider).userRole;
 
-    return Scaffold(
+    return AppScaffold(
       appBar: AppBar(title: const Text('Messages & Announcements')),
       body: announcementsState.when(
         loading: () => const Center(child: CircularProgressIndicator()),

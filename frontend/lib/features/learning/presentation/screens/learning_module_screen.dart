@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +8,7 @@ import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:shri_nrityalaya_app/core/network/api_client.dart' as shri_nrityalaya_app_dio;
 import '../../../auth/presentation/providers/auth_providers.dart' as shri_nrityalaya_app_auth;
 import '../providers/lesson_providers.dart';
+import '../../../../core/widgets/app_bottom_nav.dart';
 
 class LearningModuleScreen extends ConsumerWidget {
   const LearningModuleScreen({Key? key}) : super(key: key);
@@ -16,9 +18,8 @@ class LearningModuleScreen extends ConsumerWidget {
     final lessonsState = ref.watch(lessonsProvider);
     final userRole = ref.watch(shri_nrityalaya_app_auth.authProvider).userRole;
 
-    return Scaffold(
-      backgroundColor: AppColors.warmCream,
-      appBar: AppBar(
+    return AppScaffold(
+appBar: AppBar(
         title: const Text('Learning & Practice'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,
@@ -116,6 +117,7 @@ class LearningModuleScreen extends ConsumerWidget {
         icon: const Icon(Icons.upload, color: AppColors.primaryNavy),
         label: const Text('Upload Lesson', style: TextStyle(color: AppColors.primaryNavy, fontWeight: FontWeight.bold)),
       ) : null,
+      bottomNavigationBar: const AppBottomNav(currentIndex: 1),
     );
   }
 }
