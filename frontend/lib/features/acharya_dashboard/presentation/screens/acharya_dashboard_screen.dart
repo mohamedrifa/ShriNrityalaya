@@ -96,80 +96,98 @@ class AcharyaHeaderBar extends StatelessWidget {
     return SafeArea(
       bottom: false,
       child: SizedBox(
-        height: 120,
+        height: 82,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Left: Hamburger menu that opens menu drawer
-              SizedBox(
-                width: 80,
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: GestureDetector(
-                    onTap: onMenuTap,
-                    behavior: HitTestBehavior.opaque,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Icon(Icons.menu, color: AcharyaColors.navy, size: 28),
-                    ),
+              // Left: Solid navy circular hamburger menu button
+              GestureDetector(
+                onTap: onMenuTap,
+                behavior: HitTestBehavior.opaque,
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AcharyaColors.navy,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.menu_rounded,
+                    color: Colors.white,
+                    size: 25,
                   ),
                 ),
               ),
 
-              // Center: Logo + brand name
+              // Center: Horizontal Crescent Logo + Left-Aligned 2-Line Brand Name
               Expanded(
-                child: Column(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/images/logo_crescent.png', height: 48,
+                    Image.asset(
+                      'assets/images/logo_crescent.png',
+                      height: 42,
                       errorBuilder: (_, __, ___) => const Icon(
-                        Icons.circle_outlined, color: AcharyaColors.gold, size: 48),
+                        Icons.circle_outlined,
+                        color: AcharyaColors.navy,
+                        size: 42,
+                      ),
                     ),
-                    const SizedBox(height: 2),
-                    Text('BHARATANATYAM\nACADEMY',
-                      textAlign: TextAlign.center,
-                      style: AcharyaTextStyles.brand,
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        'BHARATANATYAM\nACADEMY',
+                        textAlign: TextAlign.left,
+                        style: AcharyaTextStyles.brand.copyWith(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          height: 1.15,
+                          letterSpacing: 0.5,
+                          color: AcharyaColors.navy,
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ),
 
-              // Right: Bell + User Profile Avatar from API
-              SizedBox(
-                width: 80,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // GestureDetector(
-                    //   onTap: () {},
-                    //   behavior: HitTestBehavior.opaque,
-                    //   child: const Padding(
-                    //     padding: EdgeInsets.symmetric(vertical: 8),
-                    //     child: Icon(Icons.notifications, color: AcharyaColors.navy, size: 24),
-                    //   ),
-                    // ),
-                    const SizedBox(width: 12),
-                    GestureDetector(
-                      onTap: onProfileTap,
-                      child: profileAvatar ??
-                          Container(
-                            padding: const EdgeInsets.all(1.5),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AcharyaColors.pageBackground,
-                              border: Border.all(color: AcharyaColors.navy, width: 2.0),
-                            ),
-                            child: const CircleAvatar(
-                              radius: 15,
-                              backgroundColor: AcharyaColors.navy,
-                              child: Icon(Icons.person, color: Colors.white, size: 18),
-                            ),
+              // Right: Double-Ringed User Profile Avatar from API
+              GestureDetector(
+                onTap: onProfileTap,
+                behavior: HitTestBehavior.opaque,
+                child: profileAvatar ??
+                    Container(
+                      padding: const EdgeInsets.all(2.2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AcharyaColors.screenBackground,
+                        border: Border.all(
+                          color: AcharyaColors.navy,
+                          width: 2.2,
+                        ),
+                      ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AcharyaColors.navy,
+                            width: 1.6,
                           ),
+                        ),
+                        child: const CircleAvatar(
+                          radius: 18,
+                          backgroundColor: AcharyaColors.navy,
+                          child: Icon(
+                            Icons.person,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ),
                     ),
-                  ],
-                ),
               ),
             ],
           ),

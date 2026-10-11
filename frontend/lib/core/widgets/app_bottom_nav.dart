@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 
 class AppBottomNav extends ConsumerWidget {
@@ -12,103 +11,111 @@ class AppBottomNav extends ConsumerWidget {
     required this.currentIndex,
   });
 
+  static const Color _selectedText = Color(0xFF141E30);
+  static const Color _unselectedIcon = Color(0xFF525B6C);
+  static const Color _unselectedText = Color(0xFF3E4856);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
 
-    final Color selectedColor = AppColors.primaryNavy;
-    final Color unselectedColor =
-        AppColors.primaryNavy.withValues(alpha: 0.48);
-
     return SafeArea(
       top: false,
       child: Container(
-        height: 77,
-        margin: const EdgeInsets.fromLTRB(12, 0, 12, 8),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        height: 70,
+        margin: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+        padding: const EdgeInsets.all(2.2),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(
-            color: selectedColor.withValues(alpha: 0.06),
+          borderRadius: BorderRadius.circular(38),
+          gradient: const LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: [
+              Color(0xFFB38E46),
+              Color(0xFFE0C480),
+              Color(0xFFC5A054),
+              Color(0xFFDEC17B),
+              Color(0xFFAD873E),
+            ],
+            stops: [0.0, 0.28, 0.52, 0.78, 1.0],
           ),
           boxShadow: [
             BoxShadow(
-              color: selectedColor.withValues(alpha: 0.08),
-              blurRadius: 20,
-              offset: const Offset(0, 4),
+              color: const Color(0xFF8C6B28).withValues(alpha: 0.18),
+              blurRadius: 16,
+              offset: const Offset(0, 5),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            _buildNavItem(
-              context: context,
-              index: 0,
-              currentIndex: currentIndex,
-              icon: Icons.home_rounded,
-              label: 'Home',
-              selectedColor: selectedColor,
-              unselectedColor: unselectedColor,
-              onTap: () {
-                if (currentIndex == 0) return;
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(36),
+          ),
+          child: Row(
+            children: [
+              _buildNavItem(
+                context: context,
+                index: 0,
+                currentIndex: currentIndex,
+                icon: Icons.home_rounded,
+                label: 'Home',
+                onTap: () {
+                  if (currentIndex == 0) return;
 
-                final userRole = authState.userRole;
+                  final userRole = authState.userRole;
 
-                if (userRole == 'Teacher' || userRole == 'SystemAdmin') {
-                  context.go('/dashboard/teacher');
-                } else if (userRole == 'Student') {
-                  context.go('/dashboard/student');
-                } else if (userRole == 'Parent') {
-                  context.go('/dashboard/parent');
-                } else {
-                  context.go('/dashboard/teacher');
-                }
-              },
-            ),
-            _buildNavItem(
-              context: context,
-              index: 1,
-              currentIndex: currentIndex,
-              icon: Icons.menu_book_rounded,
-              label: 'Lessons',
-              selectedColor: selectedColor,
-              unselectedColor: unselectedColor,
-              onTap: () {
-                if (currentIndex != 1) {
-                  context.go('/learning');
-                }
-              },
-            ),
-            _buildNavItem(
-              context: context,
-              index: 2,
-              currentIndex: currentIndex,
-              icon: Icons.calendar_month_rounded,
-              label: 'Events',
-              selectedColor: selectedColor,
-              unselectedColor: unselectedColor,
-              onTap: () {
-                if (currentIndex != 2) {
-                  context.go('/events');
-                }
-              },
-            ),
-            _buildNavItem(
-              context: context,
-              index: 3,
-              currentIndex: currentIndex,
-              icon: Icons.person_outline_rounded,
-              label: 'Profile',
-              selectedColor: selectedColor,
-              unselectedColor: unselectedColor,
-              onTap: () {
-                if (currentIndex != 3) {
-                  context.go('/profile');
-                }
-              },
-            ),
-          ],
+                  if (userRole == 'Teacher' || userRole == 'SystemAdmin') {
+                    context.go('/dashboard/teacher');
+                  } else if (userRole == 'Student') {
+                    context.go('/dashboard/student');
+                  } else if (userRole == 'Parent') {
+                    context.go('/dashboard/parent');
+                  } else {
+                    context.go('/dashboard/teacher');
+                  }
+                },
+              ),
+              _buildNavItem(
+                context: context,
+                index: 1,
+                currentIndex: currentIndex,
+                icon: Icons.chrome_reader_mode_rounded,
+                customIconBuilder: (color) => _OpenBookIcon(color: color),
+                label: 'Lessons',
+                onTap: () {
+                  if (currentIndex != 1) {
+                    context.go('/learning');
+                  }
+                },
+              ),
+              _buildNavItem(
+                context: context,
+                index: 2,
+                currentIndex: currentIndex,
+                icon: Icons.event_rounded,
+                label: 'Events',
+                onTap: () {
+                  if (currentIndex != 2) {
+                    context.go('/events');
+                  }
+                },
+              ),
+              _buildNavItem(
+                context: context,
+                index: 3,
+                currentIndex: currentIndex,
+                icon: Icons.person_rounded,
+                label: 'Profile',
+                onTap: () {
+                  if (currentIndex != 3) {
+                    context.go('/profile');
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -119,56 +126,133 @@ class AppBottomNav extends ConsumerWidget {
     required int index,
     required int currentIndex,
     required IconData icon,
+    Widget Function(Color color)? customIconBuilder,
     required String label,
-    required Color selectedColor,
-    required Color unselectedColor,
     required VoidCallback onTap,
   }) {
     final bool isSelected = currentIndex == index;
+
+    final Widget rawIcon = customIconBuilder != null
+        ? customIconBuilder(isSelected ? Colors.white : _unselectedIcon)
+        : Icon(
+            icon,
+            size: 27,
+            color: isSelected ? Colors.white : _unselectedIcon,
+          );
+
+    final Widget styledIcon = isSelected
+        ? ShaderMask(
+            shaderCallback: (bounds) => const LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF1F2B3D),
+                Color(0xFF3A4352),
+                Color(0xFF9C7B38),
+              ],
+              stops: [0.0, 0.48, 1.0],
+            ).createShader(bounds),
+            blendMode: BlendMode.srcIn,
+            child: rawIcon,
+          )
+        : rawIcon;
 
     return Expanded(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(30),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 2,
-            vertical: 4,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                width: isSelected ? 76 : 52,
-                height: 38,
-                decoration: BoxDecoration(
-                  color: isSelected ? selectedColor : Colors.transparent,
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                child: Icon(
-                  icon,
-                  size: 20,
-                  color: isSelected ? Colors.white : unselectedColor,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 28,
+              child: Center(child: styledIcon),
+            ),
+            const SizedBox(height: 3),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: isSelected ? FontWeight.w800 : FontWeight.w400,
+                color: isSelected ? _selectedText : _unselectedText,
+                letterSpacing: -0.1,
               ),
-              const SizedBox(height: 3),
-              Text(
-                label,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight:
-                      isSelected ? FontWeight.w700 : FontWeight.w500,
-                  color: isSelected ? selectedColor : unselectedColor,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+}
+
+/// Custom open-book icon with a solid left page and outlined right page,
+/// matching the Lessons icon in the reference template.
+class _OpenBookIcon extends StatelessWidget {
+  final Color color;
+  const _OpenBookIcon({required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      size: const Size(25, 22),
+      painter: _OpenBookPainter(color: color),
+    );
+  }
+}
+
+class _OpenBookPainter extends CustomPainter {
+  final Color color;
+  _OpenBookPainter({required this.color});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final fillPaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    final strokePaint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
+      ..strokeJoin = StrokeJoin.round;
+
+    final midX = size.width / 2;
+    final topY = 2.0;
+    final bottomY = size.height - 2.0;
+
+    // Left filled page
+    final leftPage = Path()
+      ..moveTo(midX, topY + 1.5)
+      ..quadraticBezierTo(midX * 0.5, topY - 1.0, 1.5, topY + 1.0)
+      ..lineTo(1.5, bottomY - 1.0)
+      ..quadraticBezierTo(midX * 0.5, bottomY - 2.5, midX, bottomY)
+      ..close();
+    canvas.drawPath(leftPage, fillPaint);
+    canvas.drawPath(leftPage, strokePaint);
+
+    // Right outlined page
+    final rightPage = Path()
+      ..moveTo(midX, topY + 1.5)
+      ..quadraticBezierTo(
+        midX + midX * 0.5,
+        topY - 1.0,
+        size.width - 1.5,
+        topY + 1.0,
+      )
+      ..lineTo(size.width - 1.5, bottomY - 1.0)
+      ..quadraticBezierTo(
+        midX + midX * 0.5,
+        bottomY - 2.5,
+        midX,
+        bottomY,
+      )
+      ..close();
+    canvas.drawPath(rightPage, strokePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _OpenBookPainter oldDelegate) =>
+      oldDelegate.color != color;
 }

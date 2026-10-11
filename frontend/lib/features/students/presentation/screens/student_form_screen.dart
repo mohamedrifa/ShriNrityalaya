@@ -1,8 +1,7 @@
-import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import '../../domain/models/student.dart';
 import '../providers/student_providers.dart';
 import '../../../fees/presentation/providers/fee_plans_providers.dart';
@@ -49,11 +48,12 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     _lastNameController = TextEditingController(text: widget.student?.lastName ?? '');
     _genderController = TextEditingController(text: widget.student?.gender ?? '');
     _addressController = TextEditingController(text: widget.student?.address ?? '');
-    _emergencyContactController = TextEditingController(text: widget.student?.emergencyContactNumber ?? '');
+    _emergencyContactController = TextEditingController(
+      text: widget.student?.emergencyContactNumber ?? '',
+    );
     _status = widget.student?.status ?? 'Active';
     _feePlanId = widget.student?.feePlanId;
 
-    // Auth & Parent fields are only used during creation for now
     _studentLoginController = TextEditingController();
     _studentPasswordController = TextEditingController();
     _parentFirstNameController = TextEditingController();
@@ -70,7 +70,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     _genderController.dispose();
     _addressController.dispose();
     _emergencyContactController.dispose();
-    
+
     _studentLoginController.dispose();
     _studentPasswordController.dispose();
     _parentFirstNameController.dispose();
@@ -88,11 +88,10 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
 
     try {
       if (widget.student == null) {
-        // Create new student WITH parent and logins
         final payload = {
           "studentFirstName": _firstNameController.text.trim(),
           "studentLastName": _lastNameController.text.trim(),
-          "dateOfBirth": DateTime(2010, 1, 1).toIso8601String(), // Default for demo
+          "dateOfBirth": DateTime(2010, 1, 1).toIso8601String(),
           "gender": _genderController.text.trim(),
           "address": _addressController.text.trim(),
           "emergencyContactNumber": _emergencyContactController.text.trim(),
@@ -109,11 +108,12 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
         };
         await ref.read(studentsProvider.notifier).addStudent(payload);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Student & Parent created successfully!')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Student & Parent created successfully!')),
+          );
           context.pop();
         }
       } else {
-        // Update existing student (No auth logic for updates yet)
         final updatedStudent = Student(
           id: widget.student?.id,
           firstName: _firstNameController.text.trim(),
@@ -128,13 +128,17 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
         );
         await ref.read(studentsProvider.notifier).updateStudent(updatedStudent);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Student updated!')));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Student updated!')),
+          );
           context.pop();
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error saving student: $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error saving student: $e')),
+        );
       }
     } finally {
       if (mounted) {
@@ -143,15 +147,141 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     }
   }
 
+  InputDecoration _inputDecoration(String label, {IconData? icon}) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(
+        color: Color(0xFF3E4856),
+        fontSize: 13.5,
+        fontWeight: FontWeight.w500,
+      ),
+      prefixIcon: icon != null ? Icon(icon, color: const Color(0xFFC8A752), size: 20) : null,
+      filled: true,
+      fillColor: Colors.white,
+      isDense: true,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFFDEC992), width: 1.3),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFF141E30), width: 1.6),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.3),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.6),
+      ),
+    );
+  }
+
+  Widget _buildSectionCard({
+    required String title,
+    required IconData icon,
+    required List<Widget> children,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: const Color(0xFF1F2B3E), width: 1.4),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFFF3E8C8),
+                  border: Border.all(color: const Color(0xFFC8A752), width: 1.8),
+                ),
+                alignment: Alignment.center,
+                child: Icon(icon, color: const Color(0xFF141E30), size: 18),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16.5,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF141E30),
+                ),
+              ),
+            ],
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Divider(height: 1, thickness: 1, color: Color(0xFFEAE3D2)),
+          ),
+          ...children,
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.student != null;
 
     return AppScaffold(
-appBar: AppBar(
-        title: Text(isEditing ? 'Edit Student' : 'Enroll New Student & Parent'),
-        backgroundColor: AppColors.primaryNavy,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0E1D3A),
         foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        leadingWidth: 56,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: Center(
+            child: GestureDetector(
+              onTap: () => context.pop(),
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF192B4D),
+                  border: Border.all(
+                    color: const Color(0xFFD5B258).withValues(alpha: 0.45),
+                    width: 1.0,
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Color(0xFFE6C365),
+                  size: 19,
+                ),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          isEditing ? 'Edit Student' : 'Enroll Student & Parent',
+          style: const TextStyle(
+            color: Color(0xFFE6C365),
+            fontSize: 19,
+            fontWeight: FontWeight.w500,
+            letterSpacing: 0.3,
+          ),
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -162,77 +292,227 @@ appBar: AppBar(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Student Information', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                    const SizedBox(height: 12),
-                    Row(
+                    _buildSectionCard(
+                      title: 'Student Information',
+                      icon: Icons.person_outline,
                       children: [
-                        Expanded(child: TextFormField(controller: _firstNameController, decoration: const InputDecoration(labelText: 'First Name', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null)),
-                        const SizedBox(width: 16),
-                        Expanded(child: TextFormField(controller: _lastNameController, decoration: const InputDecoration(labelText: 'Last Name', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null)),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: _firstNameController,
+                                decoration: _inputDecoration('First Name'),
+                                validator: (value) =>
+                                    value == null || value.isEmpty ? 'Required' : null,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _lastNameController,
+                                decoration: _inputDecoration('Last Name'),
+                                validator: (value) =>
+                                    value == null || value.isEmpty ? 'Required' : null,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 14),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: _genderController,
+                                decoration: _inputDecoration('Gender', icon: Icons.wc),
+                                validator: (value) =>
+                                    value == null || value.isEmpty ? 'Required' : null,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: DropdownButtonFormField<String>(
+                                value: _status,
+                                decoration: _inputDecoration('Status'),
+                                items: const [
+                                  DropdownMenuItem(value: 'Active', child: Text('Active')),
+                                  DropdownMenuItem(value: 'Inactive', child: Text('Inactive')),
+                                ],
+                                onChanged: (val) {
+                                  if (val != null) setState(() => _status = val);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 14),
+                        TextFormField(
+                          controller: _emergencyContactController,
+                          decoration: _inputDecoration(
+                            'Emergency Contact',
+                            icon: Icons.phone_outlined,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        TextFormField(
+                          controller: _addressController,
+                          decoration: _inputDecoration(
+                            'Address',
+                            icon: Icons.location_on_outlined,
+                          ),
+                          maxLines: 2,
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    TextFormField(controller: _genderController, decoration: const InputDecoration(labelText: 'Gender', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null),
-                    const SizedBox(height: 16),
-                    TextFormField(controller: _addressController, decoration: const InputDecoration(labelText: 'Address', border: OutlineInputBorder()), maxLines: 2),
-                    const SizedBox(height: 16),
-                    TextFormField(controller: _emergencyContactController, decoration: const InputDecoration(labelText: 'Emergency Contact', border: OutlineInputBorder())),
-                    const SizedBox(height: 16),
-                    
+
                     if (!isEditing) ...[
-                      const Divider(height: 32, thickness: 2),
-                      const Text('Student Login Credentials', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                      const SizedBox(height: 12),
-                      TextFormField(controller: _studentLoginController, decoration: const InputDecoration(labelText: 'Email or Username', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null),
-                      const SizedBox(height: 16),
-                      TextFormField(controller: _studentPasswordController, decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()), obscureText: true, validator: (value) => value == null || value.isEmpty ? 'Required' : null),
-                      
-                      const Divider(height: 32, thickness: 2),
-                      const Text('Parent Information', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                      const SizedBox(height: 12),
-                      Row(
+                      _buildSectionCard(
+                        title: 'Student Login Credentials',
+                        icon: Icons.lock_outline,
                         children: [
-                          Expanded(child: TextFormField(controller: _parentFirstNameController, decoration: const InputDecoration(labelText: 'First Name', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null)),
-                          const SizedBox(width: 16),
-                          Expanded(child: TextFormField(controller: _parentLastNameController, decoration: const InputDecoration(labelText: 'Last Name', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null)),
+                          TextFormField(
+                            controller: _studentLoginController,
+                            decoration: _inputDecoration(
+                              'Email or Username',
+                              icon: Icons.alternate_email,
+                            ),
+                            validator: (value) =>
+                                value == null || value.isEmpty ? 'Required' : null,
+                          ),
+                          const SizedBox(height: 14),
+                          TextFormField(
+                            controller: _studentPasswordController,
+                            decoration: _inputDecoration(
+                              'Password',
+                              icon: Icons.key_outlined,
+                            ),
+                            obscureText: true,
+                            validator: (value) =>
+                                value == null || value.isEmpty ? 'Required' : null,
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      TextFormField(controller: _parentMobileController, decoration: const InputDecoration(labelText: 'Mobile Number', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null),
-                      const SizedBox(height: 16),
-                      
-                      const Text('Parent Login Credentials', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                      const SizedBox(height: 12),
-                      TextFormField(controller: _parentLoginController, decoration: const InputDecoration(labelText: 'Email or Username', border: OutlineInputBorder()), validator: (value) => value == null || value.isEmpty ? 'Required' : null),
-                      const SizedBox(height: 16),
-                      TextFormField(controller: _parentPasswordController, decoration: const InputDecoration(labelText: 'Password', border: OutlineInputBorder()), obscureText: true, validator: (value) => value == null || value.isEmpty ? 'Required' : null),
+                      _buildSectionCard(
+                        title: 'Parent Information',
+                        icon: Icons.family_restroom_outlined,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _parentFirstNameController,
+                                  decoration: _inputDecoration('First Name'),
+                                  validator: (value) =>
+                                      value == null || value.isEmpty ? 'Required' : null,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: TextFormField(
+                                  controller: _parentLastNameController,
+                                  decoration: _inputDecoration('Last Name'),
+                                  validator: (value) =>
+                                      value == null || value.isEmpty ? 'Required' : null,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 14),
+                          TextFormField(
+                            controller: _parentMobileController,
+                            decoration: _inputDecoration(
+                              'Mobile Number',
+                              icon: Icons.phone_android_outlined,
+                            ),
+                            validator: (value) =>
+                                value == null || value.isEmpty ? 'Required' : null,
+                          ),
+                        ],
+                      ),
+                      _buildSectionCard(
+                        title: 'Parent Login Credentials',
+                        icon: Icons.verified_user_outlined,
+                        children: [
+                          TextFormField(
+                            controller: _parentLoginController,
+                            decoration: _inputDecoration(
+                              'Email or Username',
+                              icon: Icons.alternate_email,
+                            ),
+                            validator: (value) =>
+                                value == null || value.isEmpty ? 'Required' : null,
+                          ),
+                          const SizedBox(height: 14),
+                          TextFormField(
+                            controller: _parentPasswordController,
+                            decoration: _inputDecoration(
+                              'Password',
+                              icon: Icons.key_outlined,
+                            ),
+                            obscureText: true,
+                            validator: (value) =>
+                                value == null || value.isEmpty ? 'Required' : null,
+                          ),
+                        ],
+                      ),
                     ],
 
-                    const SizedBox(height: 24),
-                    ref.watch(feePlansProvider).when(
-                      loading: () => const Center(child: CircularProgressIndicator()),
-                      error: (e, s) => Text('Error: $e'),
-                      data: (plans) {
-                        return DropdownButtonFormField<String>(
-                          isExpanded: true,
-                          value: _feePlanId,
-                          decoration: const InputDecoration(labelText: 'Fee Plan', border: OutlineInputBorder()),
-                          items: plans.map((p) => DropdownMenuItem(
-                            value: p['id'].toString(),
-                            child: Text(p['name'].toString(), overflow: TextOverflow.ellipsis),
-                          )).toList(),
-                          onChanged: (val) { setState(() => _feePlanId = val); },
-                        );
-                      },
+                    _buildSectionCard(
+                      title: 'Fee Plan Assignment',
+                      icon: Icons.account_balance_wallet_outlined,
+                      children: [
+                        ref.watch(feePlansProvider).when(
+                              loading: () => const Center(child: CircularProgressIndicator()),
+                              error: (e, s) => Text('Error: $e'),
+                              data: (plans) {
+                                return DropdownButtonFormField<String>(
+                                  isExpanded: true,
+                                  value: _feePlanId,
+                                  decoration: _inputDecoration(
+                                    'Select Fee Plan',
+                                    icon: Icons.workspace_premium_outlined,
+                                  ),
+                                  items: plans
+                                      .map(
+                                        (p) => DropdownMenuItem(
+                                          value: p['id'].toString(),
+                                          child: Text(
+                                            p['name'].toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (val) {
+                                    setState(() => _feePlanId = val);
+                                  },
+                                );
+                              },
+                            ),
+                      ],
                     ),
-                    const SizedBox(height: 32),
+
+                    const SizedBox(height: 8),
                     SizedBox(
                       width: double.infinity,
-                      height: 50,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryGold, foregroundColor: AppColors.primaryNavy),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF0E1D3A),
+                          foregroundColor: const Color(0xFFE6C365),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: const BorderSide(color: Color(0xFFD5B258), width: 1.5),
+                          ),
+                        ),
                         onPressed: _saveStudent,
-                        child: Text(isEditing ? 'Save Changes' : 'Enroll Student', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        child: Text(
+                          isEditing ? 'Save Changes' : 'Enroll Student',
+                          style: const TextStyle(
+                            color: Color(0xFFE6C365),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 32),

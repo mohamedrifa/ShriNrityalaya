@@ -1,9 +1,8 @@
-import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import '../../../../core/network/api_client.dart';
-import '../../../../core/theme/app_colors.dart';
 import '../providers/fee_plans_providers.dart';
 
 class FeePlanFormScreen extends ConsumerStatefulWidget {
@@ -27,9 +26,15 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.feePlan?['name'] ?? '');
-    _monthlyAmountController = TextEditingController(text: widget.feePlan?['monthlyAmount']?.toString() ?? '');
-    _admissionFeeController = TextEditingController(text: widget.feePlan?['admissionFee']?.toString() ?? '');
-    _descriptionController = TextEditingController(text: widget.feePlan?['description'] ?? '');
+    _monthlyAmountController = TextEditingController(
+      text: widget.feePlan?['monthlyAmount']?.toString() ?? '',
+    );
+    _admissionFeeController = TextEditingController(
+      text: widget.feePlan?['admissionFee']?.toString() ?? '',
+    );
+    _descriptionController = TextEditingController(
+      text: widget.feePlan?['description'] ?? '',
+    );
   }
 
   @override
@@ -57,74 +62,168 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
     try {
       final dio = ref.read(dioProvider);
       if (widget.feePlan == null) {
-        // Create
         await dio.post('/feeplans', data: data);
-        if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Plan created successfully!')));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Plan created successfully!')),
+          );
+        }
       } else {
-        // Update
         await dio.put('/feeplans/${widget.feePlan!['id']}', data: data);
-        if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Plan updated successfully!')));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Plan updated successfully!')),
+          );
+        }
       }
       ref.invalidate(feePlansProvider);
       if (mounted) context.pop();
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
   }
 
+  InputDecoration _buildInputDecoration(String label, IconData icon) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: const TextStyle(color: Color(0xFF3E4856), fontWeight: FontWeight.w500),
+      prefixIcon: Icon(icon, color: const Color(0xFFCBA43B)),
+      filled: true,
+      fillColor: Colors.white,
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFFDEC992), width: 1.3),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFF101F3E), width: 1.8),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.3),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.8),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isEdit = widget.feePlan != null;
+
     return AppScaffold(
-appBar: AppBar(
-        title: Text(widget.feePlan == null ? 'Create Fee Plan' : 'Edit Fee Plan'),
-        backgroundColor: AppColors.primaryNavy,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF0E1D3A),
         foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => context.pop(),
+        ),
+        title: Text(
+          isEdit ? 'Edit Fee Plan' : 'Create Fee Plan',
+          style: const TextStyle(
+            color: Color(0xFFE6C365),
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    TextFormField(
-                      controller: _nameController,
-                      decoration: const InputDecoration(labelText: 'Plan Name (e.g. Beginner Monthly)', border: OutlineInputBorder()),
-                      validator: (v) => v!.isEmpty ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _monthlyAmountController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(labelText: 'Monthly Amount', border: OutlineInputBorder()),
-                      validator: (v) => v!.isEmpty ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _admissionFeeController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                      decoration: const InputDecoration(labelText: 'Admission Fee', border: OutlineInputBorder()),
-                      validator: (v) => v!.isEmpty ? 'Required' : null,
-                    ),
-                    const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _descriptionController,
-                      maxLines: 3,
-                      decoration: const InputDecoration(labelText: 'Description', border: OutlineInputBorder()),
-                    ),
-                    const SizedBox(height: 24),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(backgroundColor: AppColors.primaryNavy, padding: const EdgeInsets.symmetric(vertical: 16)),
-                        onPressed: _submit,
-                        child: const Text('Save Plan', style: TextStyle(color: Colors.white, fontSize: 16)),
-                      ),
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFCF9F2),
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: const Color(0xFFDEC992), width: 1.3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.06),
+                      blurRadius: 8,
+                      offset: const Offset(0, 3),
                     ),
                   ],
+                ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _nameController,
+                        decoration: _buildInputDecoration(
+                          'Plan Name (e.g. Beginner Monthly)',
+                          Icons.workspace_premium_outlined,
+                        ),
+                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _monthlyAmountController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        decoration: _buildInputDecoration(
+                          'Monthly Amount (₹)',
+                          Icons.currency_rupee,
+                        ),
+                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _admissionFeeController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        decoration: _buildInputDecoration(
+                          'Admission Fee (₹)',
+                          Icons.account_balance_wallet_outlined,
+                        ),
+                        validator: (v) => v!.isEmpty ? 'Required' : null,
+                      ),
+                      const SizedBox(height: 16),
+                      TextFormField(
+                        controller: _descriptionController,
+                        maxLines: 3,
+                        decoration: _buildInputDecoration(
+                          'Description',
+                          Icons.description_outlined,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF101F3E),
+                            foregroundColor: const Color(0xFFE6C365),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              side: const BorderSide(color: Color(0xFFD5B258), width: 1.4),
+                            ),
+                          ),
+                          onPressed: _submit,
+                          child: Text(
+                            isEdit ? 'Update Plan' : 'Save Plan',
+                            style: const TextStyle(
+                              color: Color(0xFFE6C365),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

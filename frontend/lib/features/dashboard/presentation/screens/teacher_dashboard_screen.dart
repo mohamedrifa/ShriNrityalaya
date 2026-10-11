@@ -15,7 +15,8 @@ class TeacherDashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
     final profileState = ref.watch(profileProvider);
-    final baseUrl = ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
+    final baseUrl =
+        ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
 
     String username = 'Teacher';
     String? imageUrl;
@@ -26,17 +27,27 @@ class TeacherDashboardScreen extends ConsumerWidget {
     });
 
     final Widget profileAvatar = Container(
-      padding: const EdgeInsets.all(1.5),
+      padding: const EdgeInsets.all(2.2),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: AcharyaColors.pageBackground,
-        border: Border.all(color: AppColors.primaryNavy, width: 2.0),
+        color: AcharyaColors.screenBackground,
+        border: Border.all(color: AcharyaColors.navy, width: 2.2),
       ),
-      child: CircleAvatar(
-        radius: 15,
-        backgroundColor: AcharyaColors.pageBackground,
-        backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
-        child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy, size: 18) : null,
+      child: Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AcharyaColors.navy, width: 1.6),
+        ),
+        child: CircleAvatar(
+          radius: 18,
+          backgroundColor: AcharyaColors.pageBackground,
+          backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+              ? NetworkImage('$baseUrl$imageUrl')
+              : null,
+          child: imageUrl == null || imageUrl!.isEmpty
+              ? const Icon(Icons.person, color: AppColors.primaryNavy, size: 20)
+              : null,
+        ),
       ),
     );
 
@@ -45,19 +56,46 @@ class TeacherDashboardScreen extends ConsumerWidget {
       drawer: AppDrawer(
         roleSubtitle: 'Teacher Dashboard',
         menuItems: [
-          DrawerMenuItem(title: 'Fee Management',     icon: Icons.emoji_events_outlined,  route: '/fees'),
-          DrawerMenuItem(title: 'Manage Students',    icon: Icons.people_alt_outlined,     route: '/students'),
-          DrawerMenuItem(title: 'Directory',          icon: Icons.contact_phone_outlined,  route: '/directory'),
-          DrawerMenuItem(title: 'Learning & Lessons', icon: Icons.play_circle_outline,     route: '/learning'),
-          DrawerMenuItem(title: 'Student Progress',   icon: Icons.auto_graph_outlined,     route: '/progress'),
-          DrawerMenuItem(title: 'Messages',           icon: Icons.campaign_outlined,        route: '/messaging'),
-          DrawerMenuItem(title: 'Academy Events',     icon: Icons.calendar_today_outlined, route: '/events'),
+          DrawerMenuItem(
+            title: 'Fee Management',
+            icon: Icons.emoji_events_outlined,
+            route: '/fees',
+          ),
+          DrawerMenuItem(
+            title: 'Manage Students',
+            icon: Icons.people_alt_outlined,
+            route: '/students',
+          ),
+          DrawerMenuItem(
+            title: 'Directory',
+            icon: Icons.contact_phone_outlined,
+            route: '/directory',
+          ),
+          DrawerMenuItem(
+            title: 'Learning & Lessons',
+            icon: Icons.play_circle_outline,
+            route: '/learning',
+          ),
+          DrawerMenuItem(
+            title: 'Student Progress',
+            icon: Icons.auto_graph_outlined,
+            route: '/progress',
+          ),
+          DrawerMenuItem(
+            title: 'Messages',
+            icon: Icons.campaign_outlined,
+            route: '/messaging',
+          ),
+          DrawerMenuItem(
+            title: 'Academy Events',
+            icon: Icons.calendar_today_outlined,
+            route: '/events',
+          ),
         ],
       ),
       backgroundColor: AcharyaColors.screenBackground,
       body: Stack(
         children: [
-          // Left temple BG
           // Temple Background
           Positioned.fill(
             top: 150,
@@ -74,17 +112,6 @@ class TeacherDashboardScreen extends ConsumerWidget {
               ),
             ),
           ),
-          // Right temple BG
-          // Positioned(
-          //   right: 0, bottom: 0,
-          //   width: MediaQuery.of(context).size.width * 0.35,
-          //   child: Opacity(
-          //     opacity: 0.55,
-          //     child: Image.asset('assets/images/temple_right.png',
-          //       fit: BoxFit.fitWidth, alignment: Alignment.bottomRight,
-          //       errorBuilder: (_, __, ___) => const SizedBox.shrink()),
-          //   ),
-          // ),
 
           // Phone surface
           Center(
@@ -108,47 +135,15 @@ class TeacherDashboardScreen extends ConsumerWidget {
                   // Scrollable body
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.only(bottom: 80),
+                      padding: const EdgeInsets.only(bottom: 92),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AcharyaHeroBanner(username: username),
 
-                          // Action cards — route to real pages
-                          // SizedBox(
-                          //   height: 158,
-                          //   child: ListView(
-                          //     scrollDirection: Axis.horizontal,
-                          //     padding: const EdgeInsets.only(left: 16),
-                          //     children: [
-                          //       AcharyaActionCard(
-                          //         title: 'MY CLASSES',
-                          //         body: 'Manage student lists and attendance. 3 Classes Active.',
-                          //         linkText: 'Manage Classes',
-                          //         linkIcon: Icons.chevron_right,
-                          //         onTap: () => context.push('/students'),
-                          //       ),
-                          //       AcharyaActionCard(
-                          //         title: 'CURRICULUM REVIEW',
-                          //         body: 'Approve student submissions for Alarippu and Jatiswaram.',
-                          //         linkText: 'Review Submissions',
-                          //         linkIcon: Icons.check,
-                          //         onTap: () => context.push('/progress'),
-                          //       ),
-                          //       AcharyaActionCard(
-                          //         title: 'STUDENT PROGRESS',
-                          //         body: 'Track progress and share feedback.',
-                          //         linkText: 'Review Progress',
-                          //         linkIcon: Icons.chevron_right,
-                          //         onTap: () => context.push('/progress'),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-
-                          // Academy Modules Grid from previous commit
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20, top: 16,),
+                          // Academy Modules Section Header
+                          const Padding(
+                            padding: EdgeInsets.fromLTRB(18, 14, 18, 14),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -156,36 +151,79 @@ class TeacherDashboardScreen extends ConsumerWidget {
                                   'Academy Modules',
                                   style: TextStyle(
                                     fontFamily: 'Georgia',
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryNavy,
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xFF0E1D3A),
+                                    letterSpacing: 0.2,
                                   ),
                                 ),
-                                const SizedBox(height: 4),
-                                const Text(
+                                SizedBox(height: 4),
+                                Text(
                                   'Manage your academy from here.',
-                                  style: TextStyle(fontSize: 14, color: AppColors.deepNavy),
+                                  style: TextStyle(
+                                    fontSize: 14.5,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color(0xFF1B2B45),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
+
+                          // Academy Modules 2x3 Horizontal Cards Grid
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: GridView.count(
                               shrinkWrap: true,
-                              padding: EdgeInsets.zero, // Removes GridView's default padding
+                              padding: EdgeInsets.zero,
                               crossAxisCount: 2,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16,
-                              childAspectRatio: 0.95,
+                              crossAxisSpacing: 14,
+                              mainAxisSpacing: 14,
+                              childAspectRatio: 1.82,
                               physics: const NeverScrollableScrollPhysics(),
                               children: [
-                                _buildGridCard(context, 'Students', Icons.people, '/students'),
-                                _buildGridCard(context, 'Directory', Icons.contact_page_outlined, '/directory'),
-                                _buildGridCard(context, 'Attendance', Icons.how_to_reg, '/attendance'),
-                                _buildGridCard(context, 'Fees', Icons.monetization_on_outlined, '/fees'),
-                                _buildGridCard(context, 'Lessons', Icons.menu_book, '/learning'),
-                                _buildGridCard(context, 'Progress', Icons.auto_graph, '/progress'),
+                                _buildModuleCard(
+                                  context: context,
+                                  title: 'Students',
+                                  icon: Icons.people_alt_rounded,
+                                  route: '/students',
+                                  showBottomLeftLotus: true,
+                                ),
+                                _buildModuleCard(
+                                  context: context,
+                                  title: 'Directory',
+                                  icon: Icons.call_rounded,
+                                  route: '/directory',
+                                  showBottomLeftLotus: false,
+                                ),
+                                _buildModuleCard(
+                                  context: context,
+                                  title: 'Attendance',
+                                  icon: Icons.event_available_rounded,
+                                  route: '/attendance',
+                                  showBottomLeftLotus: false,
+                                ),
+                                _buildModuleCard(
+                                  context: context,
+                                  title: 'Fees',
+                                  icon: Icons.credit_card_rounded,
+                                  route: '/fees',
+                                  showBottomLeftLotus: false,
+                                ),
+                                _buildModuleCard(
+                                  context: context,
+                                  title: 'Lessons',
+                                  icon: Icons.play_circle_fill_rounded,
+                                  route: '/learning',
+                                  showBottomLeftLotus: true,
+                                ),
+                                _buildModuleCard(
+                                  context: context,
+                                  title: 'Progress',
+                                  icon: Icons.assessment_rounded,
+                                  route: '/progress',
+                                  showBottomLeftLotus: true,
+                                ),
                               ],
                             ),
                           ),
@@ -201,7 +239,9 @@ class TeacherDashboardScreen extends ConsumerWidget {
 
           // Fixed bottom nav (existing AppBottomNav for real routing)
           const Positioned(
-            bottom: 0, left: 0, right: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
             child: AppBottomNav(currentIndex: 0),
           ),
         ],
@@ -209,57 +249,242 @@ class TeacherDashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildGridCard(BuildContext context, String title, IconData icon, String route) {
-    return Card(
-      elevation: 4,
-      shadowColor: Colors.black.withValues(alpha: 0.1),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      color: Colors.white,
-      child: InkWell(
-        onTap: () => context.push(route),
+  Widget _buildModuleCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    required String route,
+    required bool showBottomLeftLotus,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        child: Stack(
-          children: [
-            // Top right decorative lotus
-            Positioned(
-              top: 8,
-              right: 8,
-              child: Icon(Icons.spa, size: 24, color: AppColors.primaryGold.withValues(alpha: 0.3)),
-            ),
-            // Bottom left decorative lotus
-            Positioned(
-              bottom: 8,
-              left: 8,
-              child: Icon(Icons.spa, size: 24, color: AppColors.primaryGold.withValues(alpha: 0.3)),
-            ),
-            // Content
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFFFF7E6), // Pale gold circle
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(icon, color: AppColors.primaryGold, size: 40),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w900,
-                      color: AppColors.primaryNavy,
-                    ),
-                  ),
-                ],
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF0E1D3A).withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push(route),
+          borderRadius: BorderRadius.circular(20),
+          child: Stack(
+            children: [
+              // Top-Right Line-Art Gold Lotus Ornament
+              const Positioned(
+                top: 6,
+                right: 8,
+                child: _ModuleLotusOrnament(size: 42),
               ),
-            ),
-          ],
+
+              // Bottom-Left Line-Art Gold Lotus Ornament
+              if (showBottomLeftLotus)
+                const Positioned(
+                  bottom: -2,
+                  left: -4,
+                  child: _ModuleLotusOrnament(size: 38),
+                ),
+
+              // Horizontal Content: Pale Gold Circle Icon + Bold Navy Label
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Center(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFFFDF2DB),
+                          shape: BoxShape.circle,
+                        ),
+                        alignment: Alignment.center,
+                        child: Icon(
+                          icon,
+                          color: const Color(0xFFCDA756),
+                          size: 25,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 15.5,
+                            fontWeight: FontWeight.w800,
+                            color: Color(0xFF0E1D3A),
+                            letterSpacing: -0.1,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+}
+
+/// Delicate gold line-art lotus blossom for the Academy Module cards.
+class _ModuleLotusOrnament extends StatelessWidget {
+  final double size;
+  const _ModuleLotusOrnament({required this.size});
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: CustomPaint(
+        size: Size(size, size * 0.72),
+        painter: _ModuleLotusPainter(),
+      ),
+    );
+  }
+}
+
+class _ModuleLotusPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFFD6B872).withValues(alpha: 0.65)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.15
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
+
+    final cx = size.width * 0.5;
+    final cy = size.height * 0.86;
+
+    // Center upright petal
+    final centerPetal = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx - size.width * 0.16,
+        cy - size.height * 0.46,
+        cx,
+        cy - size.height * 0.76,
+      )
+      ..quadraticBezierTo(
+        cx + size.width * 0.16,
+        cy - size.height * 0.46,
+        cx,
+        cy,
+      );
+    canvas.drawPath(centerPetal, paint);
+
+    // Left inner petal
+    final leftInner = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx - size.width * 0.30,
+        cy - size.height * 0.42,
+        cx - size.width * 0.25,
+        cy - size.height * 0.62,
+      )
+      ..quadraticBezierTo(
+        cx - size.width * 0.08,
+        cy - size.height * 0.46,
+        cx,
+        cy,
+      );
+    canvas.drawPath(leftInner, paint);
+
+    // Right inner petal
+    final rightInner = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx + size.width * 0.30,
+        cy - size.height * 0.42,
+        cx + size.width * 0.25,
+        cy - size.height * 0.62,
+      )
+      ..quadraticBezierTo(
+        cx + size.width * 0.08,
+        cy - size.height * 0.46,
+        cx,
+        cy,
+      );
+    canvas.drawPath(rightInner, paint);
+
+    // Left outer petal
+    final leftOuter = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx - size.width * 0.44,
+        cy - size.height * 0.20,
+        cx - size.width * 0.44,
+        cy - size.height * 0.38,
+      )
+      ..quadraticBezierTo(
+        cx - size.width * 0.22,
+        cy - size.height * 0.34,
+        cx,
+        cy,
+      );
+    canvas.drawPath(leftOuter, paint);
+
+    // Right outer petal
+    final rightOuter = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx + size.width * 0.44,
+        cy - size.height * 0.20,
+        cx + size.width * 0.44,
+        cy - size.height * 0.38,
+      )
+      ..quadraticBezierTo(
+        cx + size.width * 0.22,
+        cy - size.height * 0.34,
+        cx,
+        cy,
+      );
+    canvas.drawPath(rightOuter, paint);
+
+    // Base petals
+    final leftBase = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx - size.width * 0.32,
+        cy + size.height * 0.04,
+        cx - size.width * 0.46,
+        cy - size.height * 0.08,
+      )
+      ..quadraticBezierTo(
+        cx - size.width * 0.26,
+        cy - size.height * 0.14,
+        cx,
+        cy,
+      );
+    canvas.drawPath(leftBase, paint);
+
+    final rightBase = Path()
+      ..moveTo(cx, cy)
+      ..quadraticBezierTo(
+        cx + size.width * 0.32,
+        cy + size.height * 0.04,
+        cx + size.width * 0.46,
+        cy - size.height * 0.08,
+      )
+      ..quadraticBezierTo(
+        cx + size.width * 0.26,
+        cy - size.height * 0.14,
+        cx,
+        cy,
+      );
+    canvas.drawPath(rightBase, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

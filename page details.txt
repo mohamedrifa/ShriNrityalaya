@@ -1,0 +1,126 @@
+we had completed with design work on teacher dashboard page same like this we need to design the all the rest pages
+
+fee management,
+manage student,
+directory,
+learning & lessons,
+student progress,
+messages.
+academy events,
+profile & settings
+
+
+just analys this pages for redesign work for this run don't do anything give me neat and proper UI imnplementation plan page by page and wait for my approval once i approve you need to ask permission for another page in this way we are going to complete the UI of teacher login 
+
+ 
+
+
+
+
+
+Page 1: Fee Management
+Files: 
+fee_management_screen.dart
+, 
+fee_plan_form_screen.dart
+Current State: Standard Navy AppBar with basic TabBar (Monthly Dues, Pending Reviews, Fee Plans) and plain Material ListTile cards.
+Redesign Plan:
+Custom Segmented Tab Switcher: Replace the plain TabBar with a pill-style Navy & Gold segmented tab bar sitting on the cream background (Monthly Dues | Pending Reviews | Fee Plans).
+Monthly Dues Tab:
+Top summary banner (Navy glass card with gold border) showing "Current Month Obligations" alongside a gold pill "Generate Now" button (Icons.auto_awesome).
+Obligation tiles styled like Acharya cards: Student avatar/initials on the left, vertical divider, Student Name + Month/Year + Due/Paid amounts in the center, and status pills (PAID in green, UNPAID with a gold/green "Cash Paid" pill button).
+Pending Reviews Tab:
+Rich verification cards with payment amount badge, transaction reference, rounded preview frame for the payment proof image (tap to zoom), and dual action pills (Reject in red outline, Approve in emerald green fill).
+Fee Plans Tab & Form:
+Gold-accented plan cards displaying Plan Title, large ₹ / month badge in Playfair/Poppins bold, description, and an edit icon button inside a pale gold circle.
+
+Page 2: Manage Students
+Files: 
+students_list_screen.dart
+, 
+student_form_screen.dart
+Current State: Basic ListView of plain Card + ListTile showing name, status, joining date, and edit/delete icons.
+Redesign Plan:
+Top Roster Summary & Search Bar: A Navy-and-Gold summary header showing total active students + a quick search/filter bar.
+Student Roster Cards:
+Styled with a 1.2px navy/gold border, rounded 16px.
+Left: Circular avatar badge with student initials framed by a gold ring.
+Center: Student Full Name (Poppins w700), Status badge pill (Active in green / Inactive in muted gold), and formatted Joining Date with a calendar micro-icon.
+Right: Circular pale-gold Edit button (Icons.edit_outlined) and soft-red Delete button (Icons.delete_outline).
+Floating Action Button & Student Form:
+Extended Gold & Navy pill FAB (+ Enroll Student) and a clean card-grouped form for Student & Parent enrollment details.
+
+Page 3: Student & Parent Directory
+Files: 
+directory_screen.dart
+Current State: Full-width white container with a rectangular OutlineInputBorder search box and plain contact cards.
+Redesign Plan:
+Acharya Search Bar: Floating pill-shaped search bar (#FFFFFF fill, gold/navy hairline border, search icon in gold) integrated into the cream canvas.
+Directory Contact Cards:
+Structured into two clear sub-rows inside each bordered card:
+Student Row: Student name, emergency contact number, and a direct Call Student circular navy icon button.
+Divider: 1px #E5E0CC hairline divider.
+Parent/Guardian Row: Parent name + relationship badge (Father/Mother/Guardian), mobile number, and a direct Call Parent circular green/gold icon button.
+
+Page 4: Learning & Lessons
+Files: 
+learning_module_screen.dart
+, 
+lesson_upload_screen.dart
+, 
+lesson_player_screen.dart
+Current State: Black 200px placeholder boxes with a play icon, basic text padding, and unstyled bottom sheets for Edit and Progress.
+Redesign Plan:
+Curriculum Lesson Cards:
+Rich 16:9 thumbnail banner with a deep navy/temple gradient overlay, gold corner lotus accents, and a glowing gold-ringed Play button in the center.
+Card body with Lesson Title (Playfair/Poppins bold), 2-line description, and a 1px #E5E0CC divider.
+Bottom action bar with two styled pill buttons for Teachers: Edit Lesson (Icons.edit) and Watch Analytics (Icons.analytics).
+Redesigned Bottom Sheets (Edit & Student Watch Progress):
+Cream background (#FCF6E1) with rounded top corners (24px), gold drag handle, and styled progress tiles showing which students completed the video vs. in-progress watch duration.
+
+Page 5: Student Progress (Skill Assessments)
+Files: 
+progress_screen.dart
+Current State: Plain dropdown in a white box, followed by a list of plain cards showing Adavu/Margam/Theory scores.
+Redesign Plan:
+Student Selector Card: A Navy Glass Card at the top where the teacher selects the student from a styled gold-bordered dropdown, immediately displaying that student's overall average score and total milestones completed.
+Visual Milestone Timeline:
+Vertical timeline connector on the left with gold/navy nodes for each assessment (Adavu, Margam, Theory).
+Each milestone card shows:
+Skill Name + Level pill badge (Beginner, Intermediate, Advanced).
+Visual progress bar + circular score badge (90/100 in Gold/Navy).
+Teacher's remarks in an italic cream quote box and formatted assessment date.
+Record Milestone Modal: Styled dialog/sheet matching the Acharya theme.
+
+Page 6: Messages & Announcements
+Files: 
+messaging_screen.dart
+Current State: Basic AppBar and simple cards with a campaign icon and text.
+Redesign Plan:
+Announcement Notice Cards:
+Styled like official Academy notices with a left gold accent bar (4px #D4AF37), campaign badge in a pale-gold circle, bold announcement title, body text, and a footer row with the sender badge (Acharya / Admin).
+Compose Announcement Sheet:
+Clean cream-and-navy modal bottom sheet with styled input fields and a full-width Gold pill "Post Announcement" button.
+
+Page 7: Academy Events (Arangetram & Events)
+Files: 
+events_screen.dart
+Current State: Plain cards listing title, date/location string, description, and fee.
+Redesign Plan:
+Acharya Event Tiles & Detailed Cards:
+Modeled directly on the reference Acharya Event Tile aesthetic:
+Left block: Large bold Day number (25) over Month (Jan) in a dedicated date column, separated by a 1px #E5E0CC vertical divider.
+Center block: Event Title, Location with pin icon, Description, and Participation Fee badge (Free or $Fee).
+Right/Bottom action: Cream-and-Gold pill button (Edit Event for teachers, Register Now for students).
+Create/Edit Event Dialog: Styled form with a visual gold calendar date-picker trigger.
+
+Page 8: Profile & Settings
+Files: 
+profile_screen.dart
+Current State: Plain centered CircleAvatar, two basic Material Card forms (Personal Information and Change Password), and a logout button.
+Redesign Plan:
+Acharya Profile Hero Card:
+Navy glass/gold-bordered profile header card featuring the user's large circular photo framed with the mandala_frame.png / gold ring, a floating camera badge to upload a new photo, Full Name in Playfair Display gold, Role pill badge (ACHARYA / TEACHER), and email/username.
+Personal Info & Security Cards:
+Clean white cards with 1.2px #1F2A44 borders, decorative lotus corner accents, styled text fields, and gold/navy pill submit buttons.
+Logout Button: Styled crimson-outlined pill button at the bottom.
