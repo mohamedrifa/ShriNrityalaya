@@ -12,8 +12,7 @@ class AppBottomNav extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Only show bottom nav if logged in (safety check)
-    final role = ref.watch(authProvider);
-    if (role == null) return const SizedBox.shrink();
+    ref.watch(authProvider);
 
     return Container(
       decoration: BoxDecoration(

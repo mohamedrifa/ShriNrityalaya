@@ -7,7 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../fees/presentation/providers/fee_obligations_providers.dart';
 import '../../../profile/presentation/providers/profile_providers.dart';
 import '../../../progress/presentation/providers/progress_providers.dart';
-import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../../../core/network/api_client.dart';
 import '../../../../core/widgets/app_drawer.dart';
 
