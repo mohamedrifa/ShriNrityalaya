@@ -1,26 +1,53 @@
-import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
+import '../../../../core/network/api_client.dart';
+import '../../../../core/widgets/app_bottom_nav.dart';
+import '../../../../core/widgets/app_drawer.dart';
+import '../../../events/presentation/providers/event_providers.dart';
 import '../../../fees/presentation/providers/fee_obligations_providers.dart';
 import '../../../profile/presentation/providers/profile_providers.dart';
+import '../../../progress/domain/models/skill_assessment.dart';
 import '../../../progress/presentation/providers/progress_providers.dart';
-import '../../../../core/network/api_client.dart';
-import '../../../../core/widgets/app_drawer.dart';
-import '../../../../core/widgets/app_bottom_nav.dart';
 
 class StudentDashboardScreen extends ConsumerWidget {
-  // ignore: use_super_parameters
-  const StudentDashboardScreen({Key? key}) : super(key: key);
+  const StudentDashboardScreen({super.key});
+
+  static const Color _navyHeader = Color(0xFF0B1B3B);
+  static const Color _darkNavyText = Color(0xFF0E1D3A);
+  static const Color _goldPrimary = Color(0xFFD8B45A);
+  static const Color _goldSoft = Color(0xFFE5C165);
+
+  String _formatDate(DateTime dt) {
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    final m = months[(dt.month - 1).clamp(0, 11)];
+    final d = dt.day.toString().padLeft(2, '0');
+    return '$m $d, ${dt.year}';
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assessmentsState = ref.watch(studentAssessmentsProvider('me'));
     final feesState = ref.watch(feeObligationsProvider);
+    final eventsState = ref.watch(eventsProvider);
     final profileState = ref.watch(profileProvider);
-    final baseUrl = ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
+    final baseUrl =
+        ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
 
     String username = 'Student';
     String? imageUrl;
@@ -30,15 +57,22 @@ class StudentDashboardScreen extends ConsumerWidget {
       imageUrl = profile['profilePictureUrl'] as String?;
     });
 
-    Widget profileAvatar = Container(
+    final Widget profileAvatar = Container(
+      width: 42,
+      height: 42,
+      padding: const EdgeInsets.all(2.0),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: Border.all(color: AppColors.primaryGold, width: 2.0),
+        border: Border.all(color: _goldPrimary, width: 1.8),
       ),
       child: CircleAvatar(
-        backgroundColor: AppColors.primaryGold,
-        backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
-        child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
+        backgroundColor: _goldPrimary.withValues(alpha: 0.25),
+        backgroundImage: imageUrl != null && imageUrl!.isNotEmpty
+            ? NetworkImage('$baseUrl$imageUrl')
+            : null,
+        child: imageUrl == null || imageUrl!.isEmpty
+            ? const Icon(Icons.person, color: _goldSoft, size: 22)
+            : null,
       ),
     );
 
@@ -49,162 +83,232 @@ class StudentDashboardScreen extends ConsumerWidget {
       drawer: AppDrawer(
         roleSubtitle: 'Student Dashboard',
         menuItems: [
-          DrawerMenuItem(title: 'Fee Management', icon: Icons.receipt_long, route: '/fees'),
-          DrawerMenuItem(title: 'Learning & Lessons', icon: Icons.video_library, route: '/learning'),
-          DrawerMenuItem(title: 'My Progress', icon: Icons.trending_up, route: '/progress'),
-          DrawerMenuItem(title: 'Announcements', icon: Icons.campaign_outlined, route: '/messaging'),
-          DrawerMenuItem(title: 'Academy Events', icon: Icons.calendar_today_outlined, route: '/events'),
+          DrawerMenuItem(
+            title: 'Fee Management',
+            icon: Icons.receipt_long,
+            route: '/fees',
+          ),
+          DrawerMenuItem(
+            title: 'Learning & Lessons',
+            icon: Icons.video_library,
+            route: '/learning',
+          ),
+          DrawerMenuItem(
+            title: 'My Progress',
+            icon: Icons.trending_up,
+            route: '/progress',
+          ),
+          DrawerMenuItem(
+            title: 'Announcements',
+            icon: Icons.campaign_outlined,
+            route: '/messaging',
+          ),
+          DrawerMenuItem(
+            title: 'Academy Events',
+            icon: Icons.calendar_today_outlined,
+            route: '/events',
+          ),
         ],
       ),
-      body: SafeArea(
-        bottom: false,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(bottom: 28),
         child: Stack(
           children: [
-            // Background Structure
-            Column(
-              children: [
-                // Fixed Navy Header Background
-                Container(
-                  height: 190,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primaryNavy,
-                    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(24), bottomRight: Radius.circular(24)),
-                  ),
-                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Menu Icon (Simulating Profile Icon from mockup)
-                      GestureDetector(
-                        onTap: () => scaffoldKey.currentState?.openDrawer(),
-                        child: const CircleAvatar(
-                          radius: 20,
-                          backgroundColor: AppColors.primaryGold,
-                          child: Icon(Icons.menu, color: AppColors.primaryNavy),
-                        ),
-                      ),
-                      // Title
-                      const Column(
-                        children: [
-                          Text('BHARATANATYAM', style: TextStyle(color: Colors.white, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
-                          Text('ACADEMY', style: TextStyle(color: Colors.white, fontSize: 12, letterSpacing: 1.5, fontWeight: FontWeight.bold)),
-                          SizedBox(height: 16),
-                          Text('Dashboard', style: TextStyle(color: AppColors.primaryGold, fontSize: 24, fontFamily: 'Georgia', fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                      // Notification + Profile
-                      Row(
-                        children: [
-                          IconButton(icon: const Icon(Icons.notifications, color: AppColors.primaryGold), onPressed: () {}),
-                          GestureDetector(
-                            onTap: () => context.push('/profile'),
-                            child: SizedBox(height: 40, width: 40, child: profileAvatar),
-                          )
-                        ],
-                      )
-                    ],
-                  ),
+            // 1. Deep Navy Curved Header Backdrop
+            Container(
+              height: 228,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: _navyHeader,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
                 ),
-                // The Scrollable Content below the header
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(top: 130, left: 16, right: 16, bottom: 24), // 130px top padding to clear the overlapping Welcome Card
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            ),
+      
+            // 2. Foreground Content Column
+            SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+      
+                    // Top AppBar Row: Gold Menu Button + Brand + Bell & Avatar
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        // Quick Action Grid (Lessons & Events)
-                        Row(
-                          children: [
-                            Expanded(
-                              child: _buildGridCard(context, 'Lessons', Icons.menu_book, '/learning'),
+                        GestureDetector(
+                          onTap: () =>
+                              scaffoldKey.currentState?.openDrawer(),
+                          behavior: HitTestBehavior.opaque,
+                          child: Container(
+                            width: 44,
+                            height: 44,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: _goldPrimary,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: _buildGridCard(context, 'Events', Icons.event, '/events'),
+                            alignment: Alignment.center,
+                            child: const Icon(
+                              Icons.menu_rounded,
+                              color: _darkNavyText,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                        const Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 24),
+                            child: Text(
+                              'BHARATANATYAM\nACADEMY',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(0xFFF3E6C6),
+                                fontSize: 12.5,
+                                letterSpacing: 1.2,
+                                fontWeight: FontWeight.w600,
+                                height: 1.2,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            GestureDetector(
+                              onTap: () => context.push('/messaging'),
+                              behavior: HitTestBehavior.opaque,
+                              child: const Padding(
+                                padding: EdgeInsets.all(6.0),
+                                child: Icon(
+                                  Icons.notifications_rounded,
+                                  color: _goldPrimary,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            GestureDetector(
+                              onTap: () => context.push('/profile'),
+                              child: profileAvatar,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 32),
-                        
-                        const Text(
-                          'MY MODULES',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.2,
-                            color: AppColors.primaryNavy,
-                          ),
+                      ],
+                    ),
+      
+                    const SizedBox(height: 12),
+      
+                    // Centered "Dashboard" Serif Heading
+                    const Center(
+                      child: Text(
+                        'Dashboard',
+                        style: TextStyle(
+                          fontFamily: 'Georgia',
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                          color: _goldSoft,
+                          letterSpacing: 0.3,
                         ),
-                        const SizedBox(height: 12),
-
-                        // Upcoming Events List
-                        Card(
-                          elevation: 2,
-                          shadowColor: Colors.black12,
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                            leading: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: const BoxDecoration(color: AppColors.success, shape: BoxShape.circle),
-                              child: const Icon(Icons.calendar_month, color: Colors.white),
+                      ),
+                    ),
+      
+                    const SizedBox(height: 18),
+      
+                    // Overlapping Welcome Card + Right Dancer Illustration
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        _buildWelcomeCard(context, username, feesState),
+                        Positioned(
+                          top: -36,
+                          right: -12,
+                          width: 158,
+                          child: IgnorePointer(
+                            child: Image.asset(
+                              'assets/images/student_avatar.png',
+                              fit: BoxFit.contain,
+                              errorBuilder: (_, _, _) =>
+                                  const SizedBox.shrink(),
                             ),
-                            title: const Text('Upcoming Events:\nLive Workshop', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                            subtitle: const Text('Next Month'),
-                            trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                            onTap: () => context.push('/events'),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-
-                        // Recent Progress List
-                        assessmentsState.when(
-                          data: (assessments) {
-                            if (assessments.isEmpty) return const SizedBox.shrink();
-                            final latest = assessments.first;
-                            return Card(
-                              elevation: 2,
-                              shadowColor: Colors.black12,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                leading: Container(
-                                  padding: const EdgeInsets.all(12),
-                                  decoration: const BoxDecoration(color: AppColors.primaryGold, shape: BoxShape.circle),
-                                  child: const Icon(Icons.star, color: Colors.white),
-                                ),
-                                title: Text('Recent Progress:\n${latest.skillName.isNotEmpty ? latest.skillName : 'Skill'} - Level Up', style: const TextStyle(fontWeight: FontWeight.bold, color: AppColors.primaryNavy)),
-                                subtitle: Text(latest.assessmentDate.toLocal().toString().split(' ')[0]),
-                                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                                onTap: () => context.push('/progress'),
-                              ),
-                            );
-                          },
-                          loading: () => const Center(child: CircularProgressIndicator()),
-                          error: (_, __) => const SizedBox.shrink(),
                         ),
                       ],
                     ),
-                  ),
-                )
-              ],
-            ),
-            
-            // The Welcome Card Overlapping the Header
-            Positioned(
-              top: 130, // Overlaps the bottom 60px of the header
-              left: 16,
-              right: 16,
-              child: _buildWelcomeCard(context, username, feesState),
-            ),
-
-            // The Dancer Avatar Overlapping the Welcome Card (Right Aligned)
-            Positioned(
-              top: 70, // Peaks above the Welcome Card
-              right: -20, // Bleeds off the right edge
-              width: 180, // Sized perfectly
-              child: Image.asset('assets/images/student_avatar.png'),
+      
+                    const SizedBox(height: 22),
+      
+                    // Quick Actions Section
+                    const Text(
+                      'Quick Actions',
+                      style: TextStyle(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF4A5568),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildQuickActionCard(
+                            context: context,
+                            title: 'Lessons',
+                            subtitle: 'View lessons',
+                            icon: Icons.book_outlined,
+                            route: '/learning',
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: _buildQuickActionCard(
+                            context: context,
+                            title: 'Events',
+                            subtitle: 'Explore events',
+                            icon: Icons.calendar_today_outlined,
+                            route: '/events',
+                          ),
+                        ),
+                      ],
+                    ),
+      
+                    const SizedBox(height: 24),
+      
+                    // MY MODULES SECTION
+                    const Text(
+                      'MY MODULES',
+                      style: TextStyle(
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.5,
+                        color: _darkNavyText,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    const Text(
+                      'Recent Activity',
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xFF4A5568),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+      
+                    // 1. Upcoming Events Card
+                    _buildUpcomingEventCard(context, eventsState),
+      
+                    const SizedBox(height: 12),
+      
+                    // 2. Recent Progress Card
+                    _buildRecentProgressCard(context, assessmentsState),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
@@ -213,95 +317,509 @@ class StudentDashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildWelcomeCard(BuildContext context, String username, AsyncValue feesState) {
+  Widget _buildWelcomeCard(
+    BuildContext context,
+    String username,
+    AsyncValue feesState,
+  ) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      constraints: const BoxConstraints(minHeight: 112),
+      padding: const EdgeInsets.fromLTRB(18, 18, 18, 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFAFD5D7), // Light teal matches mockup
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, 5)),
+        color: _goldSoft,
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: _navyHeader.withValues(alpha: 0.12),
+            blurRadius: 14,
+            offset: const Offset(0, 6),
+          ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'Welcome $username!',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppColors.primaryNavy),
+          Padding(
+            padding: const EdgeInsets.only(right: 110),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Welcome $username!',
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.w800,
+                    color: _darkNavyText,
+                    height: 1.2,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  'Here is your academy\noverview.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF1A2B49),
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
           ),
-          const SizedBox(height: 4),
-          const Text(
-            'Here is your academy\noverview.',
-            style: TextStyle(fontSize: 16, color: AppColors.deepNavy),
-          ),
-          const SizedBox(height: 16),
-          
-          // Fee Alert inside the Welcome Card
+
+          // Fee Due Alert Banner inside Welcome Card — ONLY shown when pending/unpaid fees exist
           feesState.when(
             data: (obligations) {
-              final unpaid = obligations.where((o) => o.status == 'Unpaid').toList();
+              final unpaid = obligations
+                  .where((o) => (o.status ?? 'Unpaid') == 'Unpaid')
+                  .toList();
               if (unpaid.isEmpty) return const SizedBox.shrink();
-              return Container(
-                width: 220, // Keep it from going behind the dancer avatar too much
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFDE8E8), // Soft red tint
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppColors.error.withValues(alpha: 0.5)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.pan_tool_rounded, color: AppColors.error, size: 28), // Matches the stop hand icon
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('FEE Due', style: TextStyle(fontWeight: FontWeight.bold, color: AppColors.error, fontSize: 16)),
-                          Text('You have ${unpaid.length} pending fee\nobligation(s). Tap to view.', style: const TextStyle(color: AppColors.error, fontSize: 12)),
-                        ],
+
+              final unpaidCount = unpaid.length;
+              return Padding(
+                padding: const EdgeInsets.only(top: 14),
+                child: GestureDetector(
+                  onTap: () => context.push('/fees'),
+                  child: Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.only(right: 28),
+                    padding: const EdgeInsets.fromLTRB(12, 10, 56, 10),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFCE6E5),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: const Color(0xFFF3B7B4),
+                        width: 1.1,
                       ),
                     ),
-                  ],
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 36,
+                          height: 36,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFF7C9C7),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Icon(
+                            Icons.pan_tool_outlined,
+                            color: Color(0xFF8E1B1B),
+                            size: 19,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                fontSize: 12.2,
+                                color: Color(0xFF2B1818),
+                                height: 1.32,
+                              ),
+                              children: [
+                                const TextSpan(
+                                  text: 'FEE Due',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0xFF8B1A1A),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      ' — You have $unpaidCount\npending fee obligation${unpaidCount == 1 ? '' : 's'}. Tap\nto view. ',
+                                ),
+                                const WidgetSpan(
+                                  alignment: PlaceholderAlignment.middle,
+                                  child: Icon(
+                                    Icons.warning_amber_rounded,
+                                    size: 15,
+                                    color: Color(0xFFD9534F),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },
             loading: () => const SizedBox.shrink(),
-            error: (_, __) => const SizedBox.shrink(),
+            error: (_, _) => const SizedBox.shrink(),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildGridCard(BuildContext context, String title, IconData icon, String route) {
-    return Card(
-      elevation: 2,
-      shadowColor: Colors.black12,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: Colors.white,
-      child: InkWell(
-        onTap: () => context.push(route),
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            children: [
-              Icon(icon, color: AppColors.primaryGold, size: 48),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryNavy,
+  Widget _buildQuickActionCard({
+    required BuildContext context,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required String route,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: _navyHeader.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push(route),
+          borderRadius: BorderRadius.circular(18),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 15, 16, 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFFDEC070),
+                  ),
+                  alignment: Alignment.center,
+                  child: Icon(icon, color: _darkNavyText, size: 22),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16.5,
+                    fontWeight: FontWeight.w800,
+                    color: _darkNavyText,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  subtitle,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xFF8C7A5B),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildUpcomingEventCard(BuildContext context, AsyncValue eventsState) {
+    String eventTitle = 'Live Workshop';
+    String eventSubtitle = 'Next Month, Jan 25';
+
+    eventsState.whenData((events) {
+      if (events.isNotEmpty) {
+        final first = events.first;
+        eventTitle = first.title;
+        eventSubtitle = _formatDate(first.eventDate);
+      }
+    });
+
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFFAF6EC),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFF14223D), width: 1.4),
+        boxShadow: [
+          BoxShadow(
+            color: _navyHeader.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push('/events'),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(14, 13, 14, 13),
+            child: Row(
+              children: [
+                Container(
+                  width: 46,
+                  height: 46,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFF4D9460),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.calendar_today_outlined,
+                    color: Colors.white,
+                    size: 21,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Upcoming Events:',
+                        style: TextStyle(
+                          fontSize: 12.8,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF2C3545),
+                        ),
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        eventTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w800,
+                          color: _darkNavyText,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        eventSubtitle,
+                        style: const TextStyle(
+                          fontSize: 12.2,
+                          color: Color(0xFF3E4856),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                const Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 24),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'REGISTER',
+                          style: TextStyle(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w800,
+                            color: _darkNavyText,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Icon(
+                          Icons.chevron_right_rounded,
+                          size: 16,
+                          color: _darkNavyText,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildRecentProgressCard(
+    BuildContext context,
+    AsyncValue<List<SkillAssessment>> assessmentsState,
+  ) {
+    String skillTitle = 'Adavu - Level Up';
+    String dateText = 'Assessed on Oct 08, 2026';
+    int score = 90;
+
+    assessmentsState.whenData((assessments) {
+      if (assessments.isNotEmpty) {
+        final latest = assessments.first;
+        final name =
+            latest.skillName.isNotEmpty ? latest.skillName : latest.skillType;
+        skillTitle = '$name - Level Up';
+        dateText = 'Assessed on ${_formatDate(latest.assessmentDate)}';
+        score = latest.score;
+      }
+    });
+
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFFAF4E4),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _goldPrimary, width: 1.4),
+        boxShadow: [
+          BoxShadow(
+            color: _navyHeader.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push('/progress'),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+            child: Row(
+              children: [
+                Container(
+                  width: 46,
+                  height: 46,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Color(0xFFDEC070),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.star_border_rounded,
+                    color: _darkNavyText,
+                    size: 26,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Recent Progress:',
+                        style: TextStyle(
+                          fontSize: 12.8,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF2C3545),
+                        ),
+                      ),
+                      const SizedBox(height: 1),
+                      Text(
+                        skillTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: 15.5,
+                          fontWeight: FontWeight.w800,
+                          color: _darkNavyText,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        dateText,
+                        style: const TextStyle(
+                          fontSize: 12.2,
+                          color: Color(0xFF3E4856),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      width: 46,
+                      height: 46,
+                      child: CustomPaint(
+                        painter: _StudentScoreRingPainter(
+                          progress: (score.clamp(0, 100)) / 100.0,
+                        ),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '$score',
+                                style: const TextStyle(
+                                  fontSize: 13.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: _darkNavyText,
+                                  height: 1.0,
+                                ),
+                              ),
+                              const Text(
+                                '100',
+                                style: TextStyle(
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF4B5563),
+                                  height: 1.05,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    const Text(
+                      'VIEW',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                        color: _darkNavyText,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StudentScoreRingPainter extends CustomPainter {
+  final double progress;
+  _StudentScoreRingPainter({required this.progress});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final center = Offset(size.width / 2, size.height / 2);
+    final radius = size.width / 2 - 2.5;
+
+    final trackPaint = Paint()
+      ..color = const Color(0xFFE9DFC4)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0;
+    canvas.drawCircle(center, radius, trackPaint);
+
+    final arcPaint = Paint()
+      ..color = const Color(0xFFD8B45A)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4.0
+      ..strokeCap = StrokeCap.round;
+
+    canvas.drawArc(
+      Rect.fromCircle(center: center, radius: radius),
+      -math.pi / 2,
+      2 * math.pi * progress,
+      false,
+      arcPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _StudentScoreRingPainter oldDelegate) =>
+      oldDelegate.progress != progress;
 }

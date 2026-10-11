@@ -26,7 +26,7 @@ class AppScaffold extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: const BoxDecoration(
-        color: Color(0xFFFDF5E6), // Light cream
+        color: Color(0xFFFDF5E6),
         image: DecorationImage(
           image: AssetImage('assets/images/temple_bg.jpg'),
           fit: BoxFit.fitHeight,
@@ -37,11 +37,33 @@ class AppScaffold extends StatelessWidget {
         key: scaffoldKey,
         backgroundColor: Colors.transparent,
         appBar: appBar,
-        body: body,
+        body: Column(
+          children: [
+            Expanded(
+              child: body ?? const SizedBox.shrink(),
+            ),
+            const SizedBox(height: 80), // Add some spacing at the bottom
+          ],
+        ),
         drawer: drawer,
-        bottomNavigationBar: bottomNavigationBar,
         floatingActionButton: floatingActionButton,
         extendBodyBehindAppBar: extendBodyBehindAppBar,
+
+        // Keep the temple background visible behind the bottom navigation.
+        extendBody: true,
+
+        bottomNavigationBar: bottomNavigationBar == null
+            ? null
+            : SafeArea(
+                top: false,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 0,
+                    vertical: 0,
+                  ),
+                  child: bottomNavigationBar,
+                ),
+              ),
       ),
     );
   }
