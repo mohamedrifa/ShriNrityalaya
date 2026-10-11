@@ -644,21 +644,6 @@ class StudentDashboardScreen extends ConsumerWidget {
     BuildContext context,
     AsyncValue<List<SkillAssessment>> assessmentsState,
   ) {
-    String skillTitle = 'Adavu - Level Up';
-    String dateText = 'Assessed on Oct 08, 2026';
-    int score = 90;
-
-    assessmentsState.whenData((assessments) {
-      if (assessments.isNotEmpty) {
-        final latest = assessments.first;
-        final name =
-            latest.skillName.isNotEmpty ? latest.skillName : latest.skillType;
-        skillTitle = '$name - Level Up';
-        dateText = 'Assessed on ${_formatDate(latest.assessmentDate)}';
-        score = latest.score;
-      }
-    });
-
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFFFAF4E4),
@@ -679,108 +664,250 @@ class StudentDashboardScreen extends ConsumerWidget {
           borderRadius: BorderRadius.circular(16),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-            child: Row(
-              children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Color(0xFFDEC070),
-                  ),
-                  alignment: Alignment.center,
-                  child: const Icon(
-                    Icons.star_border_rounded,
-                    color: _darkNavyText,
-                    size: 26,
+            child: assessmentsState.when(
+              loading: () => const SizedBox(
+                height: 58,
+                child: Center(
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.2,
+                      color: _goldPrimary,
+                    ),
                   ),
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              error: (_, _) => Row(
+                children: [
+                  Container(
+                    width: 46,
+                    height: 46,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFDEC070),
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.star_border_rounded,
+                      color: _darkNavyText,
+                      size: 26,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Recent Progress:',
+                          style: TextStyle(
+                            fontSize: 12.8,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFF2C3545),
+                          ),
+                        ),
+                        SizedBox(height: 2),
+                        Text(
+                          'No milestones recorded yet.',
+                          style: TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF3E4856),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Text(
+                    'VIEW',
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w800,
+                      color: _darkNavyText,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
+                ],
+              ),
+              data: (assessments) {
+                if (assessments.isEmpty) {
+                  return Row(
                     children: [
-                      const Text(
-                        'Recent Progress:',
-                        style: TextStyle(
-                          fontSize: 12.8,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xFF2C3545),
+                      Container(
+                        width: 46,
+                        height: 46,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFFDEC070),
+                        ),
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.star_border_rounded,
+                          color: _darkNavyText,
+                          size: 26,
                         ),
                       ),
-                      const SizedBox(height: 1),
-                      Text(
-                        skillTitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 15.5,
+                      const SizedBox(width: 12),
+                      const Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Recent Progress:',
+                              style: TextStyle(
+                                fontSize: 12.8,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF2C3545),
+                              ),
+                            ),
+                            SizedBox(height: 2),
+                            Text(
+                              'No milestones recorded yet.',
+                              style: TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF3E4856),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Text(
+                        'VIEW',
+                        style: TextStyle(
+                          fontSize: 11,
                           fontWeight: FontWeight.w800,
                           color: _darkNavyText,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        dateText,
-                        style: const TextStyle(
-                          fontSize: 12.2,
-                          color: Color(0xFF3E4856),
+                          letterSpacing: 0.3,
                         ),
                       ),
                     ],
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
+                  );
+                }
+
+                final latest = assessments.first;
+                final sName = latest.skillName.trim();
+                final sType = latest.skillType.trim();
+                final level = latest.skillLevel.trim();
+                String skillTitle;
+                if (sName.isNotEmpty &&
+                    !sName.toLowerCase().contains(sType.toLowerCase())) {
+                  skillTitle =
+                      '$sType - $sName${level.isNotEmpty ? ' ($level)' : ''}';
+                } else if (sName.isNotEmpty) {
+                  skillTitle = '$sName${level.isNotEmpty ? ' ($level)' : ''}';
+                } else {
+                  skillTitle = '$sType${level.isNotEmpty ? ' ($level)' : ''}';
+                }
+                final dateText =
+                    'Assessed on ${_formatDate(latest.assessmentDate)}';
+                final score = latest.score;
+
+                return Row(
                   children: [
-                    SizedBox(
+                    Container(
                       width: 46,
                       height: 46,
-                      child: CustomPaint(
-                        painter: _StudentScoreRingPainter(
-                          progress: (score.clamp(0, 100)) / 100.0,
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '$score',
-                                style: const TextStyle(
-                                  fontSize: 13.5,
-                                  fontWeight: FontWeight.w800,
-                                  color: _darkNavyText,
-                                  height: 1.0,
-                                ),
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFDEC070),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Icon(
+                        Icons.star_border_rounded,
+                        color: _darkNavyText,
+                        size: 26,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Recent Progress:',
+                            style: TextStyle(
+                              fontSize: 12.8,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xFF2C3545),
+                            ),
+                          ),
+                          const SizedBox(height: 1),
+                          Text(
+                            skillTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 15.5,
+                              fontWeight: FontWeight.w800,
+                              color: _darkNavyText,
+                            ),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            dateText,
+                            style: const TextStyle(
+                              fontSize: 12.2,
+                              color: Color(0xFF3E4856),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 46,
+                          height: 46,
+                          child: CustomPaint(
+                            painter: _StudentScoreRingPainter(
+                              progress: (score.clamp(0, 100)) / 100.0,
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    '$score',
+                                    style: const TextStyle(
+                                      fontSize: 13.5,
+                                      fontWeight: FontWeight.w800,
+                                      color: _darkNavyText,
+                                      height: 1.0,
+                                    ),
+                                  ),
+                                  const Text(
+                                    '100',
+                                    style: TextStyle(
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0xFF4B5563),
+                                      height: 1.05,
+                                    ),
+                                  ),
+                                ],
                               ),
-                              const Text(
-                                '100',
-                                style: TextStyle(
-                                  fontSize: 9.5,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF4B5563),
-                                  height: 1.05,
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'VIEW',
-                      style: TextStyle(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w800,
-                        color: _darkNavyText,
-                        letterSpacing: 0.3,
-                      ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'VIEW',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            color: _darkNavyText,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
+                );
+              },
             ),
           ),
         ),

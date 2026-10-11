@@ -4,11 +4,14 @@ import '../../../../core/network/api_client.dart';
 import '../../data/skill_assessment_repository.dart';
 import '../../domain/models/skill_assessment.dart';
 
+import '../../../auth/presentation/providers/auth_providers.dart';
+
 final skillAssessmentRepositoryProvider = Provider<SkillAssessmentRepository>((ref) {
   return SkillAssessmentRepository(ref.watch(dioProvider));
 });
 
-final studentAssessmentsProvider = StateNotifierProvider.family<AssessmentsNotifier, AsyncValue<List<SkillAssessment>>, String>((ref, studentId) {
+final studentAssessmentsProvider = StateNotifierProvider.autoDispose.family<AssessmentsNotifier, AsyncValue<List<SkillAssessment>>, String>((ref, studentId) {
+  ref.watch(authProvider);
   return AssessmentsNotifier(ref.watch(skillAssessmentRepositoryProvider), studentId);
 });
 

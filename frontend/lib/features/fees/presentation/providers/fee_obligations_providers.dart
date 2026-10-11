@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/fee_obligations_repository.dart';
 import '../../domain/models/monthly_fee_obligation.dart';
 
@@ -8,7 +9,8 @@ final feeObligationsRepositoryProvider = Provider<FeeObligationsRepository>((ref
   return FeeObligationsRepository(ref.watch(dioProvider));
 });
 
-final feeObligationsProvider = StateNotifierProvider<FeeObligationsNotifier, AsyncValue<List<MonthlyFeeObligation>>>((ref) {
+final feeObligationsProvider = StateNotifierProvider.autoDispose<FeeObligationsNotifier, AsyncValue<List<MonthlyFeeObligation>>>((ref) {
+  ref.watch(authProvider);
   return FeeObligationsNotifier(ref.watch(feeObligationsRepositoryProvider));
 });
 

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/legacy.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
 import '../../data/profile_repository.dart';
 
 final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
@@ -8,6 +9,7 @@ final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
 });
 
 final profileProvider = StateNotifierProvider<ProfileNotifier, AsyncValue<Map<String, dynamic>>>((ref) {
+  ref.watch(authProvider);
   return ProfileNotifier(ref.watch(profileRepositoryProvider));
 });
 
