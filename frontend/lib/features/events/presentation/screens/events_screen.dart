@@ -17,7 +17,7 @@ class EventsScreen extends ConsumerWidget {
     final isTeacher = userRole == 'Teacher' || userRole == 'SystemAdmin';
 
     return AppScaffold(
-appBar: AppBar(
+      appBar: AppBar(
         title: const Text('Arangetram & Events'),
         backgroundColor: AppColors.primaryNavy,
         foregroundColor: Colors.white,

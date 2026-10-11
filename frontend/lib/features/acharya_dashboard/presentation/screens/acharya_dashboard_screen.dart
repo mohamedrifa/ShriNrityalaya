@@ -104,7 +104,7 @@ class AcharyaHeaderBar extends StatelessWidget {
             children: [
               // Left: Hamburger menu that opens menu drawer
               SizedBox(
-                width: 76,
+                width: 80,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
@@ -138,26 +138,34 @@ class AcharyaHeaderBar extends StatelessWidget {
 
               // Right: Bell + User Profile Avatar from API
               SizedBox(
-                width: 76,
+                width: 80,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    GestureDetector(
-                      onTap: () {},
-                      behavior: HitTestBehavior.opaque,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8),
-                        child: Icon(Icons.notifications, color: AcharyaColors.navy, size: 24),
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {},
+                    //   behavior: HitTestBehavior.opaque,
+                    //   child: const Padding(
+                    //     padding: EdgeInsets.symmetric(vertical: 8),
+                    //     child: Icon(Icons.notifications, color: AcharyaColors.navy, size: 24),
+                    //   ),
+                    // ),
                     const SizedBox(width: 12),
                     GestureDetector(
                       onTap: onProfileTap,
                       child: profileAvatar ??
-                          const CircleAvatar(
-                            radius: 16,
-                            backgroundColor: AcharyaColors.navy,
-                            child: Icon(Icons.person, color: Colors.white, size: 18),
+                          Container(
+                            padding: const EdgeInsets.all(1.5),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AcharyaColors.pageBackground,
+                              border: Border.all(color: AcharyaColors.navy, width: 2.0),
+                            ),
+                            child: const CircleAvatar(
+                              radius: 15,
+                              backgroundColor: AcharyaColors.navy,
+                              child: Icon(Icons.person, color: Colors.white, size: 18),
+                            ),
                           ),
                     ),
                   ],
@@ -231,7 +239,9 @@ class _ProgressRow extends StatelessWidget {
 
 // ─── GLASS CARD ───────────────────────────────────────────────────────────────
 class AcharyaGlassCard extends StatelessWidget {
-  const AcharyaGlassCard({super.key});
+  final String username;
+
+  const AcharyaGlassCard({super.key, this.username = 'Teacher'});
 
   @override
   Widget build(BuildContext context) {
@@ -256,7 +266,7 @@ class AcharyaGlassCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Namaskaram,\nAcharya Kumar!', style: AcharyaTextStyles.greeting),
+            Text('Namaskaram,\n$username!', style: AcharyaTextStyles.greeting),
             const SizedBox(height: 5),
             Text('Guide the next generation of mastery',
               style: AcharyaTextStyles.subtitle,
@@ -280,14 +290,15 @@ class AcharyaGlassCard extends StatelessWidget {
 
 // ─── HERO BANNER ──────────────────────────────────────────────────────────────
 class AcharyaHeroBanner extends StatelessWidget {
-  const AcharyaHeroBanner({super.key});
+  final String username;
+
+  const AcharyaHeroBanner({super.key, this.username = 'Teacher'});
 
   @override
   Widget build(BuildContext context) {
     final sw = MediaQuery.of(context).size.width;
     final bannerH = sw * (417 / 456);
     final cardW   = sw * (297 / 456);
-    final cardH   = bannerH * (238 / 417);
     final cardL   = sw * (26 / 456);
 
     return SizedBox(
@@ -310,7 +321,7 @@ class AcharyaHeroBanner extends StatelessWidget {
           Positioned(
             left: cardL, top: 0,
             width: cardW,
-            child: const AcharyaGlassCard(),
+            child: AcharyaGlassCard(username: username),
           ),
 
           // Layer 3 (TOP): dancer cutout, anchored bottom-right
@@ -655,33 +666,33 @@ class AcharyaDashboardScreen extends StatelessWidget {
                           const AcharyaHeroBanner(),
 
                           // Action cards
-                          SizedBox(
-                            height: 158,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: const EdgeInsets.only(left: 16),
-                              children: const [
-                                AcharyaActionCard(
-                                  title: 'MY CLASSES',
-                                  body: 'Manage student lists and attendance. 3 Classes Active.',
-                                  linkText: 'Manage Classes',
-                                  linkIcon: Icons.chevron_right,
-                                ),
-                                AcharyaActionCard(
-                                  title: 'CURRICULUM REVIEW',
-                                  body: 'Approve student submissions for Alarippu and Jatiswaram.',
-                                  linkText: 'Review Submissions',
-                                  linkIcon: Icons.check,
-                                ),
-                                AcharyaActionCard(
-                                  title: 'STUDENT PROGRESS',
-                                  body: 'Track progress and share feedback.',
-                                  linkText: 'Review Progress',
-                                  linkIcon: Icons.chevron_right,
-                                ),
-                              ],
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: 158,
+                          //   child: ListView(
+                          //     scrollDirection: Axis.horizontal,
+                          //     padding: const EdgeInsets.only(left: 16),
+                          //     children: const [
+                          //       AcharyaActionCard(
+                          //         title: 'MY CLASSES',
+                          //         body: 'Manage student lists and attendance. 3 Classes Active.',
+                          //         linkText: 'Manage Classes',
+                          //         linkIcon: Icons.chevron_right,
+                          //       ),
+                          //       AcharyaActionCard(
+                          //         title: 'CURRICULUM REVIEW',
+                          //         body: 'Approve student submissions for Alarippu and Jatiswaram.',
+                          //         linkText: 'Review Submissions',
+                          //         linkIcon: Icons.check,
+                          //       ),
+                          //       AcharyaActionCard(
+                          //         title: 'STUDENT PROGRESS',
+                          //         body: 'Track progress and share feedback.',
+                          //         linkText: 'Review Progress',
+                          //         linkIcon: Icons.chevron_right,
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
 
                           // Upcoming Events
                           Padding(

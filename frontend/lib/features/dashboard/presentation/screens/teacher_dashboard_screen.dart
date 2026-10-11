@@ -17,16 +17,27 @@ class TeacherDashboardScreen extends ConsumerWidget {
     final profileState = ref.watch(profileProvider);
     final baseUrl = ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '');
 
+    String username = 'Teacher';
     String? imageUrl;
     profileState.whenData((profile) {
+      username = profile['firstName'] ?? profile['userName'] ?? 'Teacher';
+      if (username.isEmpty) username = 'Teacher';
       imageUrl = profile['profilePictureUrl'] as String?;
     });
 
-    final Widget profileAvatar = CircleAvatar(
-      radius: 16,
-      backgroundColor: AppColors.primaryGold,
-      backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
-      child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy, size: 20) : null,
+    final Widget profileAvatar = Container(
+      padding: const EdgeInsets.all(1.5),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: AcharyaColors.pageBackground,
+        border: Border.all(color: AppColors.primaryNavy, width: 2.0),
+      ),
+      child: CircleAvatar(
+        radius: 15,
+        backgroundColor: AcharyaColors.pageBackground,
+        backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
+        child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy, size: 18) : null,
+      ),
     );
 
     return Scaffold(
@@ -43,38 +54,43 @@ class TeacherDashboardScreen extends ConsumerWidget {
           DrawerMenuItem(title: 'Academy Events',     icon: Icons.calendar_today_outlined, route: '/events'),
         ],
       ),
-      backgroundColor: AcharyaColors.pageBackground,
+      backgroundColor: AcharyaColors.screenBackground,
       body: Stack(
         children: [
           // Left temple BG
-          Positioned(
-            left: 0, bottom: 0,
-            width: MediaQuery.of(context).size.width * 0.35,
-            child: Opacity(
-              opacity: 0.55,
-              child: Image.asset('assets/images/temple_left.png',
-                fit: BoxFit.fitWidth, alignment: Alignment.bottomLeft,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink()),
+          // Temple Background
+          Positioned.fill(
+            top: 150,
+            bottom: 80,
+            child: IgnorePointer(
+              child: Image.asset(
+                'assets/images/temple_bg.jpg',
+                fit: BoxFit.cover,
+                alignment: Alignment.bottomCenter,
+                errorBuilder: (context, error, stackTrace) {
+                  debugPrint('Temple background image error: $error');
+                  return const SizedBox.shrink();
+                },
+              ),
             ),
           ),
           // Right temple BG
-          Positioned(
-            right: 0, bottom: 0,
-            width: MediaQuery.of(context).size.width * 0.35,
-            child: Opacity(
-              opacity: 0.55,
-              child: Image.asset('assets/images/temple_right.png',
-                fit: BoxFit.fitWidth, alignment: Alignment.bottomRight,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink()),
-            ),
-          ),
+          // Positioned(
+          //   right: 0, bottom: 0,
+          //   width: MediaQuery.of(context).size.width * 0.35,
+          //   child: Opacity(
+          //     opacity: 0.55,
+          //     child: Image.asset('assets/images/temple_right.png',
+          //       fit: BoxFit.fitWidth, alignment: Alignment.bottomRight,
+          //       errorBuilder: (_, __, ___) => const SizedBox.shrink()),
+          //   ),
+          // ),
 
           // Phone surface
           Center(
             child: Container(
               constraints: const BoxConstraints(maxWidth: 450),
               decoration: const BoxDecoration(
-                color: AcharyaColors.screenBackground,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(28),
                   topRight: Radius.circular(28),
@@ -96,43 +112,43 @@ class TeacherDashboardScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const AcharyaHeroBanner(),
+                          AcharyaHeroBanner(username: username),
 
                           // Action cards — route to real pages
-                          SizedBox(
-                            height: 158,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: const EdgeInsets.only(left: 16),
-                              children: [
-                                AcharyaActionCard(
-                                  title: 'MY CLASSES',
-                                  body: 'Manage student lists and attendance. 3 Classes Active.',
-                                  linkText: 'Manage Classes',
-                                  linkIcon: Icons.chevron_right,
-                                  onTap: () => context.push('/students'),
-                                ),
-                                AcharyaActionCard(
-                                  title: 'CURRICULUM REVIEW',
-                                  body: 'Approve student submissions for Alarippu and Jatiswaram.',
-                                  linkText: 'Review Submissions',
-                                  linkIcon: Icons.check,
-                                  onTap: () => context.push('/progress'),
-                                ),
-                                AcharyaActionCard(
-                                  title: 'STUDENT PROGRESS',
-                                  body: 'Track progress and share feedback.',
-                                  linkText: 'Review Progress',
-                                  linkIcon: Icons.chevron_right,
-                                  onTap: () => context.push('/progress'),
-                                ),
-                              ],
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: 158,
+                          //   child: ListView(
+                          //     scrollDirection: Axis.horizontal,
+                          //     padding: const EdgeInsets.only(left: 16),
+                          //     children: [
+                          //       AcharyaActionCard(
+                          //         title: 'MY CLASSES',
+                          //         body: 'Manage student lists and attendance. 3 Classes Active.',
+                          //         linkText: 'Manage Classes',
+                          //         linkIcon: Icons.chevron_right,
+                          //         onTap: () => context.push('/students'),
+                          //       ),
+                          //       AcharyaActionCard(
+                          //         title: 'CURRICULUM REVIEW',
+                          //         body: 'Approve student submissions for Alarippu and Jatiswaram.',
+                          //         linkText: 'Review Submissions',
+                          //         linkIcon: Icons.check,
+                          //         onTap: () => context.push('/progress'),
+                          //       ),
+                          //       AcharyaActionCard(
+                          //         title: 'STUDENT PROGRESS',
+                          //         body: 'Track progress and share feedback.',
+                          //         linkText: 'Review Progress',
+                          //         linkIcon: Icons.chevron_right,
+                          //         onTap: () => context.push('/progress'),
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
 
                           // Academy Modules Grid from previous commit
                           Padding(
-                            padding: const EdgeInsets.only(left: 20, top: 24,),
+                            padding: const EdgeInsets.only(left: 20, top: 16,),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

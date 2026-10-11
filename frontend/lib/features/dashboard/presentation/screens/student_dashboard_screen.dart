@@ -30,10 +30,16 @@ class StudentDashboardScreen extends ConsumerWidget {
       imageUrl = profile['profilePictureUrl'] as String?;
     });
 
-    Widget profileAvatar = CircleAvatar(
-      backgroundColor: AppColors.primaryGold,
-      backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
-      child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
+    Widget profileAvatar = Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: AppColors.primaryGold, width: 2.0),
+      ),
+      child: CircleAvatar(
+        backgroundColor: AppColors.primaryGold,
+        backgroundImage: imageUrl != null && imageUrl!.isNotEmpty ? NetworkImage('$baseUrl$imageUrl') : null,
+        child: imageUrl == null || imageUrl!.isEmpty ? const Icon(Icons.person, color: AppColors.primaryNavy) : null,
+      ),
     );
 
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
