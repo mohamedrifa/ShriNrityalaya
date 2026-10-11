@@ -42,7 +42,8 @@ class AppScaffold extends StatelessWidget {
             Expanded(
               child: body ?? const SizedBox.shrink(),
             ),
-            const SizedBox(height: 80), // Add some spacing at the bottom
+            if (bottomNavigationBar != null)
+              const SizedBox(height: 80), // Add spacing only when bottom nav is present
           ],
         ),
         drawer: drawer,
