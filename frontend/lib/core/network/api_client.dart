@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/app_config.dart';
 import 'api_interceptor.dart';
 import 'api_exceptions.dart';
+import '../utils/app_error_handler.dart';
 
 export 'api_exceptions.dart';
 export 'api_interceptor.dart';
 export 'network_info.dart';
+export '../utils/app_error_handler.dart';
 
 final secureStorageProvider = Provider((ref) => const FlutterSecureStorage());
 
@@ -122,19 +124,17 @@ class ApiClient {
   }
 
   ApiException _handleDioError(DioException error) {
+    final shortMsg = AppErrorHandler.toShortMessage(error);
     final res = error.response;
     if (res != null) {
-      final msg = res.data is Map && res.data['message'] != null
-          ? res.data['message'].toString()
-          : error.message ?? 'Server error';
       if (res.statusCode == 401) {
-        return UnauthorizedException(message: msg);
+        return UnauthorizedException(message: shortMsg);
       } else if (res.statusCode == 404) {
-        return NotFoundException(message: msg);
+        return NotFoundException(message: shortMsg);
       } else {
-        return ServerException(message: msg, statusCode: res.statusCode);
+        return ServerException(message: shortMsg, statusCode: res.statusCode);
       }
     }
-    return NetworkException(message: error.message ?? 'Network error');
+    return NetworkException(message: shortMsg);
   }
 }

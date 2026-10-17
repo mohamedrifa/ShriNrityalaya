@@ -1,3 +1,4 @@
+import '../../../../core/utils/app_error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -137,7 +138,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving student: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     } finally {
@@ -462,7 +463,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                       children: [
                         ref.watch(feePlansProvider).when(
                               loading: () => const Center(child: CircularProgressIndicator()),
-                              error: (e, s) => Text('Error: $e'),
+                              error: (e, s) => Text(AppErrorHandler.toShortMessage(e)),
                               data: (plans) {
                                 return DropdownButtonFormField<String>(
                                   isExpanded: true,

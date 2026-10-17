@@ -1,3 +1,4 @@
+import '../../../../shared/widgets/error_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -247,7 +248,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                         } catch (e) {
                           if (context.mounted) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Failed to generate: $e')),
+                              SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
                             );
                           }
                         }
@@ -281,7 +282,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
         Expanded(
           child: obligationsState.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Error: $err')),
+            error: (err, stack) => ErrorView(error: err, onRetry: () => ref.refresh(feeObligationsProvider)),
             data: (obligations) {
               if (obligations.isEmpty) {
                 return const Center(
@@ -500,7 +501,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
               } catch (e) {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Error: $e')),
+                    SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
                   );
                 }
               }
@@ -601,6 +602,7 @@ class _PendingReviewsList extends ConsumerStatefulWidget {
 class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
   List<dynamic> _payments = [];
   bool _isLoading = true;
+  String? _errorMessage;
 
   @override
   void initState() {
@@ -617,13 +619,17 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
         if (mounted) {
           setState(() {
             _payments = all.where((p) => p['status'] == 'PendingReview').toList();
+            _errorMessage = null;
             _isLoading = false;
           });
         }
       }
     } catch (e) {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() {
+          _errorMessage = AppErrorHandler.toShortMessage(e);
+          _isLoading = false;
+        });
       }
     }
   }
@@ -642,7 +648,7 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     }
@@ -651,6 +657,18 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) return const Center(child: CircularProgressIndicator());
+    if (_errorMessage != null && _payments.isEmpty) {
+      return ErrorView(
+        message: _errorMessage,
+        onRetry: () {
+          setState(() {
+            _isLoading = true;
+            _errorMessage = null;
+          });
+          _fetchPayments();
+        },
+      );
+    }
     if (_payments.isEmpty) {
       return const Center(
         child: Text(
@@ -901,7 +919,7 @@ class _FeePlansTab extends ConsumerWidget {
         Expanded(
           child: plansAsync.when(
             loading: () => const Center(child: CircularProgressIndicator()),
-            error: (err, stack) => Center(child: Text('Error: $err')),
+            error: (err, stack) => ErrorView(error: err, onRetry: () => ref.refresh(feeObligationsProvider)),
             data: (plans) {
               if (plans.isEmpty) {
                 return const Center(

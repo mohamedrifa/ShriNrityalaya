@@ -1,3 +1,5 @@
+import '../../../../shared/widgets/error_view.dart';
+import '../../../../core/utils/app_error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -170,14 +172,9 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
               loading: () => const Center(
                 child: CircularProgressIndicator(color: _navyHeader),
               ),
-              error: (err, stack) => Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Text(
-                    'Error: $err',
-                    style: const TextStyle(color: _darkNavyText),
-                  ),
-                ),
+              error: (err, stack) => ErrorView(
+                error: err,
+                onRetry: () => ref.refresh(announcementsProvider),
               ),
               data: (announcements) {
                 final filtered = announcements.where((ann) {
@@ -504,7 +501,7 @@ class _CreateAnnouncementSheetState
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
         setState(() => _isLoading = false);
       }

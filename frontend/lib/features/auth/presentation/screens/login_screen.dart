@@ -85,18 +85,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     } on DioException catch (e) {
       setState(() {
-        final data = e.response?.data;
-        if (data is Map && data.containsKey('message')) {
-          _errorMessage = data['message'];
-        } else if (data is String && data.isNotEmpty) {
-          _errorMessage = data;
+        final shortMsg = AppErrorHandler.toShortMessage(e);
+        if (shortMsg == 'No Internet' || shortMsg == 'Internal Server Error') {
+          _errorMessage = shortMsg;
         } else {
-          _errorMessage = 'Login failed. Please check credentials.';
+          final data = e.response?.data;
+          if (data is Map && data.containsKey('message') && data['message'] is String && (data['message'] as String).isNotEmpty) {
+            _errorMessage = data['message'];
+          } else {
+            _errorMessage = 'Login failed. Please check credentials.';
+          }
         }
       });
     } catch (e) {
       setState(() {
-        _errorMessage = 'An unexpected error occurred.';
+        _errorMessage = AppErrorHandler.toShortMessage(e);
       });
     } finally {
       if (mounted) {

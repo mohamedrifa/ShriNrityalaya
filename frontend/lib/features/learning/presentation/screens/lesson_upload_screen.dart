@@ -1,3 +1,4 @@
+import '../../../../core/utils/app_error_handler.dart';
 import 'dart:io';
 import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -65,7 +66,7 @@ class _LessonUploadScreenState extends ConsumerState<LessonUploadScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error selecting video: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     }
@@ -124,7 +125,7 @@ class _LessonUploadScreenState extends ConsumerState<LessonUploadScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Upload failed: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     } finally {

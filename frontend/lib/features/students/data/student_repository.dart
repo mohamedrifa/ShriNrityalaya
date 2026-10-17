@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../../../core/utils/app_error_handler.dart';
 import '../domain/models/student.dart';
 
 class StudentRepository {
@@ -34,7 +35,7 @@ class StudentRepository {
            throw Exception(data['message']);
         }
       }
-      throw Exception('Failed to create student: ${e.message}');
+      throw Exception(AppErrorHandler.toShortMessage(e));
     }
   }
 

@@ -1,3 +1,5 @@
+import '../../../../shared/widgets/error_view.dart';
+import '../../../../core/utils/app_error_handler.dart';
 import 'dart:math' as math;
 import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
@@ -121,14 +123,9 @@ class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
         loading: () => const Center(
           child: CircularProgressIndicator(color: _navyHeader),
         ),
-        error: (err, stack) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(
-              'Error: $err',
-              style: const TextStyle(color: _darkNavyText),
-            ),
-          ),
+        error: (err, stack) => ErrorView(
+          error: err,
+          onRetry: () => ref.refresh(lessonsProvider),
         ),
         data: (lessons) {
           final filteredLessons = lessons.where((lesson) {
@@ -1076,7 +1073,7 @@ class _EditLessonSheetState extends ConsumerState<_EditLessonSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to pick video: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     }
@@ -1110,7 +1107,7 @@ class _EditLessonSheetState extends ConsumerState<_EditLessonSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to update: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
         setState(() => _isLoading = false);
       }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../shared/widgets/error_view.dart';
 import '../providers/directory_providers.dart';
 
 class DirectoryScreen extends ConsumerStatefulWidget {
@@ -199,7 +200,10 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
           Expanded(
             child: directoryState.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (err, stack) => Center(child: Text('Error: $err')),
+              error: (err, stack) => ErrorView(
+                error: err,
+                onRetry: () => ref.refresh(directoryProvider),
+              ),
               data: (directory) {
                 final filtered = directory.where((entry) {
                   final studentName =

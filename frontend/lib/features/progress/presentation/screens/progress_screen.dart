@@ -1,3 +1,5 @@
+import '../../../../shared/widgets/error_view.dart';
+import '../../../../core/utils/app_error_handler.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -315,7 +317,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                               ),
                             ),
                             error: (err, _) => Text(
-                              'Error loading students: $err',
+                              AppErrorHandler.toShortMessage(err),
                               style: const TextStyle(color: Colors.white70),
                             ),
                             data: (students) {
@@ -810,11 +812,9 @@ class _ProgressTimeline extends ConsumerWidget {
       loading: () => const Center(
         child: CircularProgressIndicator(color: _navyHeader),
       ),
-      error: (err, stack) => Center(
-        child: Text(
-          'Error: $err',
-          style: const TextStyle(color: _darkNavyText),
-        ),
+      error: (err, stack) => ErrorView(
+        error: err,
+        onRetry: () => ref.refresh(studentAssessmentsProvider(studentId)),
       ),
       data: (assessments) {
         if (assessments.isEmpty) {

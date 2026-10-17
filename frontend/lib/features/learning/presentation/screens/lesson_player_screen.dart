@@ -1,3 +1,4 @@
+import '../../../../core/utils/app_error_handler.dart';
 import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _LessonPlayerScreenState extends ConsumerState<LessonPlayerScreen> {
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text('Error playing video: $errorMessage', style: const TextStyle(color: Colors.white)),
+                  child: Text(AppErrorHandler.toShortMessage(errorMessage), style: const TextStyle(color: Colors.white)),
                 ),
               );
             },

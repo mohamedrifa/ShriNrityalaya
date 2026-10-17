@@ -1,3 +1,5 @@
+import '../../../../shared/widgets/error_view.dart';
+import '../../../../core/utils/app_error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -197,7 +199,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
           Expanded(
             child: studentsState.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stack) => Center(child: Text('Error: $error')),
+              error: (error, stack) => ErrorView(error: error, onRetry: () => ref.refresh(studentsProvider)),
               data: (students) {
                 final filtered = students.where((student) {
                   final fullName = '${student.firstName} ${student.lastName}'.toLowerCase();
@@ -588,7 +590,7 @@ class _StudentsListScreenState extends ConsumerState<StudentsListScreen> {
       } catch (e) {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to delete student: $e')),
+            SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
           );
         }
       }

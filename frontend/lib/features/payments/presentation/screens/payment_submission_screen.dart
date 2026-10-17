@@ -73,7 +73,7 @@ class _PaymentSubmissionScreenState extends ConsumerState<PaymentSubmissionScree
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Submission failed: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     } finally {

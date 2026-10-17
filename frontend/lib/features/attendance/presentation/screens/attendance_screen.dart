@@ -113,7 +113,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
       setState(() => _isLoading = false);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to load students.')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     }
@@ -147,7 +147,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to submit attendance.')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     } finally {

@@ -1,3 +1,4 @@
+import '../../../../shared/widgets/error_view.dart';
 import 'dart:math' as math;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       } catch (e) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
+            SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
           );
         }
       } finally {
@@ -100,7 +101,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     } finally {
@@ -126,7 +127,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
       }
     } finally {
@@ -256,14 +257,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           loading: () => const Center(
             child: CircularProgressIndicator(color: _navyHeader),
           ),
-          error: (err, stack) => Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Text(
-                'Error: $err',
-                style: const TextStyle(color: _darkNavyText),
-              ),
-            ),
+          error: (err, stack) => ErrorView(
+            error: err,
+            onRetry: () => ref.refresh(profileProvider),
           ),
           data: (profile) {
             final firstName = (profile['firstName'] ?? '').toString().trim();

@@ -7,6 +7,8 @@ import 'package:shri_nrityalaya_app/features/auth/presentation/providers/auth_pr
 import 'package:shri_nrityalaya_app/features/events/presentation/providers/event_providers.dart';
 import 'package:shri_nrityalaya_app/features/events/domain/models/academy_event.dart';
 import '../../../../core/widgets/app_bottom_nav.dart';
+import '../../../../core/utils/app_error_handler.dart';
+import '../../../../shared/widgets/error_view.dart';
 
 class EventsScreen extends ConsumerStatefulWidget {
   const EventsScreen({super.key});
@@ -131,14 +133,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
         loading: () => const Center(
           child: CircularProgressIndicator(color: _navyHeader),
         ),
-        error: (err, stack) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Text(
-              'Error: $err',
-              style: const TextStyle(color: _darkNavyText),
-            ),
-          ),
+        error: (err, stack) => ErrorView(
+          error: err,
+          onRetry: () => ref.refresh(eventsProvider),
         ),
         data: (events) {
           final filteredEvents = events.where((e) {
@@ -570,7 +567,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text('Failed: $error'),
+                                        content: Text(AppErrorHandler.toShortMessage(error)),
                                       ),
                                     );
                                   }
@@ -839,7 +836,7 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed: $e')),
+          SnackBar(content: Text(AppErrorHandler.toShortMessage(e))),
         );
         setState(() => _isSaving = false);
       }

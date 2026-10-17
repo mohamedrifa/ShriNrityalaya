@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/shared/widgets/error_view.dart';
 import 'package:shri_nrityalaya_app/core/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,7 @@ class PaymentDetailsScreen extends ConsumerStatefulWidget {
 
 class _PaymentDetailsScreenState extends ConsumerState<PaymentDetailsScreen> {
   bool _isLoading = true;
+  String? _errorMessage;
   Map<String, dynamic>? _paymentData;
 
   @override
@@ -32,12 +34,16 @@ class _PaymentDetailsScreenState extends ConsumerState<PaymentDetailsScreen> {
       if (response.statusCode == 200) {
         setState(() {
           _paymentData = response.data['data'];
+          _errorMessage = null;
           _isLoading = false;
         });
       }
     } catch (e) {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() {
+          _errorMessage = AppErrorHandler.toShortMessage(e);
+          _isLoading = false;
+        });
       }
     }
   }
@@ -52,9 +58,20 @@ appBar: AppBar(
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : _paymentData == null
-              ? const Center(child: Text('Payment details not found.'))
-              : SingleChildScrollView(
+          : _errorMessage != null
+              ? ErrorView(
+                  message: _errorMessage,
+                  onRetry: () {
+                    setState(() {
+                      _isLoading = true;
+                      _errorMessage = null;
+                    });
+                    _fetchPayment();
+                  },
+                )
+              : _paymentData == null
+                  ? const Center(child: Text('Payment details not found.'))
+                  : SingleChildScrollView(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
