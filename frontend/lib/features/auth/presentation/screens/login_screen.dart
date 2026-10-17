@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'dart:math' as math;
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +17,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  static const Color _navyBgTop = Color(0xFF14284B);
-  static const Color _navyBgBottom = Color(0xFF0A162C);
-  static const Color _cardCream = Color(0xFFFAF3E3);
-  static const Color _darkNavy = Color(0xFF0E1D3A);
-  static const Color _fieldBorderNavy = Color(0xFF1E2F4D);
-  static const Color _goldPrimary = Color(0xFFD5B258);
-  static const Color _goldIcon = Color(0xFFC59B3E);
-  static const Color _goldButtonText = Color(0xFFE5C165);
+  static const Color _navyBgTop = AppColors.navyBgTop;
+  static const Color _navyBgBottom = AppColors.navyBgBottom;
+  static const Color _cardCream = AppColors.creamCardSurface;
+  static const Color _darkNavy = AppColors.navyHeader;
+  static const Color _fieldBorderNavy = AppColors.navyFieldBorder;
+  static const Color _goldPrimary = AppColors.goldBorder;
+  static const Color _goldIcon = AppColors.goldIconTint;
+  static const Color _goldButtonText = AppColors.goldTitle;
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -128,7 +129,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       ),
       hintText: hint,
       hintStyle: const TextStyle(
-        color: Color(0xFF646D7A),
+        color: AppColors.grayMedium646d7a,
         fontSize: 14.5,
         fontWeight: FontWeight.w400,
       ),
@@ -230,8 +231,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
                                             colors: [
-                                              Color(0xFFD6AE50),
-                                              Color(0xFF9B7120),
+                                              AppColors.crimsonAlertD6ae50,
+                                              AppColors.crimsonDeep9b7120,
                                             ],
                                           ).createShader(bounds),
                                       blendMode: BlendMode.srcIn,
@@ -267,7 +268,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               style: TextStyle(
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w400,
-                                color: Color(0xFF555E6C),
+                                color: AppColors.grayDark555e6c,
                               ),
                             ),
 
@@ -280,17 +281,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   vertical: 8,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFFDE8E8),
+                                  color: AppColors.crimsonErrorBannerBg,
                                   borderRadius: BorderRadius.circular(10),
                                   border: Border.all(
-                                    color: const Color(0xFFD97777),
+                                    color: AppColors.crimsonAlertD97777,
                                   ),
                                 ),
                                 child: Text(
                                   _errorMessage!,
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
-                                    color: Color(0xFF8B1A1A),
+                                    color: AppColors.crimsonDarkText,
                                     fontSize: 12.8,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -373,8 +374,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   begin: Alignment.topCenter,
                                   end: Alignment.bottomCenter,
                                   colors: [
-                                    Color(0xFF172C54),
-                                    Color(0xFF0E1D3A),
+                                    AppColors.navyRoyal172c54,
+                                    AppColors.navyHeader,
                                   ],
                                 ),
                                 boxShadow: [
@@ -437,13 +438,13 @@ class _LoginMandalaMedallionPainter extends CustomPainter {
     final outerRadius = size.width / 2;
 
     final strokeGold = Paint()
-      ..color = const Color(0xFFB88E35)
+      ..color = AppColors.crimsonAlertB88e35
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.2
       ..isAntiAlias = true;
 
     final fillSoftGold = Paint()
-      ..color = const Color(0xFFEAD49B).withValues(alpha: 0.55)
+      ..color = AppColors.goldWarmBorder.withValues(alpha: 0.55)
       ..style = PaintingStyle.fill
       ..isAntiAlias = true;
 
@@ -495,21 +496,21 @@ class _LoginMandalaMedallionPainter extends CustomPainter {
       center,
       outerRadius * 0.65,
       Paint()
-        ..color = const Color(0xFFFDF8EB)
+        ..color = AppColors.creamWarmLightFdf8eb
         ..style = PaintingStyle.fill,
     );
     canvas.drawCircle(
       center,
       outerRadius * 0.65,
       Paint()
-        ..color = const Color(0xFFC59B3E)
+        ..color = AppColors.goldIconTint
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.6,
     );
 
     // 3. Beaded ring between 0.65 and 0.75
     final beadPaint = Paint()
-      ..color = const Color(0xFFB88E35)
+      ..color = AppColors.crimsonAlertB88e35
       ..style = PaintingStyle.fill;
     const int beadCount = 24;
     final double beadOrbit = outerRadius * 0.70;
@@ -530,7 +531,7 @@ class _LoginMandalaMedallionPainter extends CustomPainter {
       center,
       outerRadius * 0.59,
       Paint()
-        ..color = const Color(0xFFD5B258).withValues(alpha: 0.7)
+        ..color = AppColors.goldBorder.withValues(alpha: 0.7)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 0.9,
     );
@@ -563,14 +564,14 @@ class _CornerLotusPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final stroke = Paint()
-      ..color = const Color(0xFFCFA84E).withValues(alpha: 0.75)
+      ..color = AppColors.crimsonAlertCfa84e.withValues(alpha: 0.75)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.15
       ..strokeCap = StrokeCap.round
       ..isAntiAlias = true;
 
     final fill = Paint()
-      ..color = const Color(0xFFEAD49B).withValues(alpha: 0.35)
+      ..color = AppColors.goldWarmBorder.withValues(alpha: 0.35)
       ..style = PaintingStyle.fill
       ..isAntiAlias = true;
 

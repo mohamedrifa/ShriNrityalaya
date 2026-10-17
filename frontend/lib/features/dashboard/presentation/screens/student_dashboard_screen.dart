@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,10 +16,10 @@ import '../../../progress/presentation/providers/progress_providers.dart';
 class StudentDashboardScreen extends ConsumerWidget {
   const StudentDashboardScreen({super.key});
 
-  static const Color _navyHeader = Color(0xFF0B1B3B);
-  static const Color _darkNavyText = Color(0xFF0E1D3A);
-  static const Color _goldPrimary = Color(0xFFD8B45A);
-  static const Color _goldSoft = Color(0xFFE5C165);
+  static const Color _navyHeader = AppColors.navyHeroDeep;
+  static const Color _darkNavyText = AppColors.navyHeader;
+  static const Color _goldPrimary = AppColors.goldBrightAccent;
+  static const Color _goldSoft = AppColors.goldTitle;
 
   String _formatDate(DateTime dt) {
     const months = [
@@ -167,7 +168,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                               'BHARATANATYAM\nACADEMY',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(0xFFF3E6C6),
+                                color: AppColors.creamWarmLightF3e6c6,
                                 fontSize: 12.5,
                                 letterSpacing: 1.2,
                                 fontWeight: FontWeight.w600,
@@ -248,7 +249,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 13.5,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF4A5568),
+                        color: AppColors.textSecondarySlate,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -294,7 +295,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: Color(0xFF4A5568),
+                        color: AppColors.textSecondarySlate,
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -361,7 +362,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF1A2B49),
+                    color: AppColors.navySlate1a2b49,
                     height: 1.3,
                   ),
                 ),
@@ -387,10 +388,10 @@ class StudentDashboardScreen extends ConsumerWidget {
                     margin: const EdgeInsets.only(right: 28),
                     padding: const EdgeInsets.fromLTRB(12, 10, 56, 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFCE6E5),
+                      color: AppColors.crimsonDueBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFFF3B7B4),
+                        color: AppColors.crimsonDueBorder,
                         width: 1.1,
                       ),
                     ),
@@ -401,12 +402,12 @@ class StudentDashboardScreen extends ConsumerWidget {
                           height: 36,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFFF7C9C7),
+                            color: AppColors.crimsonBadgeBorder,
                           ),
                           alignment: Alignment.center,
                           child: const Icon(
                             Icons.pan_tool_outlined,
-                            color: Color(0xFF8E1B1B),
+                            color: AppColors.crimsonDeep8e1b1b,
                             size: 19,
                           ),
                         ),
@@ -416,7 +417,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                             text: TextSpan(
                               style: const TextStyle(
                                 fontSize: 12.2,
-                                color: Color(0xFF2B1818),
+                                color: AppColors.grayDark2b1818,
                                 height: 1.32,
                               ),
                               children: [
@@ -424,7 +425,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   text: 'FEE Due',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w800,
-                                    color: Color(0xFF8B1A1A),
+                                    color: AppColors.crimsonDarkText,
                                   ),
                                 ),
                                 TextSpan(
@@ -436,7 +437,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                   child: Icon(
                                     Icons.warning_amber_rounded,
                                     size: 15,
-                                    color: Color(0xFFD9534F),
+                                    color: AppColors.crimsonAlertD9534f,
                                   ),
                                 ),
                               ],
@@ -491,7 +492,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                   height: 44,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFFDEC070),
+                    color: AppColors.goldStarBadge,
                   ),
                   alignment: Alignment.center,
                   child: Icon(icon, color: _darkNavyText, size: 22),
@@ -511,7 +512,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF8C7A5B),
+                    color: AppColors.accentTone8c7a5b,
                   ),
                 ),
               ],
@@ -536,9 +537,9 @@ class StudentDashboardScreen extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF6EC),
+        color: AppColors.creamWarmLightFaf6ec,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF14223D), width: 1.4),
+        border: Border.all(color: AppColors.navySlate14223d, width: 1.4),
         boxShadow: [
           BoxShadow(
             color: _navyHeader.withValues(alpha: 0.05),
@@ -561,7 +562,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                   height: 46,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFF4D9460),
+                    color: AppColors.greenEmerald4d9460,
                   ),
                   alignment: Alignment.center,
                   child: const Icon(
@@ -580,7 +581,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 12.8,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF2C3545),
+                          color: AppColors.textDarkSlate,
                         ),
                       ),
                       const SizedBox(height: 1),
@@ -599,7 +600,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                         eventSubtitle,
                         style: const TextStyle(
                           fontSize: 12.2,
-                          color: Color(0xFF3E4856),
+                          color: AppColors.textMutedSlate,
                         ),
                       ),
                     ],
@@ -646,7 +647,7 @@ class StudentDashboardScreen extends ConsumerWidget {
   ) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF4E4),
+        color: AppColors.creamWarmLightFaf4e4,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: _goldPrimary, width: 1.4),
         boxShadow: [
@@ -685,7 +686,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                     height: 46,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Color(0xFFDEC070),
+                      color: AppColors.goldStarBadge,
                     ),
                     alignment: Alignment.center,
                     child: const Icon(
@@ -704,7 +705,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 12.8,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF2C3545),
+                            color: AppColors.textDarkSlate,
                           ),
                         ),
                         SizedBox(height: 2),
@@ -713,7 +714,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                           style: TextStyle(
                             fontSize: 13.5,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF3E4856),
+                            color: AppColors.textMutedSlate,
                           ),
                         ),
                       ],
@@ -739,7 +740,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                         height: 46,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFFDEC070),
+                          color: AppColors.goldStarBadge,
                         ),
                         alignment: Alignment.center,
                         child: const Icon(
@@ -758,7 +759,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                               style: TextStyle(
                                 fontSize: 12.8,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF2C3545),
+                                color: AppColors.textDarkSlate,
                               ),
                             ),
                             SizedBox(height: 2),
@@ -767,7 +768,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                               style: TextStyle(
                                 fontSize: 13.5,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF3E4856),
+                                color: AppColors.textMutedSlate,
                               ),
                             ),
                           ],
@@ -811,7 +812,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                       height: 46,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(0xFFDEC070),
+                        color: AppColors.goldStarBadge,
                       ),
                       alignment: Alignment.center,
                       child: const Icon(
@@ -830,7 +831,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                             style: TextStyle(
                               fontSize: 12.8,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF2C3545),
+                              color: AppColors.textDarkSlate,
                             ),
                           ),
                           const SizedBox(height: 1),
@@ -849,7 +850,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                             dateText,
                             style: const TextStyle(
                               fontSize: 12.2,
-                              color: Color(0xFF3E4856),
+                              color: AppColors.textMutedSlate,
                             ),
                           ),
                         ],
@@ -884,7 +885,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                                     style: TextStyle(
                                       fontSize: 9.5,
                                       fontWeight: FontWeight.w600,
-                                      color: Color(0xFF4B5563),
+                                      color: AppColors.textNeutralGray,
                                       height: 1.05,
                                     ),
                                   ),
@@ -926,13 +927,13 @@ class _StudentScoreRingPainter extends CustomPainter {
     final radius = size.width / 2 - 2.5;
 
     final trackPaint = Paint()
-      ..color = const Color(0xFFE9DFC4)
+      ..color = AppColors.creamWarmLightE9dfc4
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.0;
     canvas.drawCircle(center, radius, trackPaint);
 
     final arcPaint = Paint()
-      ..color = const Color(0xFFD8B45A)
+      ..color = AppColors.goldBrightAccent
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4.0
       ..strokeCap = StrokeCap.round;

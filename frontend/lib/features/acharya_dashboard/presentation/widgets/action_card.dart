@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../theme/acharya_colors.dart';
 import '../../theme/acharya_text_styles.dart';
@@ -46,7 +47,7 @@ class ActionCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(body, style: AcharyaTextStyles.cardBody, maxLines: 3, overflow: TextOverflow.ellipsis),
             const Spacer(),
-            Divider(color: const Color(0xFFE5E0CC), height: 1, thickness: 1),
+            Divider(color: AppColors.sandBorderSoft, height: 1, thickness: 1),
             const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

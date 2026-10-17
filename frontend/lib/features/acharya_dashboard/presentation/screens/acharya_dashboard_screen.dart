@@ -1,22 +1,23 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // ─── Colors ──────────────────────────────────────────────────────────────────
 class AcharyaColors {
-  static const Color pageBackground   = Color(0xFFF8EFCE);
-  static const Color screenBackground = Color(0xFFFCF6E1);
-  static const Color navy             = Color(0xFF15264F);
-  static const Color navyDeep         = Color(0xFF0F1D3F);
-  static const Color gold             = Color(0xFFD4AF37);
-  static const Color goldLight        = Color(0xFFE8C970);
-  static const Color goldPale         = Color(0xFFF6E8B4);
-  static const Color cardBorder       = Color(0xFF1F2A44);
-  static const Color cardFill         = Color(0xFFFFFFFF);
-  static const Color textPrimary      = Color(0xFF1B2433);
-  static const Color textSecondary    = Color(0xFF4A5568);
-  static const Color navInactive      = Color(0xFF3A4152);
-  static const Color checkGreen       = Color(0xFF3FA66B);
-  static const Color cream            = Color(0xFFFFF8E1);
+  static const Color pageBackground   = AppColors.creamPageBackground;
+  static const Color screenBackground = AppColors.creamScreenBackground;
+  static const Color navy             = AppColors.navyAcharya;
+  static const Color navyDeep         = AppColors.navyDeepAcharya;
+  static const Color gold             = AppColors.goldMetallic;
+  static const Color goldLight        = AppColors.goldLightAccent;
+  static const Color goldPale         = AppColors.goldPaleChip;
+  static const Color cardBorder       = AppColors.navyBorderSlate;
+  static const Color cardFill         = AppColors.pureWhite;
+  static const Color textPrimary      = AppColors.textDarkPrimary;
+  static const Color textSecondary    = AppColors.textSecondarySlate;
+  static const Color navInactive      = AppColors.navyNavInactive;
+  static const Color checkGreen       = AppColors.greenSuccessIcon;
+  static const Color cream            = AppColors.creamWarmIvory;
 }
 
 // ─── Text styles ─────────────────────────────────────────────────────────────
@@ -274,7 +275,7 @@ class AcharyaGlassCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
         decoration: BoxDecoration(
-          color: const Color(0xFF15264F).withValues(alpha: 0.95),
+          color: AppColors.navyAcharya.withValues(alpha: 0.95),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: AcharyaColors.gold.withValues(alpha: 0.30), width: 0.5,
@@ -427,7 +428,7 @@ class AcharyaActionCard extends StatelessWidget {
               child: Text(body, style: AcharyaTextStyles.cardBody,
                 maxLines: 4, overflow: TextOverflow.ellipsis),
             ),
-            const Divider(color: Color(0xFFE5E0CC), height: 12, thickness: 1),
+            const Divider(color: AppColors.sandBorderSoft, height: 12, thickness: 1),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -497,7 +498,7 @@ class AcharyaEventTile extends StatelessWidget {
               ),
             ),
             // Divider
-            Container(width: 1, height: 40, color: const Color(0xFFE5E0CC)),
+            Container(width: 1, height: 40, color: AppColors.sandBorderSoft),
             // Title
             Expanded(
               child: Padding(

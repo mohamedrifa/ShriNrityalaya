@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../theme/acharya_colors.dart';
 import '../../theme/acharya_text_styles.dart';
@@ -53,7 +54,7 @@ class EventTile extends StatelessWidget {
             Container(
               width: 1,
               height: 36,
-              color: const Color(0xFFE5E0CC),
+              color: AppColors.sandBorderSoft,
             ),
             
             // Title
@@ -75,7 +76,7 @@ class EventTile extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF8E1),
+                  color: AppColors.creamWarmIvory,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: AcharyaColors.gold, width: 1),
                 ),

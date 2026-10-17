@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,9 +12,9 @@ class AppBottomNav extends ConsumerWidget {
     required this.currentIndex,
   });
 
-  static const Color _selectedText = Color(0xFF141E30);
-  static const Color _unselectedIcon = Color(0xFF525B6C);
-  static const Color _unselectedText = Color(0xFF3E4856);
+  static const Color _selectedText = AppColors.darkNavyText;
+  static const Color _unselectedIcon = AppColors.slateUnselectedIcon;
+  static const Color _unselectedText = AppColors.textMutedSlate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,17 +32,17 @@ class AppBottomNav extends ConsumerWidget {
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             colors: [
-              Color(0xFFB38E46),
-              Color(0xFFE0C480),
-              Color(0xFFC5A054),
-              Color(0xFFDEC17B),
-              Color(0xFFAD873E),
+              AppColors.crimsonDeepB38e46,
+              AppColors.accentToneE0c480,
+              AppColors.crimsonAlertC5a054,
+              AppColors.accentToneDec17b,
+              AppColors.crimsonDeepAd873e,
             ],
             stops: [0.0, 0.28, 0.52, 0.78, 1.0],
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF8C6B28).withValues(alpha: 0.18),
+              color: AppColors.crimsonDeep8c6b28.withValues(alpha: 0.18),
               blurRadius: 16,
               offset: const Offset(0, 5),
             ),
@@ -146,9 +147,9 @@ class AppBottomNav extends ConsumerWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFF1F2B3D),
-                Color(0xFF3A4352),
-                Color(0xFF9C7B38),
+                AppColors.navySlate1f2b3d,
+                AppColors.navyRoyal3a4352,
+                AppColors.crimsonDeep9c7b38,
               ],
               stops: [0.0, 0.48, 1.0],
             ).createShader(bounds),

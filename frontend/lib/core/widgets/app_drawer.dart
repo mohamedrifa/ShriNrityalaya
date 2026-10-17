@@ -44,7 +44,7 @@ class AppDrawer extends ConsumerWidget {
     return Drawer(
       child: Container(
         decoration: const BoxDecoration(
-          color: Color(0xFFFDF5E6), // Light cream background
+          color: AppColors.creamWarmLightFdf5e6, // Light cream background
           image: DecorationImage(
             image: AssetImage('assets/images/temple_drawer_bg.png'),
             fit: BoxFit.fitHeight,

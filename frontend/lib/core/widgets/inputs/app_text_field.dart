@@ -62,7 +62,7 @@ class AppTextField extends StatelessWidget {
           onTap: onTap,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(color: Color(0xFF94A3B8), fontSize: 14),
+            hintStyle: const TextStyle(color: AppColors.grayMedium94a3b8, fontSize: 14),
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
             filled: true,
@@ -70,11 +70,11 @@ class AppTextField extends StatelessWidget {
             contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
-              borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.2),
+              borderSide: const BorderSide(color: AppColors.slateBorderLight, width: 1.2),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppDimensions.radiusSm),
-              borderSide: const BorderSide(color: Color(0xFFCBD5E1), width: 1.2),
+              borderSide: const BorderSide(color: AppColors.slateBorderLight, width: 1.2),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppDimensions.radiusSm),

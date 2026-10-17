@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/api_client.dart';
@@ -10,18 +11,18 @@ class AttendanceScreen extends ConsumerStatefulWidget {
 }
 
 class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
-  static const Color _navyHeader = Color(0xFF0B1B3B);
-  static const Color _navyCircleBtn = Color(0xFF1A2D52);
-  static const Color _batchBannerBg = Color(0xFF2B3E5E);
-  static const Color _creamSheet = Color(0xFFFAF3E3);
-  static const Color _darkNavyText = Color(0xFF0E1D3A);
-  static const Color _goldTitle = Color(0xFFE5C165);
-  static const Color _goldBorder = Color(0xFFD5B258);
-  static const Color _avatarFill = Color(0xFFEDE1C4);
-  static const Color _avatarBorder = Color(0xFFB89648);
-  static const Color _avatarText = Color(0xFF7A5C22);
-  static const Color _presentGreen = Color(0xFF2FA35A);
-  static const Color _absentRed = Color(0xFFA94444);
+  static const Color _navyHeader = AppColors.navyHeroDeep;
+  static const Color _navyCircleBtn = AppColors.navyCircleButton;
+  static const Color _batchBannerBg = AppColors.navyBatchBanner;
+  static const Color _creamSheet = AppColors.creamCardSurface;
+  static const Color _darkNavyText = AppColors.navyHeader;
+  static const Color _goldTitle = AppColors.goldTitle;
+  static const Color _goldBorder = AppColors.goldBorder;
+  static const Color _avatarFill = AppColors.creamAvatarFill;
+  static const Color _avatarBorder = AppColors.goldAvatarBorder;
+  static const Color _avatarText = AppColors.goldAvatarText;
+  static const Color _presentGreen = AppColors.greenCheckmark;
+  static const Color _absentRed = AppColors.crimsonAbsentButton;
 
   List<dynamic> _students = [];
   bool _isLoading = true;
@@ -274,7 +275,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                             width: 22,
                             height: 22,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFEAD49B),
+                              color: AppColors.goldWarmBorder,
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(
                                 color: _goldBorder,
@@ -337,7 +338,7 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                                         const Divider(
                                           height: 1,
                                           thickness: 1,
-                                          color: Color(0xFFEAE0CA),
+                                          color: AppColors.creamWarmLightEae0ca,
                                         ),
                                     itemBuilder: (context, index) {
                                       final student = _students[index];
@@ -436,15 +437,13 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
                                                 decoration: BoxDecoration(
                                                   color: isPresent
                                                       ? _presentGreen
-                                                      : const Color(0xFFF6EFE0),
+                                                      : AppColors.creamSheetBackground,
                                                   borderRadius:
                                                       BorderRadius.circular(7),
                                                   border: isPresent
                                                       ? null
                                                       : Border.all(
-                                                          color: const Color(
-                                                            0xFFD5C19D,
-                                                          ),
+                                                          color: AppColors.goldHighlight,
                                                           width: 1.6,
                                                         ),
                                                 ),

@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,10 +19,10 @@ class EventsScreen extends ConsumerStatefulWidget {
 }
 
 class _EventsScreenState extends ConsumerState<EventsScreen> {
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _goldBright = Color(0xFFE6C365);
-  static const Color _goldPrimary = Color(0xFFC8A248);
-  static const Color _darkNavyText = Color(0xFF141E30);
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _goldBright = AppColors.goldBright;
+  static const Color _goldPrimary = AppColors.goldPrimaryEvent;
+  static const Color _darkNavyText = AppColors.darkNavyText;
 
   String _feeFilter = 'All'; // 'All', 'Free', 'Paid'
 
@@ -171,7 +172,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF4B5563),
+                            color: AppColors.textNeutralGray,
                           ),
                         ),
                       ],
@@ -219,9 +220,9 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
           center: Alignment.center,
           radius: 1.1,
           colors: [
-            Color(0xFF19305C),
-            Color(0xFF0E1D3A),
-            Color(0xFF081226),
+            AppColors.navyRoyal19305c,
+            AppColors.navyHeader,
+            AppColors.navyMidnight081226,
           ],
         ),
         borderRadius: BorderRadius.circular(16),
@@ -282,7 +283,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                     fontFamily: 'Georgia',
                     fontSize: 19.5,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFFFDF8EC),
+                    color: AppColors.creamWarmLightFdf8ec,
                     height: 1.22,
                     letterSpacing: 0.3,
                   ),
@@ -326,7 +327,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFFFAF5EA),
+          color: AppColors.creamWarmLightFaf5ea,
           borderRadius: BorderRadius.circular(15.5),
           border: Border.all(
             color: _goldPrimary.withValues(alpha: 0.75),
@@ -382,7 +383,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
               Container(
                 width: 1,
                 margin: const EdgeInsets.symmetric(vertical: 12),
-                color: const Color(0xFFE2D8C3),
+                color: AppColors.creamWarmLightE2d8c3,
               ),
 
               // Right Event Info Column
@@ -418,7 +419,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                               style: const TextStyle(
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF2C3545),
+                                color: AppColors.textDarkSlate,
                               ),
                             ),
                           ),
@@ -432,7 +433,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 12.5,
-                            color: Color(0xFF3E4856),
+                            color: AppColors.textMutedSlate,
                             height: 1.35,
                           ),
                         ),
@@ -460,7 +461,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                 vertical: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF1E825C),
+                                color: AppColors.greenEmerald1e825c,
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: const Text(
@@ -480,7 +481,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                 vertical: 4.5,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF5ECD7),
+                                color: AppColors.creamEventCard,
                                 borderRadius: BorderRadius.circular(16),
                                 border: Border.all(
                                   color: _goldPrimary,
@@ -515,7 +516,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   vertical: 5.5,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF5ECD7),
+                                  color: AppColors.creamEventCard,
                                   borderRadius: BorderRadius.circular(18),
                                   border: Border.all(
                                     color: _goldPrimary,
@@ -537,7 +538,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     Icon(
                                       Icons.edit,
                                       size: 13.5,
-                                      color: Color(0xFFB88924),
+                                      color: AppColors.crimsonAlertB88924,
                                     ),
                                   ],
                                 ),
@@ -579,7 +580,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                   vertical: 5.5,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF5ECD7),
+                                  color: AppColors.creamEventCard,
                                   borderRadius: BorderRadius.circular(18),
                                   border: Border.all(
                                     color: _goldPrimary,
@@ -601,7 +602,7 @@ class _EventsScreenState extends ConsumerState<EventsScreen> {
                                     Icon(
                                       Icons.auto_fix_high_rounded,
                                       size: 13.5,
-                                      color: Color(0xFFB88924),
+                                      color: AppColors.crimsonAlertB88924,
                                     ),
                                   ],
                                 ),
@@ -629,7 +630,7 @@ class _MandalaCornerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFD5B258).withValues(alpha: 0.72)
+      ..color = AppColors.goldBorder.withValues(alpha: 0.72)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.2;
 
@@ -667,7 +668,7 @@ class _ScrollworkFlourishPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFD5B258).withValues(alpha: 0.85)
+      ..color = AppColors.goldBorder.withValues(alpha: 0.85)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.25
       ..strokeCap = StrokeCap.round;
@@ -706,12 +707,12 @@ class _EventBottomSheet extends ConsumerStatefulWidget {
 }
 
 class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
-  static const Color _sheetCream = Color(0xFFF6EFE0);
-  static const Color _fieldBg = Color(0xFFF7F6F2);
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _goldPrimary = Color(0xFFC59B38);
-  static const Color _goldBright = Color(0xFFE6C365);
+  static const Color _sheetCream = AppColors.creamSheetBackground;
+  static const Color _fieldBg = AppColors.creamFieldBgLight;
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _goldPrimary = AppColors.goldPrimaryAmber;
+  static const Color _goldBright = AppColors.goldBright;
 
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _titleCtrl;
@@ -789,11 +790,11 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF4B5563), width: 1.1),
+        borderSide: const BorderSide(color: AppColors.textNeutralGray, width: 1.1),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: Color(0xFF4B5563), width: 1.1),
+        borderSide: const BorderSide(color: AppColors.textNeutralGray, width: 1.1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(12),
@@ -945,7 +946,7 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
                         color: _fieldBg,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: const Color(0xFF4B5563),
+                          color: AppColors.textNeutralGray,
                           width: 1.1,
                         ),
                       ),
@@ -968,7 +969,7 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
                           shape: BoxShape.circle,
                           color: _goldPrimary,
                           border: Border.all(
-                            color: const Color(0xFFE6C365),
+                            color: AppColors.goldBright,
                             width: 1.5,
                           ),
                           boxShadow: [
@@ -1097,7 +1098,7 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
                               style: TextStyle(
                                 fontSize: 12.5,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF1E825C),
+                                color: AppColors.greenEmerald1e825c,
                               ),
                             ),
                           ),
@@ -1116,9 +1117,9 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
                       height: 46,
                       child: OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          backgroundColor: const Color(0xFFF5ECD8),
+                          backgroundColor: AppColors.creamWarmLightF5ecd8,
                           side: const BorderSide(
-                            color: Color(0xFFC97A63),
+                            color: AppColors.crimsonAlertC97a63,
                             width: 1.2,
                           ),
                           shape: RoundedRectangleBorder(
@@ -1129,7 +1130,7 @@ class _EventBottomSheetState extends ConsumerState<_EventBottomSheet> {
                         child: const Text(
                           'Cancel',
                           style: TextStyle(
-                            color: Color(0xFFA64B38),
+                            color: AppColors.crimsonDeepA64b38,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),

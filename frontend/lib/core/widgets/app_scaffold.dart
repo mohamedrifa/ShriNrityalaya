@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AppScaffold extends StatelessWidget {
@@ -26,7 +27,7 @@ class AppScaffold extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: const BoxDecoration(
-        color: Color(0xFFFDF5E6),
+        color: AppColors.creamWarmLightFdf5e6,
         image: DecorationImage(
           image: AssetImage('assets/images/temple_bg.jpg'),
           fit: BoxFit.fitHeight,

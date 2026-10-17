@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../../../core/utils/app_error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -152,30 +153,30 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
     return InputDecoration(
       labelText: label,
       labelStyle: const TextStyle(
-        color: Color(0xFF3E4856),
+        color: AppColors.textMutedSlate,
         fontSize: 13.5,
         fontWeight: FontWeight.w500,
       ),
-      prefixIcon: icon != null ? Icon(icon, color: const Color(0xFFC8A752), size: 20) : null,
+      prefixIcon: icon != null ? Icon(icon, color: AppColors.goldFrameBorder, size: 20) : null,
       filled: true,
       fillColor: Colors.white,
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFFDEC992), width: 1.3),
+        borderSide: const BorderSide(color: AppColors.goldAccentLight, width: 1.3),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF141E30), width: 1.6),
+        borderSide: const BorderSide(color: AppColors.darkNavyText, width: 1.6),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.3),
+        borderSide: const BorderSide(color: AppColors.crimsonAbsent, width: 1.3),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.6),
+        borderSide: const BorderSide(color: AppColors.crimsonAbsent, width: 1.6),
       ),
     );
   }
@@ -191,7 +192,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF1F2B3E), width: 1.4),
+        border: Border.all(color: AppColors.navyCardBorder, width: 1.4),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.06),
@@ -210,11 +211,11 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                 height: 36,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFFF3E8C8),
-                  border: Border.all(color: const Color(0xFFC8A752), width: 1.8),
+                  color: AppColors.creamChipBackground,
+                  border: Border.all(color: AppColors.goldFrameBorder, width: 1.8),
                 ),
                 alignment: Alignment.center,
-                child: Icon(icon, color: const Color(0xFF141E30), size: 18),
+                child: Icon(icon, color: AppColors.darkNavyText, size: 18),
               ),
               const SizedBox(width: 10),
               Text(
@@ -222,14 +223,14 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                 style: const TextStyle(
                   fontSize: 16.5,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF141E30),
+                  color: AppColors.darkNavyText,
                 ),
               ),
             ],
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
-            child: Divider(height: 1, thickness: 1, color: Color(0xFFEAE3D2)),
+            child: Divider(height: 1, thickness: 1, color: AppColors.creamDivider),
           ),
           ...children,
         ],
@@ -243,7 +244,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0E1D3A),
+        backgroundColor: AppColors.navyHeader,
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -258,16 +259,16 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                 height: 36,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF192B4D),
+                  color: AppColors.navyCardFill,
                   border: Border.all(
-                    color: const Color(0xFFD5B258).withValues(alpha: 0.45),
+                    color: AppColors.goldBorder.withValues(alpha: 0.45),
                     width: 1.0,
                   ),
                 ),
                 alignment: Alignment.center,
                 child: const Icon(
                   Icons.arrow_back,
-                  color: Color(0xFFE6C365),
+                  color: AppColors.goldBright,
                   size: 19,
                 ),
               ),
@@ -277,7 +278,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
         title: Text(
           isEditing ? 'Edit Student' : 'Enroll Student & Parent',
           style: const TextStyle(
-            color: Color(0xFFE6C365),
+            color: AppColors.goldBright,
             fontSize: 19,
             fontWeight: FontWeight.w500,
             letterSpacing: 0.3,
@@ -497,19 +498,19 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                       width: double.infinity,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF0E1D3A),
-                          foregroundColor: const Color(0xFFE6C365),
+                          backgroundColor: AppColors.navyHeader,
+                          foregroundColor: AppColors.goldBright,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
-                            side: const BorderSide(color: Color(0xFFD5B258), width: 1.5),
+                            side: const BorderSide(color: AppColors.goldBorder, width: 1.5),
                           ),
                         ),
                         onPressed: _saveStudent,
                         child: Text(
                           isEditing ? 'Save Changes' : 'Enroll Student',
                           style: const TextStyle(
-                            color: Color(0xFFE6C365),
+                            color: AppColors.goldBright,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),

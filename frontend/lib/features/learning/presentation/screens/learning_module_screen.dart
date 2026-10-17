@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../core/utils/app_error_handler.dart';
 import 'dart:math' as math;
@@ -23,13 +24,13 @@ class LearningModuleScreen extends ConsumerStatefulWidget {
 }
 
 class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _goldBright = Color(0xFFE6C365);
-  static const Color _goldPrimary = Color(0xFFD5B258);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _cardBorderNavy = Color(0xFF1F2B3E);
-  static const Color _mutedSubtext = Color(0xFF3E4856);
-  static const Color _dividerSoft = Color(0xFFEAE3D2);
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _goldBright = AppColors.goldBright;
+  static const Color _goldPrimary = AppColors.goldBorder;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _cardBorderNavy = AppColors.navyCardBorder;
+  static const Color _mutedSubtext = AppColors.textMutedSlate;
+  static const Color _dividerSoft = AppColors.creamDivider;
 
   bool _isSearching = false;
   String _searchQuery = '';
@@ -179,7 +180,7 @@ class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
                   border: Border.all(color: _cardBorderNavy, width: 1.4),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF0E1D3A).withValues(alpha: 0.08),
+                      color: AppColors.navyHeader.withValues(alpha: 0.08),
                       blurRadius: 12,
                       offset: const Offset(0, 5),
                     ),
@@ -204,9 +205,9 @@ class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
                             center: Alignment.center,
                             radius: 0.88,
                             colors: [
-                              Color(0xFF1F3868),
-                              Color(0xFF112244),
-                              Color(0xFF0A1428),
+                              AppColors.navyRoyal1f3868,
+                              AppColors.navySlate112244,
+                              AppColors.navyMidnight0a1428,
                             ],
                             stops: [0.0, 0.62, 1.0],
                           ),
@@ -232,7 +233,7 @@ class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
                                 height: 64,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: const Color(0xFF0E1D3A)
+                                  color: AppColors.navyHeader
                                       .withValues(alpha: 0.85),
                                   border: Border.all(
                                     color: _goldBright,
@@ -269,7 +270,7 @@ class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
                                   vertical: 3.5,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF060C18)
+                                  color: AppColors.navyMidnight060c18
                                       .withValues(alpha: 0.82),
                                   borderRadius: BorderRadius.circular(6),
                                 ),
@@ -352,7 +353,7 @@ class _LearningModuleScreenState extends ConsumerState<LearningModuleScreen> {
                                     child: Container(
                                       height: 38,
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFFFDFBF7),
+                                        color: AppColors.creamWarmLightFdfbf7,
                                         borderRadius: BorderRadius.circular(24),
                                         border: Border.all(
                                           color: _darkNavyText,
@@ -505,7 +506,7 @@ class _LotusPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFD5B258).withValues(alpha: 0.72)
+      ..color = AppColors.goldBorder.withValues(alpha: 0.72)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.25
       ..strokeCap = StrokeCap.round;
@@ -579,11 +580,11 @@ class _LessonProgressSheet extends ConsumerStatefulWidget {
 }
 
 class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
-  static const Color _sheetCream = Color(0xFFF8EFE0);
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _goldPrimary = Color(0xFFC8A654);
-  static const Color _goldBright = Color(0xFFE6C365);
+  static const Color _sheetCream = AppColors.creamModalSheet;
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _goldPrimary = AppColors.goldBadgeBorder;
+  static const Color _goldBright = AppColors.goldBright;
 
   List<dynamic> _progress = [];
   bool _isLoading = true;
@@ -744,7 +745,7 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
                               style: TextStyle(
                                 fontSize: 14.5,
                                 fontWeight: FontWeight.w500,
-                                color: Color(0xFF4B5563),
+                                color: AppColors.textNeutralGray,
                               ),
                             ),
                           ],
@@ -828,22 +829,22 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
     required int percentage,
   }) {
     final Color avatarBg = isCompleted
-        ? const Color(0xFFCBEAD8)
+        ? AppColors.greenBadgeBg
         : isInProgress
-            ? const Color(0xFFF5E6C4)
-            : const Color(0xFFE5E7EB);
+            ? AppColors.creamPillSoft
+            : AppColors.creamWarmLightE5e7eb;
 
     final Color pillBg = isCompleted
-        ? const Color(0xFFCBEAD8)
+        ? AppColors.greenBadgeBg
         : isInProgress
-            ? const Color(0xFFF5E6C4)
-            : const Color(0xFFE5E7EB);
+            ? AppColors.creamPillSoft
+            : AppColors.creamWarmLightE5e7eb;
 
     final Color pillText = isCompleted
-        ? const Color(0xFF1B6342)
+        ? AppColors.greenPresent
         : isInProgress
-            ? const Color(0xFF7D5311)
-            : const Color(0xFF4B5563);
+            ? AppColors.bronzeOchreText
+            : AppColors.textNeutralGray;
 
     final String subtitleText = isCompleted
         ? 'Completed (${_formatDuration(seconds > 0 ? seconds : 942)})'
@@ -857,7 +858,7 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE6DEC8), width: 1.1),
+        border: Border.all(color: AppColors.creamWarmLightE6dec8, width: 1.1),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.03),
@@ -901,7 +902,7 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
                       height: 18,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFF218854),
+                        color: AppColors.greenEmerald218854,
                         border: Border.all(color: Colors.white, width: 1.5),
                       ),
                       child: const Icon(
@@ -947,7 +948,7 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
                       height: 18,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFF9CA3AF),
+                        color: AppColors.grayMedium9ca3af,
                         border: Border.all(color: Colors.white, width: 1.5),
                       ),
                       child: const Icon(
@@ -981,7 +982,7 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
                   style: const TextStyle(
                     fontSize: 12.5,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF4B5563),
+                    color: AppColors.textNeutralGray,
                   ),
                 ),
                 if (isInProgress) ...[
@@ -991,7 +992,7 @@ class _LessonProgressSheetState extends ConsumerState<_LessonProgressSheet> {
                     child: LinearProgressIndicator(
                       value: percentage / 100.0,
                       minHeight: 5,
-                      backgroundColor: const Color(0xFFEAE3D2),
+                      backgroundColor: AppColors.creamDivider,
                       valueColor:
                           const AlwaysStoppedAnimation<Color>(_goldPrimary),
                     ),
@@ -1033,10 +1034,10 @@ class _EditLessonSheet extends ConsumerStatefulWidget {
 }
 
 class _EditLessonSheetState extends ConsumerState<_EditLessonSheet> {
-  static const Color _sheetCream = Color(0xFFF8EFE0);
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _goldPrimary = Color(0xFFC8A654);
+  static const Color _sheetCream = AppColors.creamModalSheet;
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _goldPrimary = AppColors.goldBadgeBorder;
 
   late TextEditingController _titleCtrl;
   late TextEditingController _descCtrl;
@@ -1162,11 +1163,11 @@ class _EditLessonSheetState extends ConsumerState<_EditLessonSheet> {
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+                borderSide: const BorderSide(color: AppColors.sandDivider),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+                borderSide: const BorderSide(color: AppColors.sandDivider),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
@@ -1184,11 +1185,11 @@ class _EditLessonSheetState extends ConsumerState<_EditLessonSheet> {
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+                borderSide: const BorderSide(color: AppColors.sandDivider),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),
-                borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+                borderSide: const BorderSide(color: AppColors.sandDivider),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(14),

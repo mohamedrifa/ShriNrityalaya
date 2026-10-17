@@ -49,7 +49,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0E1D3A),
+        backgroundColor: AppColors.navyHeader,
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -70,16 +70,16 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                 height: 36,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF192B4D),
+                  color: AppColors.navyCardFill,
                   border: Border.all(
-                    color: const Color(0xFFD5B258).withValues(alpha: 0.45),
+                    color: AppColors.goldBorder.withValues(alpha: 0.45),
                     width: 1.0,
                   ),
                 ),
                 alignment: Alignment.center,
                 child: const Icon(
                   Icons.arrow_back,
-                  color: Color(0xFFE6C365),
+                  color: AppColors.goldBright,
                   size: 19,
                 ),
               ),
@@ -89,7 +89,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
         title: const Text(
           'Directory',
           style: TextStyle(
-            color: Color(0xFFE6C365),
+            color: AppColors.goldBright,
             fontSize: 20,
             fontWeight: FontWeight.w500,
             letterSpacing: 0.3,
@@ -100,7 +100,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
             padding: EdgeInsets.only(right: 16),
             child: Icon(
               Icons.contact_phone_rounded,
-              color: Color(0xFFE6C365),
+              color: AppColors.goldBright,
               size: 25,
             ),
           ),
@@ -116,10 +116,10 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: const Color(0xFF2B3548), width: 1.3),
+                border: Border.all(color: AppColors.navyCardStroke, width: 1.3),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFC8A752).withValues(alpha: 0.22),
+                    color: AppColors.goldFrameBorder.withValues(alpha: 0.22),
                     blurRadius: 6,
                     spreadRadius: 0.5,
                     offset: const Offset(0, 2),
@@ -129,14 +129,14 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Row(
                 children: [
-                  const Icon(Icons.search, color: Color(0xFFC8A752), size: 22),
+                  const Icon(Icons.search, color: AppColors.goldFrameBorder, size: 22),
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       decoration: const InputDecoration(
                         hintText: 'Search student or parent...',
                         hintStyle: TextStyle(
-                          color: Color(0xFF5A6372),
+                          color: AppColors.grayDark5a6372,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                         ),
@@ -145,7 +145,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                         contentPadding: EdgeInsets.zero,
                       ),
                       style: const TextStyle(
-                        color: Color(0xFF141E30),
+                        color: AppColors.darkNavyText,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
@@ -177,7 +177,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                             child: Text(
                               _relationFilter,
                               style: const TextStyle(
-                                color: Color(0xFFC8A752),
+                                color: AppColors.goldFrameBorder,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -185,7 +185,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                           ),
                         const Icon(
                           Icons.filter_alt_outlined,
-                          color: Color(0xFFC8A752),
+                          color: AppColors.goldFrameBorder,
                           size: 22,
                         ),
                       ],
@@ -269,7 +269,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: const Color(0xFF1F2B3E), width: 1.4),
+                        border: Border.all(color: AppColors.navyCardBorder, width: 1.4),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: 0.06),
@@ -290,9 +290,9 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                 height: 48,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: const Color(0xFFF3E8C8),
+                                  color: AppColors.creamChipBackground,
                                   border: Border.all(
-                                    color: const Color(0xFFC8A752),
+                                    color: AppColors.goldFrameBorder,
                                     width: 2.2,
                                   ),
                                 ),
@@ -300,7 +300,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                 child: Text(
                                   initials,
                                   style: const TextStyle(
-                                    color: Color(0xFF141E30),
+                                    color: AppColors.darkNavyText,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 16,
                                   ),
@@ -316,7 +316,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                     Text(
                                       studentName.isNotEmpty ? studentName : 'Student',
                                       style: const TextStyle(
-                                        color: Color(0xFF141E30),
+                                        color: AppColors.darkNavyText,
                                         fontWeight: FontWeight.w700,
                                         fontSize: 16.5,
                                       ),
@@ -325,7 +325,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                     Text(
                                       batchSubtitle,
                                       style: const TextStyle(
-                                        color: Color(0xFF2C3545),
+                                        color: AppColors.textDarkSlate,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 13,
                                       ),
@@ -337,7 +337,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                           const Icon(
                                             Icons.phone,
                                             size: 13.5,
-                                            color: Color(0xFF141E30),
+                                            color: AppColors.darkNavyText,
                                           ),
                                           const SizedBox(width: 4),
                                           Expanded(
@@ -345,7 +345,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                               studentPhone,
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                color: Color(0xFF141E30),
+                                                color: AppColors.darkNavyText,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 12.5,
                                               ),
@@ -368,16 +368,16 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                   height: 40,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: const Color(0xFF0E1D3A),
+                                    color: AppColors.navyHeader,
                                     border: Border.all(
-                                      color: const Color(0xFFD5B258),
+                                      color: AppColors.goldBorder,
                                       width: 1.8,
                                     ),
                                   ),
                                   alignment: Alignment.center,
                                   child: const Icon(
                                     Icons.phone_in_talk_rounded,
-                                    color: Color(0xFFE6C365),
+                                    color: AppColors.goldBright,
                                     size: 18,
                                   ),
                                 ),
@@ -390,7 +390,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                             child: Divider(
                               height: 1,
                               thickness: 1,
-                              color: Color(0xFFEAE3D2),
+                              color: AppColors.creamDivider,
                             ),
                           ),
 
@@ -412,7 +412,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                             parentName.isNotEmpty ? parentName : 'Parent / Guardian',
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
-                                              color: Color(0xFF141E30),
+                                              color: AppColors.darkNavyText,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 14,
                                             ),
@@ -424,7 +424,7 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                             child: Text(
                                               parentPhone,
                                               style: const TextStyle(
-                                                color: Color(0xFF141E30),
+                                                color: AppColors.darkNavyText,
                                                 fontWeight: FontWeight.w600,
                                                 fontSize: 13,
                                               ),
@@ -446,16 +446,16 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
                                   height: 40,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
-                                    color: const Color(0xFF1F4732),
+                                    color: AppColors.greenDeep1f4732,
                                     border: Border.all(
-                                      color: const Color(0xFFD5B258),
+                                      color: AppColors.goldBorder,
                                       width: 1.8,
                                     ),
                                   ),
                                   alignment: Alignment.center,
                                   child: const Icon(
                                     Icons.phone_in_talk_rounded,
-                                    color: Color(0xFFE6C365),
+                                    color: AppColors.goldBright,
                                     size: 18,
                                   ),
                                 ),
@@ -483,13 +483,13 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3.5),
         decoration: BoxDecoration(
-          color: const Color(0xFFC7EBDD),
+          color: AppColors.greenPillBg,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           relation,
           style: const TextStyle(
-            color: Color(0xFF1B6342),
+            color: AppColors.greenPresent,
             fontWeight: FontWeight.w600,
             fontSize: 11.5,
           ),
@@ -501,13 +501,13 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3.5),
         decoration: BoxDecoration(
-          color: const Color(0xFFF7DEA8),
+          color: AppColors.sandWarmMutedF7dea8,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           relation,
           style: const TextStyle(
-            color: Color(0xFF7D5311),
+            color: AppColors.bronzeOchreText,
             fontWeight: FontWeight.w600,
             fontSize: 11.5,
           ),
@@ -518,14 +518,14 @@ class _DirectoryScreenState extends ConsumerState<DirectoryScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3.5),
       decoration: BoxDecoration(
-        color: const Color(0xFF141E30),
+        color: AppColors.darkNavyText,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFD5B258), width: 1.1),
+        border: Border.all(color: AppColors.goldBorder, width: 1.1),
       ),
       child: Text(
         relation,
         style: const TextStyle(
-          color: Color(0xFFE6C365),
+          color: AppColors.goldBright,
           fontWeight: FontWeight.w600,
           fontSize: 11.5,
         ),

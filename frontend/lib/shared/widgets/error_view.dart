@@ -38,8 +38,8 @@ class ErrorView extends StatelessWidget {
               height: 58,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFFDE8E8),
-                border: Border.all(color: const Color(0xFFF5B7B1), width: 1.2),
+                color: AppColors.crimsonErrorBannerBg,
+                border: Border.all(color: AppColors.crimsonAlertF5b7b1, width: 1.2),
               ),
               alignment: Alignment.center,
               child: Icon(
@@ -78,11 +78,11 @@ class ErrorView extends StatelessWidget {
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryNavy,
-                  foregroundColor: const Color(0xFFF5C542),
+                  foregroundColor: AppColors.primaryGold,
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(color: Color(0xFFD5B258), width: 1.2),
+                    side: const BorderSide(color: AppColors.goldBorder, width: 1.2),
                   ),
                   elevation: 2,
                 ),

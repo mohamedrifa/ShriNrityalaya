@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../../theme/app_dimensions.dart';
 
@@ -28,7 +29,7 @@ class AppCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(borderRadius),
         border: border ??
             Border.all(
-              color: const Color(0xFFE2E8F0),
+              color: AppColors.creamWarmLightE2e8f0,
               width: 1.0,
             ),
         boxShadow: [

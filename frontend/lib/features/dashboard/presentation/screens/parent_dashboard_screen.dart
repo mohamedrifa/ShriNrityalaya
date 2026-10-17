@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,11 +15,11 @@ import '../../../progress/presentation/providers/progress_providers.dart';
 class ParentDashboardScreen extends ConsumerWidget {
   const ParentDashboardScreen({super.key});
 
-  static const Color _navyHeader = Color(0xFF0B1B3B);
-  static const Color _darkNavyText = Color(0xFF0E1D3A);
-  static const Color _goldPrimary = Color(0xFFD8B45A);
-  static const Color _goldSoft = Color(0xFFE5C165);
-  static const Color _goldLink = Color(0xFF8E6E26);
+  static const Color _navyHeader = AppColors.navyHeroDeep;
+  static const Color _darkNavyText = AppColors.navyHeader;
+  static const Color _goldPrimary = AppColors.goldBrightAccent;
+  static const Color _goldSoft = AppColors.goldTitle;
+  static const Color _goldLink = AppColors.goldLinkText;
 
   String _formatDate(DateTime dt) {
     const months = [
@@ -177,7 +178,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                               'BHARATANATYAM\nACADEMY',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(0xFFF3E6C6),
+                                color: AppColors.creamWarmLightF3e6c6,
                                 fontSize: 12.5,
                                 letterSpacing: 1.2,
                                 fontWeight: FontWeight.w600,
@@ -377,7 +378,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 13.5,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF1A2B49),
+                    color: AppColors.navySlate1a2b49,
                     height: 1.3,
                   ),
                 ),
@@ -403,10 +404,10 @@ class ParentDashboardScreen extends ConsumerWidget {
                     margin: const EdgeInsets.only(right: 118),
                     padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFCE6E5),
+                      color: AppColors.crimsonDueBg,
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: const Color(0xFFF3B7B4),
+                        color: AppColors.crimsonDueBorder,
                         width: 1.1,
                       ),
                     ),
@@ -417,12 +418,12 @@ class ParentDashboardScreen extends ConsumerWidget {
                           height: 32,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFFF7C9C7),
+                            color: AppColors.crimsonBadgeBorder,
                           ),
                           alignment: Alignment.center,
                           child: const Icon(
                             Icons.pan_tool_outlined,
-                            color: Color(0xFF8E1B1B),
+                            color: AppColors.crimsonDeep8e1b1b,
                             size: 17,
                           ),
                         ),
@@ -432,7 +433,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                             text: TextSpan(
                               style: const TextStyle(
                                 fontSize: 11.5,
-                                color: Color(0xFF2B1818),
+                                color: AppColors.grayDark2b1818,
                                 height: 1.28,
                               ),
                               children: [
@@ -440,7 +441,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                                   text: 'FEE Due',
                                   style: TextStyle(
                                     fontWeight: FontWeight.w800,
-                                    color: Color(0xFF8B1A1A),
+                                    color: AppColors.crimsonDarkText,
                                   ),
                                 ),
                                 TextSpan(
@@ -476,7 +477,7 @@ class ParentDashboardScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: const Color(0xFF14223D), width: 1.4),
+        border: Border.all(color: AppColors.navySlate14223d, width: 1.4),
         boxShadow: [
           BoxShadow(
             color: _navyHeader.withValues(alpha: 0.06),
@@ -513,7 +514,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                     height: 48,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Color(0xFFDEC070),
+                      color: AppColors.goldStarBadge,
                     ),
                     alignment: Alignment.center,
                     child: const Icon(
@@ -542,7 +543,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                           'No milestones recorded yet.',
                           style: TextStyle(
                             fontSize: 12.8,
-                            color: Color(0xFF4A5568),
+                            color: AppColors.textSecondarySlate,
                           ),
                         ),
                       ],
@@ -564,7 +565,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                         height: 48,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFFDEC070),
+                          color: AppColors.goldStarBadge,
                         ),
                         alignment: Alignment.center,
                         child: const Icon(
@@ -593,7 +594,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                               'No milestones recorded yet.',
                               style: TextStyle(
                                 fontSize: 12.8,
-                                color: Color(0xFF4A5568),
+                                color: AppColors.textSecondarySlate,
                               ),
                             ),
                           ],
@@ -635,7 +636,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                       height: 48,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Color(0xFFDEC070),
+                        color: AppColors.goldStarBadge,
                       ),
                       alignment: Alignment.center,
                       child: const Icon(
@@ -669,7 +670,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                             style: const TextStyle(
                               fontSize: 12.8,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF2C3545),
+                              color: AppColors.textDarkSlate,
                             ),
                           ),
                           const SizedBox(height: 7),
@@ -681,10 +682,10 @@ class ParentDashboardScreen extends ConsumerWidget {
                                   child: LinearProgressIndicator(
                                     value: (score.clamp(0, 100)) / 100.0,
                                     minHeight: 6,
-                                    backgroundColor: const Color(0xFFE2E8F0),
+                                    backgroundColor: AppColors.creamWarmLightE2e8f0,
                                     valueColor:
                                         const AlwaysStoppedAnimation<Color>(
-                                          Color(0xFF3E8E5A),
+                                          AppColors.greenEmerald3e8e5a,
                                         ),
                                   ),
                                 ),
@@ -696,7 +697,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                                   vertical: 3,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF238854),
+                                  color: AppColors.greenEmerald238854,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -715,7 +716,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                             dateLine,
                             style: const TextStyle(
                               fontSize: 12,
-                              color: Color(0xFF4A5568),
+                              color: AppColors.textSecondarySlate,
                             ),
                           ),
                         ],
@@ -759,7 +760,7 @@ class ParentDashboardScreen extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF7EE),
+        color: AppColors.creamWarmLightFaf7ee,
         borderRadius: BorderRadius.circular(18),
         border: Border.all(color: _goldPrimary, width: 1.4),
         boxShadow: [
@@ -786,7 +787,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                   height: 48,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Color(0xFF4D9460),
+                    color: AppColors.greenEmerald4d9460,
                   ),
                   alignment: Alignment.center,
                   child: const Icon(
@@ -820,7 +821,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                         style: const TextStyle(
                           fontSize: 12.8,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFF2C3545),
+                          color: AppColors.textDarkSlate,
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -830,7 +831,7 @@ class ParentDashboardScreen extends ConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF4A5568),
+                          color: AppColors.textSecondarySlate,
                           height: 1.25,
                         ),
                       ),

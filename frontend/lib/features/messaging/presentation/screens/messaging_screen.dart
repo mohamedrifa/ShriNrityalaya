@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../core/utils/app_error_handler.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,10 @@ class MessagingScreen extends ConsumerStatefulWidget {
 }
 
 class _MessagingScreenState extends ConsumerState<MessagingScreen> {
-  static const Color _navyHeader = Color(0xFF0E1F3D);
-  static const Color _goldTitle = Color(0xFFE2BE62);
-  static const Color _goldAccent = Color(0xFFD4A736);
-  static const Color _darkNavyText = Color(0xFF141E30);
+  static const Color _navyHeader = AppColors.navySlate0e1f3d;
+  static const Color _goldTitle = AppColors.goldTitleSoft;
+  static const Color _goldAccent = AppColors.goldActionButton;
+  static const Color _darkNavyText = AppColors.darkNavyText;
 
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -115,7 +116,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                 Container(
                   height: 44,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFF5F2EA),
+                    color: AppColors.creamWarmLightF5f2ea,
                     borderRadius: BorderRadius.circular(24),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -123,7 +124,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                     children: [
                       const Icon(
                         Icons.search,
-                        color: Color(0xFF4B5563),
+                        color: AppColors.textNeutralGray,
                         size: 20,
                       ),
                       const SizedBox(width: 8),
@@ -139,7 +140,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                             hintText: 'Search announcements or students...',
                             hintStyle: TextStyle(
                               fontSize: 13.5,
-                              color: Color(0xFF7A828E),
+                              color: AppColors.grayMedium7a828e,
                             ),
                             border: InputBorder.none,
                             isDense: true,
@@ -156,7 +157,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                           child: const Icon(
                             Icons.close,
                             size: 18,
-                            color: Color(0xFF6B7280),
+                            color: AppColors.textMutedCool,
                           ),
                         ),
                     ],
@@ -204,7 +205,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w500,
-                            color: Color(0xFF4B5563),
+                            color: AppColors.textNeutralGray,
                           ),
                         ),
                       ],
@@ -340,12 +341,12 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                           height: 48,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color(0xFFF3E6C3),
+                            color: AppColors.creamWarmLightF3e6c3,
                           ),
                           alignment: Alignment.center,
                           child: const Icon(
                             Icons.campaign_outlined,
-                            color: Color(0xFFB58922),
+                            color: AppColors.crimsonAlertB58922,
                             size: 26,
                           ),
                         ),
@@ -372,7 +373,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   fontSize: 13,
-                                  color: Color(0xFF2C3545),
+                                  color: AppColors.textDarkSlate,
                                   height: 1.35,
                                 ),
                               ),
@@ -382,7 +383,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                                 style: const TextStyle(
                                   fontSize: 11.5,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF5A6270),
+                                  color: AppColors.grayDark5a6270,
                                 ),
                               ),
                             ],
@@ -403,7 +404,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFD5D9E0),
+                            color: AppColors.sandWarmMutedD5d9e0,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -411,7 +412,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                             style: const TextStyle(
                               fontSize: 11.5,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF1E293B),
+                              color: AppColors.navySlate1e293b,
                             ),
                           ),
                         ),
@@ -421,7 +422,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFEDE4CE),
+                            color: AppColors.creamWarmLightEde4ce,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -429,7 +430,7 @@ class _MessagingScreenState extends ConsumerState<MessagingScreen> {
                             style: const TextStyle(
                               fontSize: 11.5,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF1E293B),
+                              color: AppColors.navySlate1e293b,
                             ),
                           ),
                         ),
@@ -456,13 +457,13 @@ class _CreateAnnouncementSheet extends ConsumerStatefulWidget {
 
 class _CreateAnnouncementSheetState
     extends ConsumerState<_CreateAnnouncementSheet> {
-  static const Color _sheetCream = Color(0xFFF6EFE0);
-  static const Color _fieldCream = Color(0xFFF3ECD9);
-  static const Color _darkNavyBorder = Color(0xFF1B2B48);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _goldTitleBrown = Color(0xFF8E6814);
-  static const Color _goldHint = Color(0xFF9B7828);
-  static const Color _goldButton = Color(0xFFD4A736);
+  static const Color _sheetCream = AppColors.creamSheetBackground;
+  static const Color _fieldCream = AppColors.creamFieldBackground;
+  static const Color _darkNavyBorder = AppColors.navyDarkBorder;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _goldTitleBrown = AppColors.goldTitleBrown;
+  static const Color _goldHint = AppColors.goldHintText;
+  static const Color _goldButton = AppColors.goldActionButton;
 
   final _titleCtrl = TextEditingController();
   final _contentCtrl = TextEditingController();
@@ -532,7 +533,7 @@ class _CreateAnnouncementSheetState
                 width: 44,
                 height: 4.5,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFC99E32),
+                  color: AppColors.goldOchreIcon,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -682,14 +683,14 @@ class _CreateAnnouncementSheetState
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Color(0xFFC99E32),
+                    color: AppColors.goldOchreIcon,
                     width: 1.3,
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: const BorderSide(
-                    color: Color(0xFFC99E32),
+                    color: AppColors.goldOchreIcon,
                     width: 1.3,
                   ),
                 ),

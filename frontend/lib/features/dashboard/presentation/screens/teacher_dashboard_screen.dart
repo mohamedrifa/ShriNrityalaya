@@ -153,7 +153,7 @@ class TeacherDashboardScreen extends ConsumerWidget {
                                     fontFamily: 'Georgia',
                                     fontSize: 23,
                                     fontWeight: FontWeight.w800,
-                                    color: Color(0xFF0E1D3A),
+                                    color: AppColors.navyHeader,
                                     letterSpacing: 0.2,
                                   ),
                                 ),
@@ -163,7 +163,7 @@ class TeacherDashboardScreen extends ConsumerWidget {
                                   style: TextStyle(
                                     fontSize: 14.5,
                                     fontWeight: FontWeight.w400,
-                                    color: Color(0xFF1B2B45),
+                                    color: AppColors.navySlate1b2b45,
                                   ),
                                 ),
                               ],
@@ -262,7 +262,7 @@ class TeacherDashboardScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0E1D3A).withValues(alpha: 0.06),
+            color: AppColors.navyHeader.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -301,13 +301,13 @@ class TeacherDashboardScreen extends ConsumerWidget {
                         width: 48,
                         height: 48,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFFDF2DB),
+                          color: AppColors.creamWarmLightFdf2db,
                           shape: BoxShape.circle,
                         ),
                         alignment: Alignment.center,
                         child: Icon(
                           icon,
-                          color: const Color(0xFFCDA756),
+                          color: AppColors.crimsonAlertCda756,
                           size: 25,
                         ),
                       ),
@@ -320,7 +320,7 @@ class TeacherDashboardScreen extends ConsumerWidget {
                           style: const TextStyle(
                             fontSize: 15.5,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF0E1D3A),
+                            color: AppColors.navyHeader,
                             letterSpacing: -0.1,
                           ),
                         ),
@@ -357,7 +357,7 @@ class _ModuleLotusPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFD6B872).withValues(alpha: 0.65)
+      ..color = AppColors.goldLightShadeD6b872.withValues(alpha: 0.65)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.15
       ..strokeCap = StrokeCap.round

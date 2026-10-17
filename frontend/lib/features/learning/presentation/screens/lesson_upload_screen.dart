@@ -23,11 +23,11 @@ class _SelectedVideo {
 }
 
 class _LessonUploadScreenState extends ConsumerState<LessonUploadScreen> {
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _goldBright = Color(0xFFE6C365);
-  static const Color _goldPrimary = Color(0xFFC8A654);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _cardBorderNavy = Color(0xFF1F2B3E);
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _goldBright = AppColors.goldBright;
+  static const Color _goldPrimary = AppColors.goldBadgeBorder;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _cardBorderNavy = AppColors.navyCardBorder;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -140,11 +140,11 @@ class _LessonUploadScreenState extends ConsumerState<LessonUploadScreen> {
       fillColor: Colors.white,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+        borderSide: const BorderSide(color: AppColors.sandDivider),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+        borderSide: const BorderSide(color: AppColors.sandDivider),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),

@@ -36,7 +36,7 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0E1D3A),
+        backgroundColor: AppColors.navyHeader,
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -53,7 +53,7 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
         title: const Text(
           'Fee Management',
           style: TextStyle(
-            color: Color(0xFFE6C365),
+            color: AppColors.goldBright,
             fontSize: 20,
             fontWeight: FontWeight.w500,
             letterSpacing: 0.3,
@@ -66,9 +66,9 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
-              color: Color(0xFFFBF6EA),
+              color: AppColors.creamWarmLightFbf6ea,
               border: Border(
-                bottom: BorderSide(color: Color(0xFFE5DAC1), width: 1.0),
+                bottom: BorderSide(color: AppColors.creamWarmLightE5dac1, width: 1.0),
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -85,10 +85,10 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
                         duration: const Duration(milliseconds: 180),
                         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
                         decoration: BoxDecoration(
-                          color: isSelected ? const Color(0xFF101F3E) : const Color(0xFFF5EFE0),
+                          color: isSelected ? AppColors.navyDarkPill : AppColors.creamWarmLightF5efe0,
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                            color: isSelected ? const Color(0xFFD5B258) : const Color(0xFFD5C18F),
+                            color: isSelected ? AppColors.goldBorder : AppColors.accentToneD5c18f,
                             width: isSelected ? 1.6 : 1.2,
                           ),
                           boxShadow: isSelected
@@ -104,7 +104,7 @@ class _FeeManagementScreenState extends ConsumerState<FeeManagementScreen> {
                         child: Text(
                           tabs[index],
                           style: TextStyle(
-                            color: isSelected ? Colors.white : const Color(0xFF1E2736),
+                            color: isSelected ? Colors.white : AppColors.navySlate1e2736,
                             fontSize: 13.5,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                           ),
@@ -181,7 +181,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF22365E), Color(0xFF0E1D3A)],
+              colors: [AppColors.navyRoyal22365e, AppColors.navyHeader],
             ),
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
@@ -197,7 +197,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(13),
               border: Border.all(
-                color: const Color(0xFFC8A752).withValues(alpha: 0.75),
+                color: AppColors.goldFrameBorder.withValues(alpha: 0.75),
                 width: 1.1,
               ),
             ),
@@ -211,7 +211,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                       Text(
                         'Current Month',
                         style: TextStyle(
-                          color: Color(0xFFE6C56A),
+                          color: AppColors.goldHeaderAccent,
                           fontSize: 13.5,
                           fontWeight: FontWeight.w500,
                         ),
@@ -220,7 +220,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                       Text(
                         'Obligations',
                         style: TextStyle(
-                          color: Color(0xFFE6C56A),
+                          color: AppColors.goldHeaderAccent,
                           fontSize: 22,
                           fontWeight: FontWeight.w700,
                           letterSpacing: 0.2,
@@ -231,7 +231,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                 ),
                 if (isTeacherOrAdmin)
                   Material(
-                    color: const Color(0xFFDAB650),
+                    color: AppColors.crimsonAlertDab650,
                     borderRadius: BorderRadius.circular(30),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(30),
@@ -258,12 +258,12 @@ class _MonthlyDuesTab extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.auto_awesome, color: Color(0xFF101F3E), size: 17),
+                            Icon(Icons.auto_awesome, color: AppColors.navyDarkPill, size: 17),
                             SizedBox(width: 6),
                             Text(
                               'Generate Now',
                               style: TextStyle(
-                                color: Color(0xFF101F3E),
+                                color: AppColors.navyDarkPill,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13.5,
                               ),
@@ -307,9 +307,9 @@ class _MonthlyDuesTab extends ConsumerWidget {
                     margin: const EdgeInsets.only(bottom: 14),
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFCF9F2),
+                      color: AppColors.creamCardBackground,
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: const Color(0xFFDEC992), width: 1.3),
+                      border: Border.all(color: AppColors.goldAccentLight, width: 1.3),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.06),
@@ -327,14 +327,14 @@ class _MonthlyDuesTab extends ConsumerWidget {
                           height: 52,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: const Color(0xFFF6EFE0),
-                            border: Border.all(color: const Color(0xFFD5B667), width: 3.2),
+                            color: AppColors.creamSheetBackground,
+                            border: Border.all(color: AppColors.goldTabIndicator, width: 3.2),
                           ),
                           alignment: Alignment.center,
                           child: Text(
                             initials,
                             style: const TextStyle(
-                              color: Color(0xFF1C2536),
+                              color: AppColors.navySlate1c2536,
                               fontWeight: FontWeight.w700,
                               fontSize: 16.5,
                             ),
@@ -346,7 +346,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                           width: 1.2,
                           height: 76,
                           margin: const EdgeInsets.symmetric(horizontal: 13),
-                          color: const Color(0xFF2C3545).withValues(alpha: 0.55),
+                          color: AppColors.textDarkSlate.withValues(alpha: 0.55),
                         ),
 
                         // Center: Student Name, Month/Year, Due & Paid Amounts
@@ -359,7 +359,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  color: Color(0xFF182232),
+                                  color: AppColors.darkNavySurface,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16.5,
                                 ),
@@ -368,7 +368,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                               Text(
                                 monthYear,
                                 style: const TextStyle(
-                                  color: Color(0xFF3E4856),
+                                  color: AppColors.textMutedSlate,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 13,
                                 ),
@@ -383,7 +383,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                                       Text(
                                         '₹${_formatAmount(ob.amountDue)}',
                                         style: const TextStyle(
-                                          color: Color(0xFFCBA43B),
+                                          color: AppColors.goldOchreDeep,
                                           fontWeight: FontWeight.w800,
                                           fontSize: 16.5,
                                         ),
@@ -391,7 +391,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                                       const Text(
                                         'Due',
                                         style: TextStyle(
-                                          color: Color(0xFF3E4856),
+                                          color: AppColors.textMutedSlate,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
                                         ),
@@ -406,7 +406,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                                       Text(
                                         '₹${_formatAmount(ob.amountPaid)}',
                                         style: const TextStyle(
-                                          color: Color(0xFF182232),
+                                          color: AppColors.darkNavySurface,
                                           fontWeight: FontWeight.w800,
                                           fontSize: 16.5,
                                         ),
@@ -414,7 +414,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
                                       const Text(
                                         'Paid',
                                         style: TextStyle(
-                                          color: Color(0xFF3E4856),
+                                          color: AppColors.textMutedSlate,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 12,
                                         ),
@@ -459,8 +459,8 @@ class _MonthlyDuesTab extends ConsumerWidget {
       return [
         _buildPillBadge(
           label: 'PAID',
-          bgColor: const Color(0xFFD4EFE2),
-          textColor: const Color(0xFF216E4E),
+          bgColor: AppColors.greenSoftBg,
+          textColor: AppColors.greenBadgeDark,
         ),
       ];
     }
@@ -470,22 +470,22 @@ class _MonthlyDuesTab extends ConsumerWidget {
         if ((ob.amountPaid ?? 0) > 0) ...[
           _buildPillBadge(
             label: 'PAID',
-            bgColor: const Color(0xFFD4EFE2),
-            textColor: const Color(0xFF216E4E),
+            bgColor: AppColors.greenSoftBg,
+            textColor: AppColors.greenBadgeDark,
           ),
           const SizedBox(height: 5),
         ],
         _buildPillBadge(
           label: 'UNPAID',
-          bgColor: const Color(0xFFF9D8D6),
-          textColor: const Color(0xFF942921),
+          bgColor: AppColors.crimsonBlushF9d8d6,
+          textColor: AppColors.crimsonAbsent,
         ),
         const SizedBox(height: 6),
         if (isTeacherOrAdmin)
           _buildActionPillButton(
             label: 'Cash Paid',
-            bgColor: const Color(0xFFC8A647),
-            textColor: const Color(0xFF182232),
+            bgColor: AppColors.goldActionPill,
+            textColor: AppColors.darkNavySurface,
             onTap: () async {
               try {
                 await ref.read(dioProvider).post(
@@ -510,7 +510,7 @@ class _MonthlyDuesTab extends ConsumerWidget {
         else
           _buildActionPillButton(
             label: 'Pay Now',
-            bgColor: const Color(0xFF101F3E),
+            bgColor: AppColors.navyDarkPill,
             textColor: Colors.white,
             onTap: () => context.push('/payments/submit', extra: ob),
           ),
@@ -521,15 +521,15 @@ class _MonthlyDuesTab extends ConsumerWidget {
     return [
       _buildPillBadge(
         label: status.toUpperCase(),
-        bgColor: const Color(0xFFFDEBD0),
-        textColor: const Color(0xFF9A6700),
+        bgColor: AppColors.creamWarmLightFdebd0,
+        textColor: AppColors.crimsonDeep9a6700,
       ),
       if (!isTeacherOrAdmin && status == 'Under Review') ...[
         const SizedBox(height: 6),
         _buildActionPillButton(
           label: 'View Submission',
-          bgColor: const Color(0xFFC8A647),
-          textColor: const Color(0xFF182232),
+          bgColor: AppColors.goldActionPill,
+          textColor: AppColors.darkNavySurface,
           onTap: () => context.push('/payments/details', extra: ob),
         ),
       ],
@@ -689,9 +689,9 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
           margin: const EdgeInsets.only(bottom: 14),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: const Color(0xFFFCF9F2),
+            color: AppColors.creamCardBackground,
             borderRadius: BorderRadius.circular(18),
-            border: Border.all(color: const Color(0xFFDEC992), width: 1.3),
+            border: Border.all(color: AppColors.goldAccentLight, width: 1.3),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.06),
@@ -710,11 +710,11 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                     height: 46,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: const Color(0xFFF6EFE0),
-                      border: Border.all(color: const Color(0xFFD5B667), width: 2.8),
+                      color: AppColors.creamSheetBackground,
+                      border: Border.all(color: AppColors.goldTabIndicator, width: 2.8),
                     ),
                     alignment: Alignment.center,
-                    child: const Icon(Icons.receipt_long, color: Color(0xFF182232), size: 22),
+                    child: const Icon(Icons.receipt_long, color: AppColors.darkNavySurface, size: 22),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -724,7 +724,7 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                         Text(
                           'Amount: ₹${p['amount']}',
                           style: const TextStyle(
-                            color: Color(0xFF182232),
+                            color: AppColors.darkNavySurface,
                             fontWeight: FontWeight.w800,
                             fontSize: 17,
                           ),
@@ -733,7 +733,7 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                         Text(
                           'Ref: ${p['transactionReference'] ?? 'N/A'}',
                           style: const TextStyle(
-                            color: Color(0xFF3E4856),
+                            color: AppColors.textMutedSlate,
                             fontSize: 13,
                           ),
                         ),
@@ -743,14 +743,14 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5EFE0),
+                      color: AppColors.creamWarmLightF5efe0,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFFD5B667)),
+                      border: Border.all(color: AppColors.goldTabIndicator),
                     ),
                     child: Text(
                       '${p['paymentMethod'] ?? 'Online'}',
                       style: const TextStyle(
-                        color: Color(0xFF182232),
+                        color: AppColors.darkNavySurface,
                         fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),
@@ -764,7 +764,7 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                   'Payment Proof:',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF182232),
+                    color: AppColors.darkNavySurface,
                     fontSize: 13,
                   ),
                 ),
@@ -774,7 +774,7 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                   child: Container(
                     height: 160,
                     width: double.infinity,
-                    color: const Color(0xFFF0EAD8),
+                    color: AppColors.creamWarmLightF0ead8,
                     child: Image.network(
                       '${ref.read(dioProvider).options.baseUrl.replaceAll('/api/v1', '')}$imageUrl',
                       fit: BoxFit.cover,
@@ -791,8 +791,8 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                 children: [
                   OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: const Color(0xFF942921),
-                      side: const BorderSide(color: Color(0xFF942921), width: 1.2),
+                      foregroundColor: AppColors.crimsonAbsent,
+                      side: const BorderSide(color: AppColors.crimsonAbsent, width: 1.2),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                     ),
@@ -802,7 +802,7 @@ class _PendingReviewsListState extends ConsumerState<_PendingReviewsList> {
                   const SizedBox(width: 10),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF216E4E),
+                      backgroundColor: AppColors.greenBadgeDark,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -838,7 +838,7 @@ class _FeePlansTab extends ConsumerWidget {
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [Color(0xFF22365E), Color(0xFF0E1D3A)],
+              colors: [AppColors.navyRoyal22365e, AppColors.navyHeader],
             ),
             borderRadius: BorderRadius.circular(18),
             boxShadow: [
@@ -854,7 +854,7 @@ class _FeePlansTab extends ConsumerWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(13),
               border: Border.all(
-                color: const Color(0xFFC8A752).withValues(alpha: 0.75),
+                color: AppColors.goldFrameBorder.withValues(alpha: 0.75),
                 width: 1.1,
               ),
             ),
@@ -868,7 +868,7 @@ class _FeePlansTab extends ConsumerWidget {
                       Text(
                         'Academy Curriculum',
                         style: TextStyle(
-                          color: Color(0xFFE6C56A),
+                          color: AppColors.goldHeaderAccent,
                           fontSize: 13.5,
                           fontWeight: FontWeight.w500,
                         ),
@@ -877,7 +877,7 @@ class _FeePlansTab extends ConsumerWidget {
                       Text(
                         'Active Fee Plans',
                         style: TextStyle(
-                          color: Color(0xFFE6C56A),
+                          color: AppColors.goldHeaderAccent,
                           fontSize: 22,
                           fontWeight: FontWeight.w700,
                         ),
@@ -886,7 +886,7 @@ class _FeePlansTab extends ConsumerWidget {
                   ),
                 ),
                 Material(
-                  color: const Color(0xFFDAB650),
+                  color: AppColors.crimsonAlertDab650,
                   borderRadius: BorderRadius.circular(30),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(30),
@@ -896,12 +896,12 @@ class _FeePlansTab extends ConsumerWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.add, color: Color(0xFF101F3E), size: 18),
+                          Icon(Icons.add, color: AppColors.navyDarkPill, size: 18),
                           SizedBox(width: 4),
                           Text(
                             'Add Plan',
                             style: TextStyle(
-                              color: Color(0xFF101F3E),
+                              color: AppColors.navyDarkPill,
                               fontWeight: FontWeight.w700,
                               fontSize: 13.5,
                             ),
@@ -938,9 +938,9 @@ class _FeePlansTab extends ConsumerWidget {
                     margin: const EdgeInsets.only(bottom: 14),
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFCF9F2),
+                      color: AppColors.creamCardBackground,
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: const Color(0xFFDEC992), width: 1.3),
+                      border: Border.all(color: AppColors.goldAccentLight, width: 1.3),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.06),
@@ -956,13 +956,13 @@ class _FeePlansTab extends ConsumerWidget {
                           height: 52,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: const Color(0xFFF6EFE0),
-                            border: Border.all(color: const Color(0xFFD5B667), width: 3.0),
+                            color: AppColors.creamSheetBackground,
+                            border: Border.all(color: AppColors.goldTabIndicator, width: 3.0),
                           ),
                           alignment: Alignment.center,
                           child: const Icon(
                             Icons.account_balance_wallet_outlined,
-                            color: Color(0xFF1C2536),
+                            color: AppColors.navySlate1c2536,
                             size: 24,
                           ),
                         ),
@@ -970,7 +970,7 @@ class _FeePlansTab extends ConsumerWidget {
                           width: 1.2,
                           height: 64,
                           margin: const EdgeInsets.symmetric(horizontal: 13),
-                          color: const Color(0xFF2C3545).withValues(alpha: 0.55),
+                          color: AppColors.textDarkSlate.withValues(alpha: 0.55),
                         ),
                         Expanded(
                           child: Column(
@@ -979,7 +979,7 @@ class _FeePlansTab extends ConsumerWidget {
                               Text(
                                 plan['name'] ?? '',
                                 style: const TextStyle(
-                                  color: Color(0xFF182232),
+                                  color: AppColors.darkNavySurface,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 16.5,
                                 ),
@@ -988,7 +988,7 @@ class _FeePlansTab extends ConsumerWidget {
                               Text(
                                 '₹${plan['monthlyAmount']} / month',
                                 style: const TextStyle(
-                                  color: Color(0xFFCBA43B),
+                                  color: AppColors.goldOchreDeep,
                                   fontWeight: FontWeight.w800,
                                   fontSize: 16,
                                 ),
@@ -1001,7 +1001,7 @@ class _FeePlansTab extends ConsumerWidget {
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    color: Color(0xFF3E4856),
+                                    color: AppColors.textMutedSlate,
                                     fontSize: 12.5,
                                   ),
                                 ),
@@ -1011,7 +1011,7 @@ class _FeePlansTab extends ConsumerWidget {
                         ),
                         const SizedBox(width: 8),
                         Material(
-                          color: const Color(0xFFC8A647),
+                          color: AppColors.goldActionPill,
                           borderRadius: BorderRadius.circular(20),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(20),
@@ -1021,7 +1021,7 @@ class _FeePlansTab extends ConsumerWidget {
                               child: Text(
                                 'Edit',
                                 style: TextStyle(
-                                  color: Color(0xFF182232),
+                                  color: AppColors.darkNavySurface,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 12,
                                 ),

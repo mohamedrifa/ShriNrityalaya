@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -92,25 +93,25 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
   InputDecoration _buildInputDecoration(String label, IconData icon) {
     return InputDecoration(
       labelText: label,
-      labelStyle: const TextStyle(color: Color(0xFF3E4856), fontWeight: FontWeight.w500),
-      prefixIcon: Icon(icon, color: const Color(0xFFCBA43B)),
+      labelStyle: const TextStyle(color: AppColors.textMutedSlate, fontWeight: FontWeight.w500),
+      prefixIcon: Icon(icon, color: AppColors.goldOchreDeep),
       filled: true,
       fillColor: Colors.white,
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFFDEC992), width: 1.3),
+        borderSide: const BorderSide(color: AppColors.goldAccentLight, width: 1.3),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF101F3E), width: 1.8),
+        borderSide: const BorderSide(color: AppColors.navyDarkPill, width: 1.8),
       ),
       errorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.3),
+        borderSide: const BorderSide(color: AppColors.crimsonAbsent, width: 1.3),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: Color(0xFF942921), width: 1.8),
+        borderSide: const BorderSide(color: AppColors.crimsonAbsent, width: 1.8),
       ),
     );
   }
@@ -121,7 +122,7 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
 
     return AppScaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0E1D3A),
+        backgroundColor: AppColors.navyHeader,
         foregroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
@@ -132,7 +133,7 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
         title: Text(
           isEdit ? 'Edit Fee Plan' : 'Create Fee Plan',
           style: const TextStyle(
-            color: Color(0xFFE6C365),
+            color: AppColors.goldBright,
             fontSize: 20,
             fontWeight: FontWeight.w500,
           ),
@@ -145,9 +146,9 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
               child: Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFCF9F2),
+                  color: AppColors.creamCardBackground,
                   borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: const Color(0xFFDEC992), width: 1.3),
+                  border: Border.all(color: AppColors.goldAccentLight, width: 1.3),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: 0.06),
@@ -203,19 +204,19 @@ class _FeePlanFormScreenState extends ConsumerState<FeePlanFormScreen> {
                         width: double.infinity,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF101F3E),
-                            foregroundColor: const Color(0xFFE6C365),
+                            backgroundColor: AppColors.navyDarkPill,
+                            foregroundColor: AppColors.goldBright,
                             padding: const EdgeInsets.symmetric(vertical: 15),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
-                              side: const BorderSide(color: Color(0xFFD5B258), width: 1.4),
+                              side: const BorderSide(color: AppColors.goldBorder, width: 1.4),
                             ),
                           ),
                           onPressed: _submit,
                           child: Text(
                             isEdit ? 'Update Plan' : 'Save Plan',
                             style: const TextStyle(
-                              color: Color(0xFFE6C365),
+                              color: AppColors.goldBright,
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
                             ),

@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../../../shared/widgets/error_view.dart';
 import 'dart:math' as math;
 import 'package:file_picker/file_picker.dart';
@@ -18,13 +19,13 @@ class ProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _ProfileScreenState extends ConsumerState<ProfileScreen> {
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _goldBright = Color(0xFFE6C365);
-  static const Color _goldPrimary = Color(0xFFD5B258);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _cardBorderNavy = Color(0xFF1F2B3E);
-  static const Color _creamBg = Color(0xFFF7F0E4);
-  static const Color _burgundyLogout = Color(0xFF932738);
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _goldBright = AppColors.goldBright;
+  static const Color _goldPrimary = AppColors.goldBorder;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _cardBorderNavy = AppColors.navyCardBorder;
+  static const Color _creamBg = AppColors.creamPageBgWarm;
+  static const Color _burgundyLogout = AppColors.burgundyLogout;
 
   final _nameFormKey = GlobalKey<FormState>();
   final _passwordFormKey = GlobalKey<FormState>();
@@ -153,20 +154,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       labelStyle: const TextStyle(
         fontSize: 12.5,
         fontWeight: FontWeight.w500,
-        color: Color(0xFF4B5563),
+        color: AppColors.textNeutralGray,
       ),
       suffixIcon: suffixIcon,
       filled: true,
-      fillColor: const Color(0xFFFAF9F6),
+      fillColor: AppColors.creamInputFill,
       isDense: true,
       contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color(0xFFD1CFC9), width: 1.1),
+        borderSide: const BorderSide(color: AppColors.sandWarmMutedD1cfc9, width: 1.1),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
-        borderSide: const BorderSide(color: Color(0xFFD1CFC9), width: 1.1),
+        borderSide: const BorderSide(color: AppColors.sandWarmMutedD1cfc9, width: 1.1),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
@@ -213,9 +214,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF172A4F),
+                color: AppColors.navyAccentDark,
                 border: Border.all(
-                  color: const Color(0xFF2E4470),
+                  color: AppColors.navyGradientMid,
                   width: 1.2,
                 ),
               ),
@@ -310,9 +311,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                               center: Alignment(0, -0.25),
                               radius: 0.95,
                               colors: [
-                                Color(0xFF243F73),
-                                Color(0xFF132548),
-                                Color(0xFF0B162C),
+                                AppColors.navyRoyal243f73,
+                                AppColors.navySlate132548,
+                                AppColors.navyMidnight0b162c,
                               ],
                               stops: [0.0, 0.62, 1.0],
                             ),
@@ -456,8 +457,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 decoration: BoxDecoration(
                                   gradient: const LinearGradient(
                                     colors: [
-                                      Color(0xFFE5C467),
-                                      Color(0xFFC59B38),
+                                      AppColors.crimsonAlertE5c467,
+                                      AppColors.goldPrimaryAmber,
                                     ],
                                   ),
                                   borderRadius: BorderRadius.circular(16),
@@ -688,7 +689,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                                           .visibility_outlined,
                                                   size: 19,
                                                   color:
-                                                      const Color(0xFF6B7280),
+                                                      AppColors.textMutedCool,
                                                 ),
                                                 onPressed: () {
                                                   setState(() {
@@ -722,7 +723,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                                           .visibility_outlined,
                                                   size: 19,
                                                   color:
-                                                      const Color(0xFF6B7280),
+                                                      AppColors.textMutedCool,
                                                 ),
                                                 onPressed: () {
                                                   setState(() {
@@ -806,7 +807,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           height: 44,
                           child: OutlinedButton(
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: const Color(0xFFFAF6EE),
+                              backgroundColor: AppColors.creamSettingsTile,
                               foregroundColor: _burgundyLogout,
                               side: const BorderSide(
                                 color: _burgundyLogout,
@@ -863,12 +864,12 @@ class _MandalaHaloPainter extends CustomPainter {
     final innerR = 45.0;
 
     final goldStroke = Paint()
-      ..color = const Color(0xFFD5B258).withValues(alpha: 0.78)
+      ..color = AppColors.goldBorder.withValues(alpha: 0.78)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.1;
 
     final brightGoldStroke = Paint()
-      ..color = const Color(0xFFE6C365).withValues(alpha: 0.9)
+      ..color = AppColors.goldBright.withValues(alpha: 0.9)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.3;
 
@@ -934,7 +935,7 @@ class _CornerLotusPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = const Color(0xFFD5B258).withValues(alpha: 0.75)
+      ..color = AppColors.goldBorder.withValues(alpha: 0.75)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.15
       ..strokeCap = StrokeCap.round;

@@ -1,3 +1,4 @@
+import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import '../../../../shared/widgets/error_view.dart';
 import '../../../../core/utils/app_error_handler.dart';
 import 'dart:math' as math;
@@ -20,12 +21,12 @@ class ProgressScreen extends ConsumerStatefulWidget {
 }
 
 class _ProgressScreenState extends ConsumerState<ProgressScreen> {
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _navyCardTop = Color(0xFF1A2F56);
-  static const Color _navyCardBottom = Color(0xFF0E1C36);
-  static const Color _goldBright = Color(0xFFE6C365);
-  static const Color _goldPrimary = Color(0xFFD5B258);
-  static const Color _darkNavyText = Color(0xFF141E30);
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _navyCardTop = AppColors.navyCardTop;
+  static const Color _navyCardBottom = AppColors.navyCardBottom;
+  static const Color _goldBright = AppColors.goldBright;
+  static const Color _goldPrimary = AppColors.goldBorder;
+  static const Color _darkNavyText = AppColors.darkNavyText;
 
   String? _selectedStudentId;
 
@@ -60,7 +61,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
             maxHeight: MediaQuery.of(ctx).size.height * 0.65,
           ),
           decoration: BoxDecoration(
-            color: const Color(0xFFF8EFE0),
+            color: AppColors.creamModalSheet,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             border: Border.all(
               color: _goldPrimary.withValues(alpha: 0.65),
@@ -105,7 +106,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                         border: Border.all(
                           color: isSelected
                               ? _goldPrimary
-                              : const Color(0xFFE2D9C5),
+                              : AppColors.creamWarmLightE2d9c5,
                           width: 1.2,
                         ),
                       ),
@@ -123,8 +124,8 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: isSelected
-                                ? const Color(0xFF203864)
-                                : const Color(0xFFF5E6C4),
+                                ? AppColors.navyRoyal203864
+                                : AppColors.creamPillSoft,
                             border: Border.all(color: _goldPrimary, width: 1.3),
                           ),
                           alignment: Alignment.center,
@@ -216,9 +217,9 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
               height: 38,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFF172A4F),
+                color: AppColors.navyAccentDark,
                 border: Border.all(
-                  color: const Color(0xFF2E4470),
+                  color: AppColors.navyGradientMid,
                   width: 1.2,
                 ),
               ),
@@ -249,9 +250,9 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                 height: 38,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: const Color(0xFF172A4F),
+                  color: AppColors.navyAccentDark,
                   border: Border.all(
-                    color: const Color(0xFF2E4470),
+                    color: AppColors.navyGradientMid,
                     width: 1.2,
                   ),
                 ),
@@ -354,7 +355,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                                         height: 34,
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: const Color(0xFF284170),
+                                          color: AppColors.navyRoyal284170,
                                           border: Border.all(
                                             color: _goldBright,
                                             width: 1.6,
@@ -569,11 +570,11 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
         fillColor: Colors.white,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+          borderSide: const BorderSide(color: AppColors.sandDivider),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFFD6CEBF)),
+          borderSide: const BorderSide(color: AppColors.sandDivider),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
@@ -590,7 +591,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
         builder: (ctx, setModalState) {
           return Container(
             decoration: BoxDecoration(
-              color: const Color(0xFFF8EFE0),
+              color: AppColors.creamModalSheet,
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(28)),
               border: Border.all(
@@ -768,11 +769,11 @@ class _ProgressTimeline extends ConsumerWidget {
     required this.bottomPadding,
   });
 
-  static const Color _navyHeader = Color(0xFF0E1D3A);
-  static const Color _goldBright = Color(0xFFE6C365);
-  static const Color _goldPrimary = Color(0xFFD5B258);
-  static const Color _darkNavyText = Color(0xFF141E30);
-  static const Color _cardBorderNavy = Color(0xFF1F2B3E);
+  static const Color _navyHeader = AppColors.navyHeader;
+  static const Color _goldBright = AppColors.goldBright;
+  static const Color _goldPrimary = AppColors.goldBorder;
+  static const Color _darkNavyText = AppColors.darkNavyText;
+  static const Color _cardBorderNavy = AppColors.navyCardBorder;
 
   String _formatDate(DateTime dt) {
     const months = [
@@ -833,7 +834,7 @@ class _ProgressTimeline extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF4B5563),
+                    color: AppColors.textNeutralGray,
                   ),
                 ),
               ],
@@ -969,13 +970,13 @@ class _ProgressTimeline extends ConsumerWidget {
                                   gradient: LinearGradient(
                                     colors: index == 0
                                         ? const [
-                                            Color(0xFF2B6CB0),
-                                            Color(0xFF3E7B52),
-                                            Color(0xFFD5B258),
+                                            AppColors.blueAccent,
+                                            AppColors.greenEmerald3e7b52,
+                                            AppColors.goldBorder,
                                           ]
                                         : const [
-                                            Color(0xFFB8923A),
-                                            Color(0xFFE6C365),
+                                            AppColors.crimsonAlertB8923a,
+                                            AppColors.goldBright,
                                           ],
                                   ),
                                 ),
@@ -991,7 +992,7 @@ class _ProgressTimeline extends ConsumerWidget {
                               const Icon(
                                 Icons.calendar_today_outlined,
                                 size: 13.5,
-                                color: Color(0xFF3E4856),
+                                color: AppColors.textMutedSlate,
                               ),
                               const SizedBox(width: 6),
                               Text(
@@ -999,7 +1000,7 @@ class _ProgressTimeline extends ConsumerWidget {
                                 style: const TextStyle(
                                   fontSize: 12.2,
                                   fontWeight: FontWeight.w500,
-                                  color: Color(0xFF3E4856),
+                                  color: AppColors.textMutedSlate,
                                 ),
                               ),
                             ],
@@ -1013,7 +1014,7 @@ class _ProgressTimeline extends ConsumerWidget {
                               padding:
                                   const EdgeInsets.fromLTRB(12, 8, 12, 10),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF6F1E6),
+                                color: AppColors.creamWarmLightF6f1e6,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -1036,7 +1037,7 @@ class _ProgressTimeline extends ConsumerWidget {
                                       style: const TextStyle(
                                         fontSize: 12.5,
                                         fontStyle: FontStyle.italic,
-                                        color: Color(0xFF232C3D),
+                                        color: AppColors.navySlate232c3d,
                                         height: 1.35,
                                       ),
                                     ),
@@ -1091,7 +1092,7 @@ class _ProgressTimeline extends ConsumerWidget {
         height: 24,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: const Color(0xFF6B8A47),
+          color: AppColors.greenEmerald6b8a47,
           border: Border.all(color: _darkNavyText, width: 2.0),
         ),
       );
@@ -1104,15 +1105,15 @@ class _ProgressTimeline extends ConsumerWidget {
     Color fg;
 
     if (normalized == 'intermediate') {
-      bg = const Color(0xFFF5E6B8);
-      fg = const Color(0xFF6B5314);
+      bg = AppColors.sandWarmMutedF5e6b8;
+      fg = AppColors.bronzeDark6b5314;
     } else if (normalized == 'advanced') {
       bg = _navyHeader;
       fg = Colors.white;
     } else {
       // Beginner default
-      bg = const Color(0xFFCBEAD8);
-      fg = const Color(0xFF1B6342);
+      bg = AppColors.greenBadgeBg;
+      fg = AppColors.greenPresent;
     }
 
     return Container(
@@ -1187,20 +1188,20 @@ class _ScoreRingPainter extends CustomPainter {
 
     // Dark navy inner disk
     final fillPaint = Paint()
-      ..color = const Color(0xFF0E1D3A)
+      ..color = AppColors.navyHeader
       ..style = PaintingStyle.fill;
     canvas.drawCircle(center, radius - 2, fillPaint);
 
     // Subtle track ring
     final trackPaint = Paint()
-      ..color = const Color(0xFF283E66)
+      ..color = AppColors.navyRoyal283e66
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.5;
     canvas.drawCircle(center, radius - 2.5, trackPaint);
 
     // Gold progress arc
     final arcPaint = Paint()
-      ..color = const Color(0xFFD5B258)
+      ..color = AppColors.goldBorder
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.5
       ..strokeCap = StrokeCap.round;
