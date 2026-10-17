@@ -13,7 +13,7 @@ import '../../../../core/network/api_client.dart';
 class PaymentSubmissionScreen extends ConsumerStatefulWidget {
   final MonthlyFeeObligation obligation;
 
-  const PaymentSubmissionScreen({Key? key, required this.obligation}) : super(key: key);
+  const PaymentSubmissionScreen({super.key, required this.obligation});
 
   @override
   ConsumerState<PaymentSubmissionScreen> createState() => _PaymentSubmissionScreenState();
@@ -129,7 +129,7 @@ appBar: AppBar(
                     ),
                     const SizedBox(height: 24),
                     DropdownButtonFormField<String>(
-                      value: _paymentMethod,
+                      initialValue: _paymentMethod,
                       decoration: const InputDecoration(labelText: 'Payment Method', border: OutlineInputBorder()),
                       items: ['UPI', 'BankTransfer', 'Cash'].map((m) {
                         return DropdownMenuItem(value: m, child: Text(m));

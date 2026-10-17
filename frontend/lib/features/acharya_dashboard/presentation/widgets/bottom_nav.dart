@@ -12,14 +12,14 @@ class AcharyaBottomNav extends StatelessWidget {
     return Container(
       height: 68,
       decoration: BoxDecoration(
-        color: AcharyaColors.screenBackground.withOpacity(0.95),
+        color: AcharyaColors.screenBackground.withValues(alpha: 0.95),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, -2),
           ),

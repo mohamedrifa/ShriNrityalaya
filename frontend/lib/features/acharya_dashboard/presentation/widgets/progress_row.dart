@@ -40,7 +40,7 @@ class ProgressRow extends StatelessWidget {
           height: 4,
           width: double.infinity,
           decoration: BoxDecoration(
-            color: isGold ? Colors.white.withOpacity(0.1) : Colors.white.withOpacity(0.25),
+            color: isGold ? Colors.white.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.25),
             borderRadius: BorderRadius.circular(2),
           ),
           alignment: Alignment.centerLeft,

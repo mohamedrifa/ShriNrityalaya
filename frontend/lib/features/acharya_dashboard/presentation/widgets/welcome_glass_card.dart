@@ -27,10 +27,10 @@ class WelcomeGlassCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: AcharyaColors.navy.withOpacity(0.92),
+          color: AcharyaColors.navy.withValues(alpha: 0.92),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AcharyaColors.gold.withOpacity(0.3),
+            color: AcharyaColors.gold.withValues(alpha: 0.3),
             width: 0.5,
           ),
         ),

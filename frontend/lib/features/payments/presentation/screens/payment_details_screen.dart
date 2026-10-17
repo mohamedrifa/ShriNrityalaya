@@ -9,7 +9,7 @@ import 'package:shri_nrityalaya_app/features/fees/domain/models/monthly_fee_obli
 class PaymentDetailsScreen extends ConsumerStatefulWidget {
   final MonthlyFeeObligation obligation;
 
-  const PaymentDetailsScreen({Key? key, required this.obligation}) : super(key: key);
+  const PaymentDetailsScreen({super.key, required this.obligation});
 
   @override
   ConsumerState<PaymentDetailsScreen> createState() => _PaymentDetailsScreenState();

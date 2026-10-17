@@ -10,7 +10,7 @@ import 'package:shri_nrityalaya_app/features/learning/domain/models/lesson.dart'
 
 class LessonPlayerScreen extends ConsumerStatefulWidget {
   final Lesson lesson;
-  const LessonPlayerScreen({Key? key, required this.lesson}) : super(key: key);
+  const LessonPlayerScreen({super.key, required this.lesson});
 
   @override
   ConsumerState<LessonPlayerScreen> createState() => _LessonPlayerScreenState();

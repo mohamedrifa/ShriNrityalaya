@@ -130,7 +130,7 @@ class AcharyaHeaderBar extends StatelessWidget {
                     Image.asset(
                       'assets/images/logo_crescent.png',
                       height: 42,
-                      errorBuilder: (_, __, ___) => const Icon(
+                      errorBuilder: (context, error, stackTrace) => const Icon(
                         Icons.circle_outlined,
                         color: AcharyaColors.navy,
                         size: 42,
@@ -234,7 +234,7 @@ class _ProgressRow extends StatelessWidget {
         Container(
           height: 4,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.22),
+            color: Colors.white.withValues(alpha: 0.22),
             borderRadius: BorderRadius.circular(2),
           ),
           child: Align(
@@ -274,10 +274,10 @@ class AcharyaGlassCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
         decoration: BoxDecoration(
-          color: const Color(0xFF15264F).withOpacity(0.95),
+          color: const Color(0xFF15264F).withValues(alpha: 0.95),
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AcharyaColors.gold.withOpacity(0.30), width: 0.5,
+            color: AcharyaColors.gold.withValues(alpha: 0.30), width: 0.5,
           ),
         ),
         child: Column(
@@ -330,7 +330,7 @@ class AcharyaHeroBanner extends StatelessWidget {
             child: Image.asset(
               'assets/images/hero_clean_bg.png',
               fit: BoxFit.fill,
-              errorBuilder: (_, __, ___) => Image.asset(
+              errorBuilder: (context, error, stackTrace) => Image.asset(
                 'assets/images/hero_full.png', fit: BoxFit.fill),
             ),
           ),
@@ -349,7 +349,7 @@ class AcharyaHeroBanner extends StatelessWidget {
               'assets/images/dancer_cutout.png',
               fit: BoxFit.contain,
               alignment: Alignment.bottomRight,
-              errorBuilder: (_, __, ___) => Image.asset(
+              errorBuilder: (context, error, stackTrace) => Image.asset(
                 'assets/images/avatar_dancer_cutout.png',
                 fit: BoxFit.contain, alignment: Alignment.bottomRight,
               ),
@@ -364,7 +364,7 @@ class AcharyaHeroBanner extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter, end: Alignment.bottomCenter,
                   colors: [
-                    AcharyaColors.screenBackground.withOpacity(0.0),
+                    AcharyaColors.screenBackground.withValues(alpha: 0.0),
                     AcharyaColors.screenBackground,
                   ],
                 ),
@@ -408,7 +408,7 @@ class AcharyaActionCard extends StatelessWidget {
           border: Border.all(color: AcharyaColors.cardBorder, width: 1.2),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.08),
+              color: Colors.black.withValues(alpha: 0.08),
               blurRadius: 12, offset: const Offset(0, 4),
             ),
           ],
@@ -476,7 +476,7 @@ class AcharyaEventTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.07),
+            color: Colors.black.withValues(alpha: 0.07),
             blurRadius: 10, offset: const Offset(0, 3),
           ),
         ],
@@ -551,13 +551,13 @@ class _AcharyaBottomNavBarState extends State<AcharyaBottomNavBar> {
     return Container(
       height: 68,
       decoration: BoxDecoration(
-        color: AcharyaColors.screenBackground.withOpacity(0.95),
+        color: AcharyaColors.screenBackground.withValues(alpha: 0.95),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20), topRight: Radius.circular(20),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
+            color: Colors.black.withValues(alpha: 0.06),
             blurRadius: 10, offset: const Offset(0, -2),
           ),
         ],
@@ -639,7 +639,7 @@ class AcharyaDashboardScreen extends StatelessWidget {
               opacity: 0.55,
               child: Image.asset('assets/images/temple_left.png',
                 fit: BoxFit.fitWidth, alignment: Alignment.bottomLeft,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
               ),
             ),
           ),
@@ -650,7 +650,7 @@ class AcharyaDashboardScreen extends StatelessWidget {
               opacity: 0.55,
               child: Image.asset('assets/images/temple_right.png',
                 fit: BoxFit.fitWidth, alignment: Alignment.bottomRight,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
               ),
             ),
           ),

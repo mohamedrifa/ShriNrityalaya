@@ -23,7 +23,7 @@ class HeroBanner extends StatelessWidget {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.5),
+                    Colors.black.withValues(alpha: 0.5),
                     Colors.black,
                   ],
                   stops: const [0.0, 0.12, 1.0],
@@ -71,7 +71,7 @@ class HeroBanner extends StatelessWidget {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    AcharyaColors.screenBackground.withOpacity(0.0),
+                    AcharyaColors.screenBackground.withValues(alpha: 0.0),
                     AcharyaColors.screenBackground,
                   ],
                 ),

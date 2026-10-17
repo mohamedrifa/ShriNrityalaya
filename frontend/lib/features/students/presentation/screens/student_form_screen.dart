@@ -331,7 +331,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                             const SizedBox(width: 12),
                             Expanded(
                               child: DropdownButtonFormField<String>(
-                                value: _status,
+                                initialValue: _status,
                                 decoration: _inputDecoration('Status'),
                                 items: const [
                                   DropdownMenuItem(value: 'Active', child: Text('Active')),
@@ -466,7 +466,7 @@ class _StudentFormScreenState extends ConsumerState<StudentFormScreen> {
                               data: (plans) {
                                 return DropdownButtonFormField<String>(
                                   isExpanded: true,
-                                  value: _feePlanId,
+                                  initialValue: _feePlanId,
                                   decoration: _inputDecoration(
                                     'Select Fee Plan',
                                     icon: Icons.workspace_premium_outlined,
