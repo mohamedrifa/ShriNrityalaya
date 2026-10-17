@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../features/attendance/presentation/screens/attendance_screen.dart';
 import '../../features/attendance/presentation/screens/student_attendance_tracker_screen.dart';
@@ -25,7 +26,10 @@ import '../../features/students/presentation/screens/student_form_screen.dart';
 import '../../features/students/presentation/screens/students_list_screen.dart';
 import 'route_names.dart';
 
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
 final appRouter = GoRouter(
+  navigatorKey: rootNavigatorKey,
   initialLocation: RouteNames.splash,
   routes: [
     GoRoute(

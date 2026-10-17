@@ -11,4 +11,7 @@ class AppConstants {
   static const String roleAdmin = 'SystemAdmin';
 
   static const int defaultPageSize = 20;
+
+  /// Current application version code matching AppVersionConstants
+  static const int appVersion = 1;
 }

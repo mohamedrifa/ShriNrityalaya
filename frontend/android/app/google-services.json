@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "530605585688",
+    "project_id": "bharath-academy-1a1ce",
+    "storage_bucket": "bharath-academy-1a1ce.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530605585688:android:44e90a51991e52c9f31a6d",
+        "android_client_info": {
+          "package_name": "com.example.shri_nrityalaya_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbu_Nehd66O1i3scAtZ8S4gwMinaJeqXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
