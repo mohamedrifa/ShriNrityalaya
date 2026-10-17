@@ -217,10 +217,13 @@ class AppDrawer extends ConsumerWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              onTap: () {
+              onTap: () async {
                 Navigator.pop(context);
+                await ref.read(secureStorageProvider).delete(key: 'jwt_token');
                 ref.read(authProvider.notifier).logout();
-                context.go('/login');
+                if (context.mounted) {
+                  context.go('/login');
+                }
               },
             ),
 

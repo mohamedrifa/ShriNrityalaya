@@ -20,11 +20,14 @@ class EventsNotifier extends StateNotifier<AsyncValue<List<AcademyEvent>>> {
   }
 
   Future<void> loadEvents() async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final data = await _repository.getEvents();
+      if (!mounted) return;
       state = AsyncValue.data(data);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
     }
   }
@@ -32,6 +35,7 @@ class EventsNotifier extends StateNotifier<AsyncValue<List<AcademyEvent>>> {
   Future<void> createEvent(AcademyEvent event) async {
     try {
       final newEvent = await _repository.createEvent(event);
+      if (!mounted) return;
       final currentList = state.value ?? [];
       state = AsyncValue.data([...currentList, newEvent]);
     } catch (e) {
@@ -42,6 +46,7 @@ class EventsNotifier extends StateNotifier<AsyncValue<List<AcademyEvent>>> {
   Future<void> updateEvent(AcademyEvent event) async {
     try {
       final updatedEvent = await _repository.updateEvent(event);
+      if (!mounted) return;
       if (state.hasValue) {
         final currentList = state.value!;
         final index = currentList.indexWhere((e) => e.id == updatedEvent.id);

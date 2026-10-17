@@ -2,6 +2,8 @@ import 'package:shri_nrityalaya_app/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/network/api_client.dart';
+import '../../../auth/presentation/providers/auth_providers.dart';
+import 'student_attendance_tracker_screen.dart';
 
 class AttendanceScreen extends ConsumerStatefulWidget {
   const AttendanceScreen({super.key});
@@ -129,9 +131,8 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
         .map(
           (s) => {
             'studentId': s['id'],
-            'classSessionId':
-                '00000000-0000-0000-0000-000000000000', // placeholder for actual session
             'status': s['present'] == true ? 'Present' : 'Absent',
+            'date': _selectedDate.toIso8601String(),
           },
         )
         .toList();
@@ -160,6 +161,11 @@ class _AttendanceScreenState extends ConsumerState<AttendanceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final userRole = ref.watch(authProvider).userRole;
+    if (userRole == 'Student' || userRole == 'Parent') {
+      return const StudentAttendanceTrackerScreen();
+    }
+
     return Scaffold(
       backgroundColor: _navyHeader,
       body: Column(

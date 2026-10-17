@@ -8,6 +8,7 @@ class RouteNames {
   static const String paymentSubmit = '/payments/submit';
   static const String paymentDetails = '/payments/details';
   static const String attendance = '/attendance';
+  static const String studentAttendance = '/attendance/student';
   static const String learning = '/learning';
   static const String learningPlay = '/learning/play';
   static const String learningUpload = '/learning/upload';

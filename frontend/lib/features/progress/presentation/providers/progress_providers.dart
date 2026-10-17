@@ -11,25 +11,36 @@ final skillAssessmentRepositoryProvider = Provider<SkillAssessmentRepository>((r
 });
 
 final studentAssessmentsProvider = StateNotifierProvider.autoDispose.family<AssessmentsNotifier, AsyncValue<List<SkillAssessment>>, String>((ref, studentId) {
-  ref.watch(authProvider);
-  return AssessmentsNotifier(ref.watch(skillAssessmentRepositoryProvider), studentId);
+  final auth = ref.watch(authProvider);
+  return AssessmentsNotifier(
+    ref.watch(skillAssessmentRepositoryProvider),
+    studentId,
+    isAuthenticated: auth.isAuthenticated,
+  );
 });
 
 class AssessmentsNotifier extends StateNotifier<AsyncValue<List<SkillAssessment>>> {
   final SkillAssessmentRepository _repository;
   final String _studentId;
+  final bool isAuthenticated;
 
-  AssessmentsNotifier(this._repository, this._studentId) : super(const AsyncValue.loading()) {
-    loadAssessments();
+  AssessmentsNotifier(this._repository, this._studentId, {this.isAuthenticated = true}) : super(const AsyncValue.loading()) {
+    if (isAuthenticated) {
+      loadAssessments();
+    } else {
+      state = const AsyncValue.data([]);
+    }
   }
 
   Future<void> loadAssessments() async {
-    if (_studentId.isEmpty) return;
+    if (_studentId.isEmpty || !mounted) return;
     state = const AsyncValue.loading();
     try {
       final data = await _repository.getAssessmentsForStudent(_studentId);
+      if (!mounted) return;
       state = AsyncValue.data(data);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
     }
   }

@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import '../../features/attendance/presentation/screens/attendance_screen.dart';
+import '../../features/attendance/presentation/screens/student_attendance_tracker_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/dashboard/presentation/screens/parent_dashboard_screen.dart';
@@ -68,6 +69,16 @@ final appRouter = GoRouter(
     GoRoute(
       path: RouteNames.attendance,
       builder: (context, state) => const AttendanceScreen(),
+    ),
+    GoRoute(
+      path: RouteNames.studentAttendance,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return StudentAttendanceTrackerScreen(
+          studentId: extra?['studentId'] as String?,
+          studentName: extra?['studentName'] as String?,
+        );
+      },
     ),
     GoRoute(
       path: RouteNames.learning,

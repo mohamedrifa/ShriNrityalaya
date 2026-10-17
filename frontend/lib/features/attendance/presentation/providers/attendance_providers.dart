@@ -5,3 +5,8 @@ import '../../data/attendance_repository.dart';
 final attendanceRepositoryProvider = Provider<AttendanceRepository>((ref) {
   return AttendanceRepository(ref.watch(dioProvider));
 });
+
+final studentAttendanceProvider = FutureProvider.family<List<Map<String, dynamic>>, String>((ref, studentId) async {
+  final repo = ref.watch(attendanceRepositoryProvider);
+  return await repo.getStudentAttendance(studentId);
+});

@@ -9,23 +9,34 @@ final profileRepositoryProvider = Provider<ProfileRepository>((ref) {
 });
 
 final profileProvider = StateNotifierProvider<ProfileNotifier, AsyncValue<Map<String, dynamic>>>((ref) {
-  ref.watch(authProvider);
-  return ProfileNotifier(ref.watch(profileRepositoryProvider));
+  final auth = ref.watch(authProvider);
+  return ProfileNotifier(
+    ref.watch(profileRepositoryProvider),
+    isAuthenticated: auth.isAuthenticated,
+  );
 });
 
 class ProfileNotifier extends StateNotifier<AsyncValue<Map<String, dynamic>>> {
   final ProfileRepository _repository;
+  final bool isAuthenticated;
 
-  ProfileNotifier(this._repository) : super(const AsyncValue.loading()) {
-    loadProfile();
+  ProfileNotifier(this._repository, {this.isAuthenticated = true}) : super(const AsyncValue.loading()) {
+    if (isAuthenticated) {
+      loadProfile();
+    } else {
+      state = const AsyncValue.data({});
+    }
   }
 
   Future<void> loadProfile() async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final profile = await _repository.getProfile();
+      if (!mounted) return;
       state = AsyncValue.data(profile);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
     }
   }

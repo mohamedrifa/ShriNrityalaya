@@ -20,11 +20,14 @@ class LessonsNotifier extends StateNotifier<AsyncValue<List<Lesson>>> {
   }
 
   Future<void> loadLessons() async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final data = await _repository.getAllLessons();
+      if (!mounted) return;
       state = AsyncValue.data(data);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
     }
   }

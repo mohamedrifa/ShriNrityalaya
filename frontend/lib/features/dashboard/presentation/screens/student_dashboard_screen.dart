@@ -264,7 +264,17 @@ class StudentDashboardScreen extends ConsumerWidget {
                             route: '/learning',
                           ),
                         ),
-                        const SizedBox(width: 14),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _buildQuickActionCard(
+                            context: context,
+                            title: 'Attendance',
+                            subtitle: 'Track presence',
+                            icon: Icons.fact_check_outlined,
+                            route: '/attendance/student',
+                          ),
+                        ),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: _buildQuickActionCard(
                             context: context,
@@ -291,7 +301,7 @@ class StudentDashboardScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 2),
                     const Text(
-                      'Recent Activity',
+                      'Recent Activity & Presence',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
@@ -300,12 +310,17 @@ class StudentDashboardScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
       
-                    // 1. Upcoming Events Card
+                    // 1. Attendance Tracker Card
+                    _buildAttendanceSummaryCard(context),
+
+                    const SizedBox(height: 12),
+
+                    // 2. Upcoming Events Card
                     _buildUpcomingEventCard(context, eventsState),
       
                     const SizedBox(height: 12),
       
-                    // 2. Recent Progress Card
+                    // 3. Recent Progress Card
                     _buildRecentProgressCard(context, assessmentsState),
                   ],
                 ),
@@ -500,8 +515,9 @@ class StudentDashboardScreen extends ConsumerWidget {
                 const SizedBox(height: 12),
                 Text(
                   title,
+                  maxLines: 1,
                   style: const TextStyle(
-                    fontSize: 16.5,
+                    fontSize: 12,
                     fontWeight: FontWeight.w800,
                     color: _darkNavyText,
                   ),
@@ -909,6 +925,91 @@ class StudentDashboardScreen extends ConsumerWidget {
                   ],
                 );
               },
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAttendanceSummaryCard(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.pureWhite,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _goldPrimary, width: 1.4),
+        boxShadow: [
+          BoxShadow(
+            color: _navyHeader.withValues(alpha: 0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push('/attendance/student'),
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+            child: Row(
+              children: [
+                Container(
+                  width: 46,
+                  height: 46,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.greenBadgeBg,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.fact_check_rounded,
+                    color: AppColors.greenPresent,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                const Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Class Attendance:',
+                        style: TextStyle(
+                          fontSize: 12.8,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.textDarkSlate,
+                        ),
+                      ),
+                      SizedBox(height: 2),
+                      Text(
+                        'Track attendance & session logs',
+                        style: TextStyle(
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w700,
+                          color: _darkNavyText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: AppColors.navyDarkPill,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'Track',
+                    style: TextStyle(
+                      color: AppColors.goldBright,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

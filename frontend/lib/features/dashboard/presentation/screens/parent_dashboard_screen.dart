@@ -254,6 +254,50 @@ class ParentDashboardScreen extends ConsumerWidget {
       
                     const SizedBox(height: 24),
       
+                    // Attendance Tracking Section
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Attendance Tracking',
+                          style: TextStyle(
+                            fontSize: 17.5,
+                            fontWeight: FontWeight.w800,
+                            color: _darkNavyText,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => context.push(
+                            '/attendance/student',
+                            extra: {
+                              'studentId': childStudentId ?? 'me',
+                              'studentName': childName ?? 'Student',
+                            },
+                          ),
+                          behavior: HitTestBehavior.opaque,
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 4),
+                            child: Text(
+                              'View Logs',
+                              style: TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w600,
+                                color: _goldLink,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    _buildChildAttendanceCard(
+                      context,
+                      childName,
+                      childStudentId,
+                    ),
+
+                    const SizedBox(height: 24),
+      
                     // Recent Progress Section
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -843,6 +887,102 @@ class ParentDashboardScreen extends ConsumerWidget {
                   Icons.chevron_right_rounded,
                   color: _goldLink,
                   size: 22,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChildAttendanceCard(
+    BuildContext context,
+    String? childName,
+    String? childStudentId,
+  ) {
+    final String displayChild = childName ?? 'Child';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.pureWhite,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: AppColors.goldFrameBorder, width: 1.4),
+        boxShadow: [
+          BoxShadow(
+            color: _navyHeader.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => context.push(
+            '/attendance/student',
+            extra: {
+              'studentId': childStudentId ?? 'me',
+              'studentName': displayChild,
+            },
+          ),
+          borderRadius: BorderRadius.circular(18),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+            child: Row(
+              children: [
+                Container(
+                  width: 48,
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColors.greenBadgeBg,
+                  ),
+                  alignment: Alignment.center,
+                  child: const Icon(
+                    Icons.how_to_reg_rounded,
+                    color: AppColors.greenPresent,
+                    size: 26,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "$displayChild's Attendance Record",
+                        style: const TextStyle(
+                          fontSize: 14.5,
+                          fontWeight: FontWeight.w700,
+                          color: _darkNavyText,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'Monitor class presence, dates & topics',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondarySlate,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: AppColors.navyDarkPill,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'Track',
+                    style: TextStyle(
+                      color: AppColors.goldBright,
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ],
             ),

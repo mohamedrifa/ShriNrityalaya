@@ -10,23 +10,34 @@ final feeObligationsRepositoryProvider = Provider<FeeObligationsRepository>((ref
 });
 
 final feeObligationsProvider = StateNotifierProvider.autoDispose<FeeObligationsNotifier, AsyncValue<List<MonthlyFeeObligation>>>((ref) {
-  ref.watch(authProvider);
-  return FeeObligationsNotifier(ref.watch(feeObligationsRepositoryProvider));
+  final auth = ref.watch(authProvider);
+  return FeeObligationsNotifier(
+    ref.watch(feeObligationsRepositoryProvider),
+    isAuthenticated: auth.isAuthenticated,
+  );
 });
 
 class FeeObligationsNotifier extends StateNotifier<AsyncValue<List<MonthlyFeeObligation>>> {
   final FeeObligationsRepository _repository;
+  final bool isAuthenticated;
 
-  FeeObligationsNotifier(this._repository) : super(const AsyncValue.loading()) {
-    loadObligations();
+  FeeObligationsNotifier(this._repository, {this.isAuthenticated = true}) : super(const AsyncValue.loading()) {
+    if (isAuthenticated) {
+      loadObligations();
+    } else {
+      state = const AsyncValue.data([]);
+    }
   }
 
   Future<void> loadObligations() async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final obligations = await _repository.getObligations();
+      if (!mounted) return;
       state = AsyncValue.data(obligations);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
     }
   }
@@ -34,6 +45,7 @@ class FeeObligationsNotifier extends StateNotifier<AsyncValue<List<MonthlyFeeObl
   Future<void> generateObligations(int year, int month) async {
     try {
       await _repository.generateObligations(year, month);
+      if (!mounted) return;
       await loadObligations(); // Reload list after generating
     } catch (e) {
       rethrow;

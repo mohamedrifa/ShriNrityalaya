@@ -20,11 +20,14 @@ class StudentsNotifier extends StateNotifier<AsyncValue<List<Student>>> {
   }
 
   Future<void> loadStudents() async {
+    if (!mounted) return;
     state = const AsyncValue.loading();
     try {
       final students = await _repository.getStudents();
+      if (!mounted) return;
       state = AsyncValue.data(students);
     } catch (e, stack) {
+      if (!mounted) return;
       state = AsyncValue.error(e, stack);
     }
   }
@@ -32,6 +35,7 @@ class StudentsNotifier extends StateNotifier<AsyncValue<List<Student>>> {
   Future<void> addStudent(Map<String, dynamic> payload) async {
     try {
       final newStudent = await _repository.createStudent(payload);
+      if (!mounted) return;
       if (state.value != null) {
         state = AsyncValue.data([...state.value!, newStudent]);
       }
@@ -43,6 +47,7 @@ class StudentsNotifier extends StateNotifier<AsyncValue<List<Student>>> {
   Future<void> updateStudent(Student student) async {
     try {
       final updatedStudent = await _repository.updateStudent(student);
+      if (!mounted) return;
       if (state.hasValue) {
         state = AsyncValue.data(
           state.value!.map((e) => e.id == updatedStudent.id ? updatedStudent : e).toList(),
@@ -56,6 +61,7 @@ class StudentsNotifier extends StateNotifier<AsyncValue<List<Student>>> {
   Future<void> deleteStudent(String id) async {
     try {
       await _repository.deleteStudent(id);
+      if (!mounted) return;
       if (state.hasValue) {
         state = AsyncValue.data(
           state.value!.where((e) => e.id != id).toList(),
